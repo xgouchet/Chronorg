@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Chronorg</string>
+    <string name="empty_projects_list">No project yet…</string>
+    <string name="error_projects_list">Error reading projects list</string>
 </resources>
