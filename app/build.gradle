@@ -56,7 +56,11 @@ dependencies {
 
     // COUNSEL
     compile 'com.github.deezer.Counsel:counsel:master-SNAPSHOT'
+
+    // DEBUG
     debugCompile 'com.github.deezer.Counsel:counsel-debug:master-SNAPSHOT'
+    debugCompile 'com.facebook.stetho:stetho:1.4.1'
+    debugCompile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
 
     //  UNIT TESTS
     testCompile 'junit:junit:4.12'
