@@ -8,6 +8,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <provider
+            android:name=".provider.ChronorgContentProvider"
+            android:authorities="${applicationId}.provider"/>
     </application>
 
 </manifest>
