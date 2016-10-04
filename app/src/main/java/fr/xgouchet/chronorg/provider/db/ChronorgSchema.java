@@ -56,6 +56,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         return description;
     }
 
+
     private TableDescription buildProjectsTable() {
         TableDescription tableDescription = new TableDescription(TABLE_PROJECTS);
 
@@ -124,5 +125,9 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS, MATCH_PROJECTS);
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS + "/*/" + PATH_ENTITIES, MATCH_PROJECT_ENTITIES);
         return uriMatcher;
+    }
+
+    public Uri projectUri(long id) {
+        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(id)).build();
     }
 }

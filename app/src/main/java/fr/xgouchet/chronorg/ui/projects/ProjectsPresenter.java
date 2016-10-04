@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.ui.projects;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -19,24 +20,29 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ProjectsPresenter implements ProjectsContract.Presenter {
 
-    private List<Project> projects = new ArrayList<>();
+    @NonNull private final List<Project> projects;
 
-    private ProjectsContract.View projectsView;
+    @NonNull /*package*/ final ProjectsContract.View view;
 
-    private ProjectRepository projectRepository;
+    @NonNull private final ProjectRepository projectRepository;
 
-    private CompositeSubscription subscriptions;
+    @NonNull private final CompositeSubscription subscriptions;
 
-    public ProjectsPresenter(ProjectRepository projectRepository, ProjectsContract.View projectsView) {
+    public ProjectsPresenter(@NonNull ProjectRepository projectRepository,
+                             @NonNull ProjectsContract.View view) {
         this.projectRepository = projectRepository;
-        this.projectsView = projectsView;
-
+        this.view = view;
+        projects = new ArrayList<>();
         subscriptions = new CompositeSubscription();
-        projectsView.setPresenter(this);
+        view.setPresenter(this);
     }
 
     @Override public void load(boolean force) {
-        projectsView.setLoading(true);
+        if (!force) {
+            view.setContent(projects);
+        }
+
+        view.setLoading(true);
 
         projects.clear();
 
@@ -47,25 +53,30 @@ public class ProjectsPresenter implements ProjectsContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Project>>() {
                     @Override public void onCompleted() {
-                        projectsView.setLoading(false);
+                        view.setLoading(false);
                     }
 
                     @Override public void onError(Throwable e) {
                         Log.e("Hey", "Ho", e);
-                        projectsView.setLoading(false);
-                        projectsView.setError();
+                        view.setLoading(false);
+                        view.setError();
                     }
 
                     @Override public void onNext(List<Project> projects) {
-                        if (projects.isEmpty()) {
-                            projectsView.setEmpty();
-                        } else {
-                            projectsView.setContent(projects);
-                        }
+                        onProjectsLoaded(projects);
                     }
                 });
 
         subscriptions.add(subscription);
+    }
+
+    /*package*/ void onProjectsLoaded(List<Project> projects) {
+        this.projects.addAll(projects);
+        if (this.projects.isEmpty()) {
+            view.setEmpty();
+        } else {
+            view.setContent(this.projects);
+        }
     }
 
     @Override public void open(Project project) {
@@ -74,7 +85,7 @@ public class ProjectsPresenter implements ProjectsContract.Presenter {
 
     @Override public void createProject() {
         // TODO tablet version
-        projectsView.showCreateUi();
+        view.showCreateUi();
     }
 
     @Override public void subscribe() {

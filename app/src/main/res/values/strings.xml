@@ -2,4 +2,8 @@
     <string name="app_name">Chronorg</string>
     <string name="empty_projects_list">No project yet…</string>
     <string name="error_projects_list">Error reading projects list</string>
+    <string name="hint_project_name">Project name</string>
+    <string name="hint_project_description">Project description</string>
+    <string name="save">Save</string>
+    <string name="error_empty_name">Name can\'t be empty</string>
 </resources>

@@ -74,7 +74,17 @@ public class ChronorgContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-        return null;
+        int match = uriMatcher.match(uri);
+        Uri result = null;
+
+        switch (match) {
+            case ChronorgSchema.MATCH_PROJECTS:
+                long id = chronorgDatabaseHelper.getProjectDao().insert(values);
+                result = chronorgSchema.projectUri(id);
+                break;
+        }
+
+        return result;
     }
 
     @Override

@@ -12,6 +12,18 @@ public class Project {
     @Nullable private String name;
     @Nullable private String description;
 
+    public Project() {
+        id = -1;
+        name = null;
+        description = null;
+    }
+
+    public Project(@Nullable String name, @Nullable String description) {
+        id = -1;
+        this.name = name;
+        this.description = description;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -22,5 +34,13 @@ public class Project {
 
     public void setDescription(@Nullable String description) {
         this.description = description;
+    }
+
+    @Nullable public String getName() {
+        return name;
+    }
+
+    @Nullable public String getDescription() {
+        return description;
     }
 }

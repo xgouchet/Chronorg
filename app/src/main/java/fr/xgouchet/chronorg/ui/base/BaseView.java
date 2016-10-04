@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
  */
 public interface BaseView<P extends BasePresenter, T> {
 
-    void setPresenter(P presenter);
+    void setPresenter(@NonNull P presenter);
 
     void setLoading(boolean active);
 

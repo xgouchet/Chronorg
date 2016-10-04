@@ -1,6 +1,8 @@
 package fr.xgouchet.chronorg.ui.projects;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.model.Project;
+import fr.xgouchet.chronorg.ui.EditProjectActivity;
 
 import static butterknife.ButterKnife.bind;
 
@@ -26,16 +29,10 @@ import static butterknife.ButterKnife.bind;
 
 public class ProjectsFragment extends Fragment implements ProjectsContract.View {
 
-
-
-    @BindView(android.R.id.list)
-    RecyclerView list;
-    @BindView(R.id.loading)
-    ProgressBar loading;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.message)
-    TextView message;
+    @BindView(android.R.id.list) RecyclerView list;
+    @BindView(R.id.loading) ProgressBar loading;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.message) TextView message;
 
     private ProjectsContract.Presenter presenter;
 
@@ -57,7 +54,7 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
         presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(ProjectsContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull ProjectsContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -78,14 +75,15 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
         list.setVisibility(View.GONE);
     }
 
-    @Override public void setContent(List<Project> projects) {
+    @Override public void setContent(@NonNull List<Project> projects) {
         message.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
         // TODO update adapter
     }
 
     @Override public void showCreateUi() {
-
+        Intent intent = new Intent(getActivity(), EditProjectActivity.class);
+        getActivity().startActivity(intent);
     }
 
     @OnClick(R.id.fab)

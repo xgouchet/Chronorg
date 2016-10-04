@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.ProjectRepository;
+import fr.xgouchet.chronorg.provider.dao.ProjectIOProvider;
 import fr.xgouchet.chronorg.ui.projects.ProjectsFragment;
 import fr.xgouchet.chronorg.ui.projects.ProjectsPresenter;
 
@@ -21,7 +22,7 @@ public class ProjectsActivity extends AppCompatActivity {
         ProjectsFragment fragment = (ProjectsFragment) getSupportFragmentManager().findFragmentById(R.id.projects_fragment);
 
         // TODO inject
-        ProjectRepository repository = new ProjectRepository(this);
+        ProjectRepository repository = new ProjectRepository(this, new ProjectIOProvider());
         ProjectsPresenter projectsPresenter = new ProjectsPresenter(repository, fragment);
 
     }
