@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 /**
@@ -37,12 +38,14 @@ public abstract class BaseDao<T> {
         return insertedId;
     }
 
-    public Cursor queryAll() {
+    public Cursor query(@Nullable String[] projection,
+                        @Nullable String selection,
+                        @Nullable String[] selectionArgs,
+                        @Nullable String sortOrder) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
 
-        return db.query(tableName, null, null, null, null, null, null);
+        return db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
-    // TODO READ, UPDATE, DELETE
 
 }

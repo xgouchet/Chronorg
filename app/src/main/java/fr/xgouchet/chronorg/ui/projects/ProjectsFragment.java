@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +24,15 @@ import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.model.Project;
 import fr.xgouchet.chronorg.ui.EditProjectActivity;
+import fr.xgouchet.chronorg.ui.ProjectDetailsActivity;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-
-public class ProjectsFragment extends Fragment implements ProjectsContract.View {
+@Trace
+public class ProjectsFragment extends Fragment implements ProjectsContract.View, ProjectViewHolder.Listener {
 
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
@@ -41,7 +44,7 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
     private ProjectsContract.Presenter presenter;
 
     public ProjectsFragment() {
-        this.adapter = new ProjectsAdapter(new ArrayList<Project>());
+        this.adapter = new ProjectsAdapter(new ArrayList<Project>(), this);
     }
 
     @Nullable @Override
@@ -93,6 +96,7 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
     }
 
     @Override public void showCreateUi() {
+        // TODO handle tablet
         Intent intent = new Intent(getActivity(), EditProjectActivity.class);
         getActivity().startActivity(intent);
     }
@@ -100,5 +104,15 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
     @OnClick(R.id.fab)
     public void onCreateNewProject(View view) {
         presenter.createProject();
+    }
+
+    @Override public void onProjectSelected(@NonNull Project project) {
+        presenter.projectSelected(project);
+    }
+
+    @Override public void showProject(@NonNull Project project) {
+        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), project);
+
+        getActivity().startActivity(intent);
     }
 }

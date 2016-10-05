@@ -49,7 +49,12 @@ public class EditProjectFragment extends Fragment
 
     @Override public void onResume() {
         super.onResume();
-        if (presenter != null) presenter.subscribe();
+        presenter.subscribe();
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
     }
 
     @Override
@@ -80,7 +85,7 @@ public class EditProjectFragment extends Fragment
     }
 
     @Override public void projectSaved() {
-        // TODO close fragment / activity
+        // TODO handle tablet
         getActivity().finish();
     }
 
@@ -99,7 +104,6 @@ public class EditProjectFragment extends Fragment
         }
         inputNameLayout.setErrorEnabled(true);
         inputNameLayout.setError(getString(message));
-//        inputName.setError(getString(message));
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

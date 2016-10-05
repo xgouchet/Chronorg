@@ -12,7 +12,20 @@
         <item name="textColorError">@android:color/holo_red_light</item>
     </style>
 
-    <!--<style name="TextErrorAppearance" parent="@android:style/TextAppearance">-->
-    <!--<item name="android:textColor">@android:color/holo_red_dark</item>-->
-    <!--</style>-->
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="TextTitleAppearanceExpanded" parent="@android:style/TextAppearance.Material.Title">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextTitleAppearance" parent="@android:style/TextAppearance.Material.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

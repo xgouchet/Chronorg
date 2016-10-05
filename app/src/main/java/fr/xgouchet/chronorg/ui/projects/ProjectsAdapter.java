@@ -17,9 +17,11 @@ import fr.xgouchet.chronorg.ui.base.BaseSimpleAdapter;
 public class ProjectsAdapter extends BaseSimpleAdapter<Project, ProjectViewHolder> {
 
     @NonNull /*package*/ final List<Project> projects;
+    @NonNull private final ProjectViewHolder.Listener listener;
 
-    public ProjectsAdapter(@NonNull List<Project> projects) {
+    public ProjectsAdapter(@NonNull List<Project> projects, @NonNull ProjectViewHolder.Listener listener) {
         this.projects = projects;
+        this.listener = listener;
     }
 
     @Override public int getItemCount() {
@@ -58,7 +60,7 @@ public class ProjectsAdapter extends BaseSimpleAdapter<Project, ProjectViewHolde
     }
 
     @Override protected ProjectViewHolder instantiateViewHolder(int viewType, View view) {
-        return new ProjectViewHolder(view);
+        return new ProjectViewHolder(listener, view);
     }
 
     @Override protected int getLayout(int viewType) {

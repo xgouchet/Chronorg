@@ -82,4 +82,34 @@ public class ProjectRepository {
             }
         });
     }
+
+    public Observable<Project> getProject(final int projectId) {
+        return Observable.create(new Observable.OnSubscribe<Project>() {
+            @Override public void call(Subscriber<? super Project> subscriber) {
+                Cursor cursor = null;
+                try {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    cursor = contentResolver.query(
+                            ChronorgSchema.PROJECTS_URI,
+                            null,
+                            provider.selectById(),
+                            new String[]{Integer.toString(projectId)},
+                            null);
+
+                    if (cursor != null && cursor.getCount() > 0) {
+                        BaseCursorReader<Project> reader = provider.provideReader(cursor);
+                        while (cursor.moveToNext()) {
+                            subscriber.onNext(reader.instantiateAndFill());
+                        }
+                    }
+                    subscriber.onCompleted();
+                } catch (Exception err) {
+                    subscriber.onError(err);
+                } finally {
+                    if (cursor != null) cursor.close();
+                }
+
+            }
+        });
+    }
 }

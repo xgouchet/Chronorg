@@ -15,7 +15,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.EditProjectActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.EditProjectActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".ui.ProjectDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <provider
             android:name=".provider.ChronorgContentProvider"

@@ -16,11 +16,11 @@ public class SQLiteDescriptionHelper extends SQLiteOpenHelper {
     private final SQLiteDescription description;
 
     /**
-     * Create a helper object to create, open, and/or manage a database. This method always returns
+     * Create a helper object to create, projectSelected, and/or manage a database. This method always returns
      * very quickly. The database is not actually created or opened until one of getWritableDatabase()
      * or getReadableDatabase() is called.
      *
-     * @param context             to use to open or create the database
+     * @param context             to use to projectSelected or create the database
      * @param descriptionProvider a provider for the description of the database
      * @param factory             to use for creating cursor objects, or null for the default
      */
@@ -31,11 +31,11 @@ public class SQLiteDescriptionHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Create a helper object to create, open, and/or manage a database. This method always returns
+     * Create a helper object to create, projectSelected, and/or manage a database. This method always returns
      * very quickly. The database is not actually created or opened until one of getWritableDatabase()
      * or getReadableDatabase() is called.
      *
-     * @param context     to use to open or create the database
+     * @param context     to use to projectSelected or create the database
      * @param description the description of the database
      * @param factory     to use for creating cursor objects, or null for the default
      */

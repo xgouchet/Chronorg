@@ -55,7 +55,7 @@ public class ChronorgContentProvider extends ContentProvider {
 
         switch (match) {
             case ChronorgSchema.MATCH_PROJECTS:
-                result = chronorgDatabaseHelper.getProjectDao().queryAll();
+                result = chronorgDatabaseHelper.getProjectDao().query(projection, selection, selectionArgs, sortOrder);
                 break;
             default:
                 result = null;

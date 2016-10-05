@@ -1,5 +1,7 @@
 package fr.xgouchet.chronorg.ui.projects;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import fr.xgouchet.chronorg.model.Project;
@@ -15,7 +17,7 @@ public interface ProjectsContract {
 
     interface Presenter extends BasePresenter {
 
-        void open(Project project);
+        void projectSelected(@NonNull Project project);
 
         void createProject();
     }
@@ -23,5 +25,7 @@ public interface ProjectsContract {
     interface View extends BaseView<Presenter, List<Project>> {
 
         void showCreateUi();
+
+        void showProject(@NonNull Project project);
     }
 }

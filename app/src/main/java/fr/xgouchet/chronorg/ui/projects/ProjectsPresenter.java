@@ -3,6 +3,8 @@ package fr.xgouchet.chronorg.ui.projects;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * @author Xavier Gouchet
  */
-
+@Trace
 public class ProjectsPresenter implements ProjectsContract.Presenter {
 
     @NonNull private final List<Project> projects;
@@ -79,12 +81,11 @@ public class ProjectsPresenter implements ProjectsContract.Presenter {
         }
     }
 
-    @Override public void open(Project project) {
-        // TODO
+    @Override public void projectSelected(@NonNull Project project) {
+        view.showProject(project);
     }
 
     @Override public void createProject() {
-        // TODO tablet version
         view.showCreateUi();
     }
 
