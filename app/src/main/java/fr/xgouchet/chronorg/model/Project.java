@@ -43,4 +43,8 @@ public class Project {
     @Nullable public String getDescription() {
         return description;
     }
+
+    public int getId() {
+        return id;
+    }
 }

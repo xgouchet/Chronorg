@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,13 +36,22 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
+    private final ProjectsAdapter adapter;
+
     private ProjectsContract.Presenter presenter;
+
+    public ProjectsFragment() {
+        this.adapter = new ProjectsAdapter(new ArrayList<Project>());
+    }
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
 
         bind(this, view);
+
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setAdapter(adapter);
         return view;
     }
 
@@ -76,9 +87,9 @@ public class ProjectsFragment extends Fragment implements ProjectsContract.View 
     }
 
     @Override public void setContent(@NonNull List<Project> projects) {
+        adapter.update(projects);
         message.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
-        // TODO update adapter
     }
 
     @Override public void showCreateUi() {

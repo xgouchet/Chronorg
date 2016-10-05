@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.ui.newproject;
+package fr.xgouchet.chronorg.ui.projects;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;

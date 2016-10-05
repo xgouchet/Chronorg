@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "fr.xgouchet.chronorg"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"

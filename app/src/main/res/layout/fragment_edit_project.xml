@@ -4,15 +4,18 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_margin="8dp"
+
               android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:errorEnabled="false">
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true">
+        <!--app:errorTextAppearance="@style/TextErrorAppearance"-->
 
         <EditText
             android:id="@+id/input_name"
@@ -30,7 +33,9 @@
         android:id="@+id/input_description_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:errorEnabled="false">
 
         <EditText

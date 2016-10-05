@@ -1,9 +1,10 @@
-package fr.xgouchet.chronorg.ui.newproject;
+package fr.xgouchet.chronorg.ui.projects;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ public class EditProjectFragment extends Fragment
     private EditProjectContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
+    @BindView(R.id.input_name_layout) TextInputLayout inputNameLayout;
     @BindView(R.id.input_description) EditText inputDesc;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,8 +97,9 @@ public class EditProjectFragment extends Fragment
             default:
                 return;
         }
-
-        inputName.setError(getString(message));
+        inputNameLayout.setErrorEnabled(true);
+        inputNameLayout.setError(getString(message));
+//        inputName.setError(getString(message));
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

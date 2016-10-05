@@ -8,8 +8,8 @@ import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.ProjectRepository;
 import fr.xgouchet.chronorg.model.Project;
 import fr.xgouchet.chronorg.provider.dao.ProjectIOProvider;
-import fr.xgouchet.chronorg.ui.newproject.EditProjectFragment;
-import fr.xgouchet.chronorg.ui.newproject.EditProjectPresenter;
+import fr.xgouchet.chronorg.ui.projects.EditProjectFragment;
+import fr.xgouchet.chronorg.ui.projects.EditProjectPresenter;
 
 /**
  * @author Xavier Gouchet
