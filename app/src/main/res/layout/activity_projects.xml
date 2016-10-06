@@ -6,8 +6,8 @@
 
     <fragment
         android:id="@+id/projects_fragment"
-        android:name="fr.xgouchet.chronorg.ui.projects.ProjectsFragment"
+        android:name="fr.xgouchet.chronorg.ui.fragments.ProjectListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_projects"/>
+        tools:layout="@layout/fragment_project_list"/>
 </FrameLayout>

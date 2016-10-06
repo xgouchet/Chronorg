@@ -127,7 +127,11 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         return uriMatcher;
     }
 
-    public Uri projectUri(long id) {
-        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(id)).build();
+    public Uri projectUri(long projectId) {
+        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).build();
+    }
+
+    public static Uri projectEntitiesUri(int projectId) {
+        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).appendEncodedPath(PATH_ENTITIES).build();
     }
 }

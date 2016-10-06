@@ -6,4 +6,6 @@
     <string name="hint_project_description">Project description</string>
     <string name="save">Save</string>
     <string name="error_empty_name">Name can\'t be empty</string>
+    <string name="empty_entities_list">No entities in this project yet</string>
+    <string name="error_entities_list">Error reading the entities in this list</string>
 </resources>
