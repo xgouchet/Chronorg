@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,15 +24,17 @@ import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.activities.EditEntityActivity;
+import fr.xgouchet.chronorg.ui.adapters.EntitiesAdapter;
 import fr.xgouchet.chronorg.ui.contracts.EntityListContract;
 import fr.xgouchet.chronorg.ui.contracts.ProjectDetailsContract;
+import fr.xgouchet.chronorg.ui.viewholders.EntityViewHolder;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class ProjectDetailsFragment extends Fragment {
+public class ProjectDetailsFragment extends Fragment implements EntityViewHolder.Listener {
 
 
     @BindView(R.id.description) TextView description;
@@ -47,11 +51,21 @@ public class ProjectDetailsFragment extends Fragment {
     private final EntityListView entityListView = new EntityListView();
     /*package*/ int projectId = -1;
 
+    /*package*/ final EntitiesAdapter adapter;
+
+    public ProjectDetailsFragment() {
+        adapter = new EntitiesAdapter(new ArrayList<Entity>(), this);
+    }
+
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_details, container, false);
 
         bind(this, view);
+
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setAdapter(adapter);
+
         return view;
     }
 
@@ -77,6 +91,10 @@ public class ProjectDetailsFragment extends Fragment {
 
     @OnClick(R.id.fab) public void onCreateNewEntity() {
         entityListPresenter.createNewItem();
+    }
+
+    @Override public void onEntitySelected(@NonNull Entity project) {
+
     }
 
     /*package*/ class ProjectDetailsView implements ProjectDetailsContract.View {
@@ -131,8 +149,10 @@ public class ProjectDetailsFragment extends Fragment {
         }
 
 
-        @Override public void setContent(@NonNull List<Entity> content) {
-            // TODO
+        @Override public void setContent(@NonNull List<Entity> entities) {
+            adapter.update(entities);
+            message.setVisibility(View.GONE);
+            list.setVisibility(View.VISIBLE);
         }
     }
 

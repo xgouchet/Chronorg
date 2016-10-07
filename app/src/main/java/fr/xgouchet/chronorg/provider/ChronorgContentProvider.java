@@ -57,6 +57,9 @@ public class ChronorgContentProvider extends ContentProvider {
             case ChronorgSchema.MATCH_PROJECTS:
                 result = chronorgDatabaseHelper.getProjectDao().query(projection, selection, selectionArgs, sortOrder);
                 break;
+            case ChronorgSchema.MATCH_PROJECT_ENTITIES:
+                result = chronorgDatabaseHelper.getEntityDao().query(projection, selection, selectionArgs, sortOrder);
+                break;
             default:
                 result = null;
         }
@@ -79,8 +82,12 @@ public class ChronorgContentProvider extends ContentProvider {
 
         switch (match) {
             case ChronorgSchema.MATCH_PROJECTS:
-                long id = chronorgDatabaseHelper.getProjectDao().insert(values);
-                result = chronorgSchema.projectUri(id);
+                long projectId = chronorgDatabaseHelper.getProjectDao().insert(values);
+                result = chronorgSchema.projectUri(projectId);
+                break;
+            case ChronorgSchema.MATCH_PROJECT_ENTITIES:
+                long entityId = chronorgDatabaseHelper.getEntityDao().insert(values);
+                result = chronorgSchema.entityUri(entityId);
                 break;
         }
 

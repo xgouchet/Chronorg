@@ -38,7 +38,11 @@ public class EntityRepository {
                 Cursor cursor = null;
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    cursor = contentResolver.query(ChronorgSchema.projectEntitiesUri(projectId), null, null, null, null);
+                    cursor = contentResolver.query(ChronorgSchema.projectEntitiesUri(projectId),
+                            null,
+                            provider.selectByProjectId(),
+                            new String[]{Integer.toString(projectId)},
+                            null);
 
                     if (cursor != null && cursor.getCount() > 0) {
                         BaseCursorReader<Entity> reader = provider.provideReader(cursor);

@@ -56,7 +56,6 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         return description;
     }
 
-
     private TableDescription buildProjectsTable() {
         TableDescription tableDescription = new TableDescription(TABLE_PROJECTS);
 
@@ -118,12 +117,14 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     public static final Uri PROJECTS_URI = BASE_URI.buildUpon().appendPath(PATH_PROJECTS).build();
+    public static final Uri ENTITIES_URI = BASE_URI.buildUpon().appendPath(PATH_ENTITIES).build();
 
     public UriMatcher buildUriMatcher() {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS, MATCH_PROJECTS);
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS + "/*/" + PATH_ENTITIES, MATCH_PROJECT_ENTITIES);
+
         return uriMatcher;
     }
 
@@ -133,5 +134,10 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public static Uri projectEntitiesUri(int projectId) {
         return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).appendEncodedPath(PATH_ENTITIES).build();
+    }
+
+
+    public Uri entityUri(long entityId) {
+        return ENTITIES_URI.buildUpon().appendEncodedPath(Long.toString(entityId)).build();
     }
 }

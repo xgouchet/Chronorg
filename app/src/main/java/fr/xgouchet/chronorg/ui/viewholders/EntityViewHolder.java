@@ -29,7 +29,7 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     @NonNull private final Listener listener;
 
-    protected EntityViewHolder(@NonNull Listener listener, View itemView) {
+    public EntityViewHolder(@NonNull Listener listener, View itemView) {
         super(itemView);
         this.listener = listener;
         bind(this, itemView);

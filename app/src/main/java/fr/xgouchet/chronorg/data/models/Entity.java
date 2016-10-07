@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class Entity {
 
+    private int id;
     private int projectId;
 
     @NonNull
@@ -35,6 +36,7 @@ public class Entity {
     private final List<Jump> jumps;
 
     public Entity() {
+        id = -1;
         name = "‽";
         description = null;
         birth = new DateTime("1970-01-01T00:00:00Z");
@@ -47,6 +49,7 @@ public class Entity {
                   @Nullable String description,
                   @NonNull ReadableInstant birth,
                   @Nullable ReadableInstant death) {
+        id = -1;
         this.projectId = projectId;
         this.name = name;
         this.description = description;
@@ -138,6 +141,10 @@ public class Entity {
         }
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getProjectId() {
         return projectId;
     }
@@ -158,6 +165,10 @@ public class Entity {
         return death;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -174,7 +185,15 @@ public class Entity {
         this.birth = birth;
     }
 
+    public void setBirth(@NonNull String birth) {
+        this.birth = new DateTime(birth);
+    }
+
     public void setDeath(@Nullable ReadableInstant death) {
         this.death = death;
+    }
+
+    public void setDeath(@Nullable String death) {
+        this.death = death == null ? null : new DateTime(death);
     }
 }

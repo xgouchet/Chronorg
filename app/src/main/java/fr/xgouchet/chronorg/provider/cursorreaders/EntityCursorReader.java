@@ -18,7 +18,7 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
     private int idxBirth;
     private int idxDeath;
 
-    protected EntityCursorReader(@NonNull Cursor cursor) {
+    public EntityCursorReader(@NonNull Cursor cursor) {
         super(cursor);
     }
 
@@ -36,6 +36,10 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
     }
 
     @Override public void fill(@NonNull Entity entity) {
-
+        entity.setId(readInt(idxId));
+        entity.setName(readString(idxName));
+        entity.setDescription(readString(idxDesc));
+        entity.setBirth(readString(idxBirth));
+        entity.setDeath(readString(idxDeath));
     }
 }
