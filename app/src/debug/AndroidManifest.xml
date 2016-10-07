@@ -2,7 +2,7 @@
           package="fr.xgouchet.chronorg">
 
     <application
-        android:name=".DebugChronorgApplication">
+        android:name=".ChronorgApplication">
     </application>
 
 </manifest>

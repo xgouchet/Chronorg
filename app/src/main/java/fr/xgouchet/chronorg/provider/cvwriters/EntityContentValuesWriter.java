@@ -3,6 +3,8 @@ package fr.xgouchet.chronorg.provider.cvwriters;
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
+import org.joda.time.ReadableInstant;
+
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 
@@ -17,6 +19,7 @@ public class EntityContentValuesWriter extends BaseContentValuesWriter<Entity> {
         cv.put(ChronorgSchema.COL_NAME, entity.getName());
         cv.put(ChronorgSchema.COL_DESCRIPTION, entity.getDescription());
         cv.put(ChronorgSchema.COL_BIRTH, entity.getBirth().toString());
-        cv.put(ChronorgSchema.COL_DEATH, entity.getDeath().toString());
+        final ReadableInstant death = entity.getDeath();
+        cv.put(ChronorgSchema.COL_DEATH, death == null ? null : death.toString());
     }
 }

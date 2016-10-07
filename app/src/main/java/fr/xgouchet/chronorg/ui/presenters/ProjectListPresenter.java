@@ -62,7 +62,7 @@ public class ProjectListPresenter implements ProjectListContract.Presenter {
                     @Override public void onError(Throwable e) {
                         Log.e("Hey", "Ho", e);
                         view.setLoading(false);
-                        view.setError();
+                        view.setError(e);
                     }
 
                     @Override public void onNext(List<Project> projects) {
@@ -82,12 +82,12 @@ public class ProjectListPresenter implements ProjectListContract.Presenter {
         }
     }
 
-    @Override public void projectSelected(@NonNull Project project) {
-        view.showProject(project);
+    @Override public void itemSelected(@NonNull Project project) {
+        view.showItem(project);
     }
 
-    @Override public void createProject() {
-        view.showCreateUi();
+    @Override public void createNewItem() {
+        view.showCreateItemUi();
     }
 
     @Override public void subscribe() {

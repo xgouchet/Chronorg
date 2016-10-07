@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.models.Project;
+import fr.xgouchet.chronorg.ui.activities.EditEntityActivity;
 import fr.xgouchet.chronorg.ui.contracts.EntityListContract;
 import fr.xgouchet.chronorg.ui.contracts.ProjectDetailsContract;
 
@@ -42,6 +45,7 @@ public class ProjectDetailsFragment extends Fragment {
 
     private final ProjectDetailsView projectDetailsView = new ProjectDetailsView();
     private final EntityListView entityListView = new EntityListView();
+    /*package*/ int projectId = -1;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,25 +75,23 @@ public class ProjectDetailsFragment extends Fragment {
         return entityListView;
     }
 
+    @OnClick(R.id.fab) public void onCreateNewEntity() {
+        entityListPresenter.createNewItem();
+    }
+
     /*package*/ class ProjectDetailsView implements ProjectDetailsContract.View {
 
         @Override public void setPresenter(@NonNull ProjectDetailsContract.Presenter presenter) {
             projectPresenter = presenter;
         }
 
-        @Override public void setLoading(boolean active) {
-
-        }
-
-        @Override public void setEmpty() {
+        @Override public void setError(@Nullable Throwable throwable) {
+            // TODO toast
             getActivity().finish();
         }
 
-        @Override public void setError() {
-
-        }
-
         @Override public void setContent(@NonNull Project project) {
+            projectId = project.getId();
             description.setText(project.getDescription());
             toolbar.setTitle(project.getName());
         }
@@ -102,12 +104,13 @@ public class ProjectDetailsFragment extends Fragment {
             entityListPresenter = presenter;
         }
 
-        @Override public void showCreateUi() {
-
+        @Override public void showCreateItemUi() {
+            Intent intent = EditEntityActivity.intentNewEntity(getActivity(), projectId);
+            getActivity().startActivity(intent);
         }
 
-        @Override public void showEntity(@NonNull Entity entity) {
-
+        @Override public void showItem(@NonNull Entity item) {
+            // TODO
         }
 
         @Override public void setLoading(boolean active) {
@@ -121,7 +124,7 @@ public class ProjectDetailsFragment extends Fragment {
             list.setVisibility(View.GONE);
         }
 
-        @Override public void setError() {
+        @Override public void setError(@Nullable Throwable throwable) {
             message.setText(R.string.error_projects_list);
             message.setVisibility(View.VISIBLE);
             list.setVisibility(View.GONE);
@@ -129,7 +132,7 @@ public class ProjectDetailsFragment extends Fragment {
 
 
         @Override public void setContent(@NonNull List<Entity> content) {
-
+            // TODO
         }
     }
 

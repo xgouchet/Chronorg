@@ -68,7 +68,7 @@ public class EntityListPresenter implements EntityListContract.Presenter {
                     @Override public void onError(Throwable e) {
                         Log.e("Hey", "Ho", e);
                         view.setLoading(false);
-                        view.setError();
+                        view.setError(e);
                     }
 
                     @Override public void onNext(List<Entity> projects) {
@@ -88,12 +88,12 @@ public class EntityListPresenter implements EntityListContract.Presenter {
         }
     }
 
-    @Override public void entitySelected(@NonNull Entity entity) {
-        view.showEntity(entity);
+    @Override public void itemSelected(@NonNull Entity entity) {
+        view.showItem(entity);
     }
 
-    @Override public void createEntity() {
-        view.showCreateUi();
+    @Override public void createNewItem() {
+        view.showCreateItemUi();
     }
 
     @Override public void subscribe() {

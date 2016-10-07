@@ -1,29 +1,19 @@
 package fr.xgouchet.chronorg.ui.contracts;
 
-import android.support.annotation.NonNull;
-
-import java.util.List;
-
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
-import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.fragments.BaseListView;
+import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 
 /**
  * @author Xavier Gouchet
  */
 public interface EntityListContract {
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BaseListPresenter<Entity> {
 
-        void entitySelected(@NonNull Entity entity);
-
-        void createEntity();
     }
 
-    interface View extends BaseView<Presenter, List<Entity>> {
+    interface View extends BaseListView<Presenter, Entity> {
 
-        void showCreateUi();
-
-        void showEntity(@NonNull Entity entity);
     }
 }

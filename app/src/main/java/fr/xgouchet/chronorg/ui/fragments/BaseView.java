@@ -1,6 +1,7 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 
@@ -11,11 +12,7 @@ public interface BaseView<P extends BasePresenter, T> {
 
     void setPresenter(@NonNull P presenter);
 
-    void setLoading(boolean active);
-
-    void setEmpty();
-
-    void setError();
+    void setError(@Nullable Throwable throwable);
 
     void setContent(@NonNull T content);
 }

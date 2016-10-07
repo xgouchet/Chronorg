@@ -86,7 +86,7 @@ public class ProjectListFragment extends Fragment implements ProjectListContract
         list.setVisibility(View.GONE);
     }
 
-    @Override public void setError() {
+    @Override public void setError(@Nullable Throwable throwable) {
         message.setText(R.string.error_projects_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
@@ -98,22 +98,22 @@ public class ProjectListFragment extends Fragment implements ProjectListContract
         list.setVisibility(View.VISIBLE);
     }
 
-    @Override public void showCreateUi() {
+    @Override public void showCreateItemUi() {
         // TODO handle tablet
         Intent intent = new Intent(getActivity(), EditProjectActivity.class);
         getActivity().startActivity(intent);
     }
 
     @OnClick(R.id.fab) public void onCreateNewProject() {
-        presenter.createProject();
+        presenter.createNewItem();
     }
 
     @Override public void onProjectSelected(@NonNull Project project) {
-        presenter.projectSelected(project);
+        presenter.itemSelected(project);
     }
 
-    @Override public void showProject(@NonNull Project project) {
-        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), project);
+    @Override public void showItem(@NonNull Project item) {
+        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), item);
 
         getActivity().startActivity(intent);
     }

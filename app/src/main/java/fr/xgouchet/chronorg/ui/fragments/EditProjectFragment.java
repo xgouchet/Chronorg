@@ -68,16 +68,8 @@ public class EditProjectFragment extends Fragment
         this.presenter = presenter;
     }
 
-    @Override public void setLoading(boolean active) {
-
-    }
-
-    @Override public void setEmpty() {
-
-    }
-
-    @Override public void setError() {
-
+    @Override public void setError(@Nullable Throwable throwable) {
+        // TODO
     }
 
     @Override public void setContent(@NonNull Project project) {
@@ -112,7 +104,7 @@ public class EditProjectFragment extends Fragment
 
         switch (item.getItemId()) {
             case R.id.save:
-                checkInput();
+                saveProject();
                 break;
             default:
                 result = super.onOptionsItemSelected(item);
@@ -121,7 +113,7 @@ public class EditProjectFragment extends Fragment
         return result;
     }
 
-    private void checkInput() {
+    private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
         String inputDescText = inputDesc.getText().toString();
 

@@ -49,21 +49,17 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
             return;
         }
 
-        view.setLoading(true);
-
         Subscription subscription = projectRepository
                 .getProject(project.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Project>() {
                     @Override public void onCompleted() {
-                        view.setLoading(false);
                         view.setContent(project);
                     }
 
                     @Override public void onError(Throwable e) {
-                        view.setLoading(false);
-                        view.setError();
+                        view.setError(e);
                     }
 
                     @Override public void onNext(Project project) {
@@ -75,6 +71,9 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
     }
 
     /*package*/ void onProjectLoaded(Project project) {
-        if (project != null) this.project = project;
+        if (project != null) {
+            this.project = project;
+            view.setContent(project);
+        }
     }
 }

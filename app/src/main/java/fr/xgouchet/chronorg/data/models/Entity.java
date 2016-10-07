@@ -37,7 +37,7 @@ public class Entity {
     public Entity() {
         name = "‽";
         description = null;
-        birth = new DateTime("1970-00-00T00:00:00Z");
+        birth = new DateTime("1970-01-01T00:00:00Z");
         death = null;
         jumps = new LinkedList<>();
     }

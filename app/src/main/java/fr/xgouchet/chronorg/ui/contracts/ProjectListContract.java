@@ -1,12 +1,8 @@
 package fr.xgouchet.chronorg.ui.contracts;
 
-import android.support.annotation.NonNull;
-
-import java.util.List;
-
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
-import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.fragments.BaseListView;
+import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 
 /**
  * @author Xavier Gouchet
@@ -15,17 +11,13 @@ import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 public interface ProjectListContract {
 
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BaseListPresenter<Project> {
 
-        void projectSelected(@NonNull Project project);
 
-        void createProject();
     }
 
-    interface View extends BaseView<Presenter, List<Project>> {
+    interface View extends BaseListView<Presenter, Project> {
 
-        void showCreateUi();
 
-        void showProject(@NonNull Project project);
     }
 }
