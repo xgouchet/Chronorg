@@ -44,6 +44,12 @@ public class ChronorgContentProvider extends ContentProvider {
 
     @Nullable
     @Override
+    public String getType(@NonNull Uri uri) {
+        return null;
+    }
+
+    @Nullable
+    @Override
     public Cursor query(@NonNull Uri uri,
                         @Nullable String[] projection,
                         @Nullable String selection,
@@ -65,12 +71,6 @@ public class ChronorgContentProvider extends ContentProvider {
         }
 
         return result;
-    }
-
-    @Nullable
-    @Override
-    public String getType(@NonNull Uri uri) {
-        return null;
     }
 
     @Nullable
@@ -98,7 +98,17 @@ public class ChronorgContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        return 0;
+        int match = uriMatcher.match(uri);
+        int deleted;
+
+        switch (match) {
+            case ChronorgSchema.MATCH_PROJECTS:
+                deleted = chronorgDatabaseHelper.getProjectDao().delete(selection, selectionArgs);
+                break;
+            default:
+                deleted = 0;
+        }
+        return deleted;
     }
 
     @Override

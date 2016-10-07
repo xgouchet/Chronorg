@@ -44,9 +44,9 @@
         android:layout_margin="16dp"
         android:drawableTop="@drawable/ic_hourglass_empty_black_24dp"
         android:gravity="center_horizontal"
-        android:text="@string/empty_projects_list"
         android:textAppearance="?android:textAppearanceLarge"
         android:visibility="gone"
+        tools:text="Ooops"
         tools:visibility="visible"/>
 
 </FrameLayout>

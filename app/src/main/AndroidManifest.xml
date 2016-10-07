@@ -21,8 +21,7 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".ui.activities.ProjectDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".ui.activities.ProjectDetailsActivity"/>
 
         <activity
             android:name=".ui.activities.EditEntityActivity"

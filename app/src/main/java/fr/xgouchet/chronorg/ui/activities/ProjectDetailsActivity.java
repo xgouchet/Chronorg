@@ -4,16 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import butterknife.BindView;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
-import fr.xgouchet.chronorg.provider.ioproviders.EntityIOProvider;
 import fr.xgouchet.chronorg.provider.ioproviders.ProjectIOProvider;
-import fr.xgouchet.chronorg.ui.fragments.ProjectDetailsFragment;
-import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.adapters.PageFragmentAdapter;
+import fr.xgouchet.chronorg.ui.contracts.ProjectDetailsContract;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 
 import static butterknife.ButterKnife.bind;
@@ -21,10 +25,13 @@ import static butterknife.ButterKnife.bind;
 /**
  * @author Xavier Gouchet
  */
-public class ProjectDetailsActivity extends AppCompatActivity {
+public class ProjectDetailsActivity extends AppCompatActivity implements ProjectDetailsContract.View {
 
     private static final String EXTRA_PROJECT = "project";
 
+    @BindView(R.id.pager) ViewPager viewPager;
+    private PageFragmentAdapter pageAdapter;
+    private ProjectDetailsContract.Presenter presenter;
 
     public static Intent buildIntent(@NonNull Context context, @NonNull Project project) {
         Intent intent = new Intent(context, ProjectDetailsActivity.class);
@@ -41,25 +48,63 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         // Get project from intent
         Project project = getIntent().getParcelableExtra(EXTRA_PROJECT);
         if (project == null) {
-            // TODO Toast
+            Toast.makeText(this, R.string.error_project_details_empty, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        setTitle(project.getName());
+
+        pageAdapter = new PageFragmentAdapter(getSupportFragmentManager(), this, project);
+        viewPager.setAdapter(pageAdapter);
+
         // TODO inject presenters
-        ProjectDetailsFragment projectDetailsFragment = (ProjectDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.project_details_fragment);
         ProjectRepository projectRepository = new ProjectRepository(this, new ProjectIOProvider());
         ProjectDetailsPresenter projectDetailsPresenter =
                 new ProjectDetailsPresenter(projectRepository,
-                        projectDetailsFragment.getProjectDetailsView(),
+                        this,
                         project);
-
-        // TODO inject presenters
-        EntityRepository entityRepository = new EntityRepository(this, new EntityIOProvider());
-        EntityListPresenter presenter =
-                new EntityListPresenter(entityRepository,
-                        projectDetailsFragment.getEntityListView(), project);
     }
 
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view, menu);
+        return true;
+    }
 
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        boolean result = true;
+
+        switch (item.getItemId()) {
+            case R.id.delete:
+                deleteProject();
+                break;
+            default:
+                result = super.onOptionsItemSelected(item);
+                break;
+        }
+        return result;
+    }
+
+    private void deleteProject() {
+        presenter.deleteProject();
+    }
+
+    @Override public void setPresenter(@NonNull ProjectDetailsContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override public void projectDeleted() {
+        finish();
+    }
+
+    @Override public void projectDeleteError(@NonNull Throwable e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override public void setError(@Nullable Throwable throwable) {
+    }
+
+    @Override public void setContent(@NonNull Project project) {
+        setTitle(project.getName());
+    }
 }

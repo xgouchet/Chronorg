@@ -60,7 +60,7 @@ public class EditProjectFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_project, menu);
+        inflater.inflate(R.menu.edit, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -69,7 +69,6 @@ public class EditProjectFragment extends Fragment
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
-        // TODO
     }
 
     @Override public void setContent(@NonNull Project project) {

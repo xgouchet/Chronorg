@@ -12,4 +12,6 @@
     <string name="hint_entity_name">Entity Name</string>
     <string name="hint_entity_description">Entity description</string>
     <string name="hint_death">Death date and time</string>
+    <string name="error_project_details_empty">No project to display</string>
+    <string name="title_entities">Entities</string>
 </resources>

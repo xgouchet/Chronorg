@@ -70,7 +70,7 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_project, menu);
+        inflater.inflate(R.menu.edit, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -139,13 +139,9 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
-        // TODO Toast ?
     }
 
     @Override public void setContent(@NonNull Entity content) {
-
-//        birth = content.getBirth();
-//        inputBirth.setText(birth.toString());
     }
 
     @Override

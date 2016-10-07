@@ -19,7 +19,7 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     public static interface Listener {
 
-        void onEntitySelected(@NonNull Entity project);
+        void onEntitySelected(@NonNull Entity entity);
     }
 
     @BindView(R.id.name) TextView name;

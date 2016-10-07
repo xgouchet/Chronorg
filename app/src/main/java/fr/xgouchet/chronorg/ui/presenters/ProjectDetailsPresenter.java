@@ -76,4 +76,25 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
             view.setContent(project);
         }
     }
+
+    @Override public void deleteProject() {
+        Subscription subscription = projectRepository
+                .deleteProject(project.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override public void onCompleted() {
+                        view.projectDeleted();
+                    }
+
+                    @Override public void onError(Throwable e) {
+                        view.projectDeleteError(e);
+                    }
+
+                    @Override public void onNext(Void project) {
+                    }
+                });
+
+        subscriptions.add(subscription);
+    }
 }

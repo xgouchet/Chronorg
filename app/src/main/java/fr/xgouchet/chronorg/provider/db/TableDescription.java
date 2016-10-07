@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * TODO handle creation / removal of columns
+ * TODO handle removal of columns
  *
  * @author Xavier Gouchet
  */

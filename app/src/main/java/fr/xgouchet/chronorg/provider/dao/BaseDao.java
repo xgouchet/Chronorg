@@ -48,4 +48,20 @@ public abstract class BaseDao<T> {
     }
 
 
+    public int delete(@Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+
+        int deleted = -1;
+
+        db.beginTransaction();
+        try {
+            deleted = db.delete(tableName, selection, selectionArgs);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        return deleted;
+    }
 }

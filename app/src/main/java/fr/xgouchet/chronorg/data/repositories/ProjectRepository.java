@@ -112,4 +112,27 @@ public class ProjectRepository {
             }
         });
     }
+
+    public Observable<Void> deleteProject(final int projectId) {
+        return Observable.create(new Observable.OnSubscribe<Void>() {
+            @Override public void call(Subscriber<? super Void> subscriber) {
+                try {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    int deleted = contentResolver.delete(
+                            ChronorgSchema.PROJECTS_URI,
+                            provider.selectById(),
+                            new String[]{Integer.toString(projectId)});
+
+                    if (deleted == 0) {
+                        subscriber.onError(new RuntimeException("Unable to delete project !"));
+                    } else {
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+
+            }
+        });
+    }
 }
