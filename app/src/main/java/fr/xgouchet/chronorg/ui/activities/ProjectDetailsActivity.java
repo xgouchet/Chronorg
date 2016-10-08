@@ -66,6 +66,16 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Project
                         project);
     }
 
+    @Override protected void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view, menu);
         return true;
@@ -75,6 +85,9 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Project
         boolean result = true;
 
         switch (item.getItemId()) {
+            case R.id.edit:
+                editProject();
+                break;
             case R.id.delete:
                 deleteProject();
                 break;
@@ -85,12 +98,21 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Project
         return result;
     }
 
+    private void editProject() {
+        presenter.editProject();
+    }
+
     private void deleteProject() {
         presenter.deleteProject();
     }
 
     @Override public void setPresenter(@NonNull ProjectDetailsContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override public void showEditProjectUi(@NonNull Project project) {
+        Intent intent = EditProjectActivity.intentEditProject(this, project);
+        startActivity(intent);
     }
 
     @Override public void projectDeleted() {

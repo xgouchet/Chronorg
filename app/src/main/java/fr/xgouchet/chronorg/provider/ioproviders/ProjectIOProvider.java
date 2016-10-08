@@ -26,4 +26,8 @@ public class ProjectIOProvider implements BaseIOProvider<Project> {
     public String selectById() {
         return ChronorgSchema.COL_ID + "=?";
     }
+
+    public String orderByName() {
+        return ChronorgSchema.COL_NAME + " ASC";
+    }
 }

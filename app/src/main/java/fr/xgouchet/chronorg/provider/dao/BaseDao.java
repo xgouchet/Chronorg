@@ -52,7 +52,7 @@ public abstract class BaseDao<T> {
                       @Nullable String[] selectionArgs) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
 
-        int deleted = -1;
+        int deleted = 0;
 
         db.beginTransaction();
         try {
@@ -63,5 +63,23 @@ public abstract class BaseDao<T> {
         }
 
         return deleted;
+    }
+
+    public int update(@Nullable ContentValues values,
+                      @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+        if (values == null) return 0;
+        int updated = 0;
+
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            updated = db.update(tableName, values, selection, selectionArgs);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        return updated;
     }
 }

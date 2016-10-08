@@ -100,7 +100,7 @@ public class ProjectListFragment extends Fragment implements ProjectListContract
 
     @Override public void showCreateItemUi() {
         // TODO handle tablet
-        Intent intent = new Intent(getActivity(), EditProjectActivity.class);
+        Intent intent = EditProjectActivity.intentNewProject(getActivity());
         getActivity().startActivity(intent);
     }
 

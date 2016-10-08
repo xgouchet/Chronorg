@@ -116,7 +116,17 @@ public class ChronorgContentProvider extends ContentProvider {
                       @Nullable ContentValues values,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        return 0;
+        int match = uriMatcher.match(uri);
+        int updated;
+
+        switch (match) {
+            case ChronorgSchema.MATCH_PROJECTS:
+                updated = chronorgDatabaseHelper.getProjectDao().update(values, selection, selectionArgs);
+                break;
+            default:
+                updated = 0;
+        }
+        return updated;
     }
 
     @Nullable

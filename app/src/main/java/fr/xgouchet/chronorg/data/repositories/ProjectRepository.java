@@ -40,7 +40,11 @@ public class ProjectRepository {
                 Cursor cursor = null;
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    cursor = contentResolver.query(ChronorgSchema.PROJECTS_URI, null, null, null, null);
+                    cursor = contentResolver.query(ChronorgSchema.PROJECTS_URI,
+                            null,
+                            null,
+                            null,
+                            provider.orderByName());
 
                     if (cursor != null && cursor.getCount() > 0) {
                         BaseCursorReader<Project> reader = provider.provideReader(cursor);
@@ -68,12 +72,22 @@ public class ProjectRepository {
                     BaseContentValuesWriter<Project> writer = provider.provideWriter();
 
                     ContentValues cv = writer.toContentValues(project);
-                    Uri result = contentResolver.insert(ChronorgSchema.PROJECTS_URI, cv);
-
-                    if (result == null) {
-                        subscriber.onError(new RuntimeException("Unable to save project !"));
+                    boolean success;
+                    if (project.getId() <= 0) {
+                        Uri result = contentResolver.insert(ChronorgSchema.PROJECTS_URI, cv);
+                        success = result != null;
                     } else {
+                        int updated = contentResolver.update(ChronorgSchema.PROJECTS_URI,
+                                cv,
+                                provider.selectById(),
+                                new String[]{Integer.toString(project.getId())});
+                        success = updated > 0;
+                    }
+
+                    if (success) {
                         subscriber.onCompleted();
+                    } else {
+                        subscriber.onError(new RuntimeException("Unable to save project !"));
                     }
                 } catch (Exception e) {
                     subscriber.onError(e);

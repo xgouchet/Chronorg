@@ -13,6 +13,8 @@ public interface ProjectDetailsContract {
     interface Presenter extends BasePresenter {
 
         void deleteProject();
+
+        void editProject();
     }
 
     interface View extends BaseView<Presenter, Project> {
@@ -20,5 +22,7 @@ public interface ProjectDetailsContract {
         void projectDeleteError(@NonNull Throwable e);
 
         void projectDeleted();
+
+        void showEditProjectUi(@NonNull Project project);
     }
 }

@@ -1,17 +1,26 @@
 <resources>
     <string name="app_name">Chronorg</string>
+
+    <string name="title_entities">Entities</string>
+
     <string name="empty_projects_list">No project yet…</string>
-    <string name="error_projects_list">Error reading projects list</string>
+    <string name="empty_entities_list">No entities in this project yet</string>
+
     <string name="hint_project_name">Project name</string>
     <string name="hint_project_description">Project description</string>
-    <string name="save">Save</string>
-    <string name="error_empty_name">Name can\'t be empty</string>
-    <string name="empty_entities_list">No entities in this project yet</string>
-    <string name="error_entities_list">Error reading the entities in this list</string>
     <string name="hint_birth">Birth date and time</string>
     <string name="hint_entity_name">Entity Name</string>
     <string name="hint_entity_description">Entity description</string>
     <string name="hint_death">Death date and time</string>
+
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+
+
+    <string name="error_empty_name">Name can\'t be empty</string>
+    <string name="error_projects_list">Error reading projects list</string>
+    <string name="error_entities_list">Error reading the entities in this list</string>
     <string name="error_project_details_empty">No project to display</string>
-    <string name="title_entities">Entities</string>
+    <string name="error_entity_details_empty">No entity to display</string>
 </resources>

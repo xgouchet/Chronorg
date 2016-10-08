@@ -77,6 +77,10 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
         }
     }
 
+    @Override public void editProject() {
+        view.showEditProjectUi(project);
+    }
+
     @Override public void deleteProject() {
         Subscription subscription = projectRepository
                 .deleteProject(project.getId())

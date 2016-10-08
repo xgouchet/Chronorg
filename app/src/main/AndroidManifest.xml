@@ -27,6 +27,9 @@
             android:name=".ui.activities.EditEntityActivity"
             android:windowSoftInputMode="adjustResize"/>
 
+
+        <activity
+            android:name=".ui.activities.EntityDetailsActivity"/>
         <activity
             android:name=".ui.activities.DateTimePickerActivity"
             android:theme="@style/AppTheme.Transluscent"/>

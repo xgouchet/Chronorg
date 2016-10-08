@@ -21,6 +21,7 @@ import butterknife.BindView;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.activities.EditEntityActivity;
+import fr.xgouchet.chronorg.ui.activities.EntityDetailsActivity;
 import fr.xgouchet.chronorg.ui.adapters.EntitiesAdapter;
 import fr.xgouchet.chronorg.ui.contracts.EntityListContract;
 import fr.xgouchet.chronorg.ui.viewholders.EntityViewHolder;
@@ -76,8 +77,9 @@ public class EntityListFragment extends Fragment implements EntityListContract.V
         getActivity().startActivity(intent);
     }
 
-    @Override public void showItem(@NonNull Entity item) {
-        // TODO show entity
+    @Override public void showItem(@NonNull Entity entity) {
+        Intent intent = EntityDetailsActivity.buildIntent(getActivity(), entity);
+        getActivity().startActivity(intent);
     }
 
     @Override public void setLoading(boolean active) {
@@ -105,6 +107,6 @@ public class EntityListFragment extends Fragment implements EntityListContract.V
     }
 
     @Override public void onEntitySelected(@NonNull Entity entity) {
-        // TODO
+        presenter.itemSelected(entity);
     }
 }

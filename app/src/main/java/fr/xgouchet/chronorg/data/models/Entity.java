@@ -1,5 +1,7 @@
 package fr.xgouchet.chronorg.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -17,7 +19,7 @@ import java.util.List;
  *
  * @author Xavier Gouchet
  */
-public class Entity {
+public class Entity implements Parcelable {
 
     private int id;
     private int projectId;
@@ -196,4 +198,38 @@ public class Entity {
     public void setDeath(@Nullable String death) {
         this.death = death == null ? null : new DateTime(death);
     }
+
+    @Override public int describeContents() {
+        return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(projectId);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(birth.toString());
+        dest.writeString(death == null ? null : death.toString());
+    }
+
+    protected Entity(Parcel in) {
+        id = in.readInt();
+        projectId = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        birth = new DateTime(in.readString());
+        String deathStr = in.readString();
+        death = deathStr == null ? null : new DateTime(deathStr);
+        jumps = new LinkedList<>();
+    }
+
+    public static final Parcelable.Creator<Entity> CREATOR = new Parcelable.Creator<Entity>() {
+        @Override public Entity createFromParcel(Parcel source) {
+            return new Entity(source);
+        }
+
+        @Override public Entity[] newArray(int size) {
+            return new Entity[size];
+        }
+    };
 }
