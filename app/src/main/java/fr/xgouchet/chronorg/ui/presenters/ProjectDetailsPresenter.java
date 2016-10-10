@@ -83,7 +83,7 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
 
     @Override public void deleteProject() {
         Subscription subscription = projectRepository
-                .deleteProject(project.getId())
+                .deleteProject(project)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {

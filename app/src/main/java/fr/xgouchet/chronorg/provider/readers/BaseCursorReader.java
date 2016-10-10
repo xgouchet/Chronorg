@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.provider.cursorreaders;
+package fr.xgouchet.chronorg.provider.readers;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
@@ -9,11 +9,15 @@ import android.support.annotation.NonNull;
 public abstract class BaseCursorReader<T> {
 
     @NonNull
-    protected final Cursor cursor;
+    private final Cursor cursor;
 
     protected BaseCursorReader(@NonNull Cursor cursor) {
         this.cursor = cursor;
         cacheIndices();
+    }
+
+    public Cursor getCursor() {
+        return cursor;
     }
 
 

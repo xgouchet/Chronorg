@@ -3,15 +3,18 @@ package fr.xgouchet.chronorg.provider.ioproviders;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import fr.xgouchet.chronorg.provider.cursorreaders.BaseCursorReader;
-import fr.xgouchet.chronorg.provider.cvwriters.BaseContentValuesWriter;
+import fr.xgouchet.chronorg.provider.queriers.BaseContentQuerier;
+import fr.xgouchet.chronorg.provider.readers.BaseCursorReader;
+import fr.xgouchet.chronorg.provider.writers.BaseContentValuesWriter;
 
 /**
  * @author Xavier Gouchet
  */
 public interface BaseIOProvider<T> {
 
-    BaseCursorReader<T> provideReader(@NonNull Cursor cursor);
+    @NonNull BaseCursorReader<T> provideReader(@NonNull Cursor cursor);
 
-    BaseContentValuesWriter<T> provideWriter();
+    @NonNull BaseContentValuesWriter<T> provideWriter();
+
+    @NonNull BaseContentQuerier<T> provideQuerier();
 }

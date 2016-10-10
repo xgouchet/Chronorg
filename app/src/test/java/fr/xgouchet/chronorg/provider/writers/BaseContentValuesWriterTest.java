@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.provider.cvwriters;
+package fr.xgouchet.chronorg.provider.writers;
 
 import android.content.ContentValues;
 import android.database.Cursor;

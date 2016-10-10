@@ -36,19 +36,27 @@ public class ColumnDescription {
     public static final String UNIQUE = "UNIQUE";
 
 
-    @NonNull
-    private final String name;
+    @NonNull private final String name;
 
-    @ColumnType
-    private final String type;
+    @ColumnType private final String type;
+
+    @IntRange(from = 0) private final int since;
 
     private final boolean primaryKey, autoIncrement, notNull, unique;
 
     public ColumnDescription(@NonNull String name,
                              @ColumnType String type,
                              @ColumnOption String... options) {
+        this(name, type, 0, options);
+    }
+
+    public ColumnDescription(@NonNull String name,
+                             @ColumnType String type,
+                             @IntRange(from = 0) int since,
+                             @ColumnOption String... options) {
         this.name = name;
         this.type = type;
+        this.since = since;
 
         // read options
         boolean primaryKey = false, autoInc = false, notNull = false, unique = false;
@@ -133,6 +141,6 @@ public class ColumnDescription {
 
     @IntRange(from = 0)
     public int getSince() {
-        return 0;
+        return since;
     }
 }

@@ -11,7 +11,7 @@ import android.support.annotation.WorkerThread;
 /**
  * @author Xavier Gouchet
  */
-public abstract class BaseDao<T> {
+public class BaseDao {
 
     @NonNull private final SQLiteOpenHelper openHelper;
     @NonNull private final String tableName;

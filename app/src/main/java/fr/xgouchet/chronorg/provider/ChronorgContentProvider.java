@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import fr.xgouchet.chronorg.provider.db.ChronorgDatabaseHelper;
+import fr.xgouchet.chronorg.provider.dao.BaseDao;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import fr.xgouchet.chronorg.provider.db.SQLiteDescriptionHelper;
 
 /**
  * @author Xavier Gouchet
@@ -21,8 +21,12 @@ public class ChronorgContentProvider extends ContentProvider {
 
     @NonNull private final ChronorgSchema chronorgSchema;
     @NonNull private final UriMatcher uriMatcher;
-    private ChronorgDatabaseHelper chronorgDatabaseHelper;
 
+    private BaseDao projectDao;
+    private BaseDao entityDao;
+
+
+    @SuppressWarnings("unused")
     public ChronorgContentProvider() {
         this(new ChronorgSchema());
     }
@@ -32,13 +36,24 @@ public class ChronorgContentProvider extends ContentProvider {
         uriMatcher = chronorgSchema.buildUriMatcher();
     }
 
+    /*package*/ ChronorgContentProvider(@NonNull ChronorgSchema chronorgSchema,
+                                        @NonNull BaseDao projectDao,
+                                        @NonNull BaseDao entityDao) {
+        this.chronorgSchema = chronorgSchema;
+        uriMatcher = chronorgSchema.buildUriMatcher();
+        this.projectDao = projectDao;
+        this.entityDao = entityDao;
+    }
+
     @Override public boolean onCreate() {
         final Context context = getContext();
         if (context == null) {
             return false;
         }
 
-        chronorgDatabaseHelper = new ChronorgDatabaseHelper(context, chronorgSchema, null);
+        SQLiteDescriptionHelper databaseHelper = new SQLiteDescriptionHelper(context, chronorgSchema, null);
+        projectDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_PROJECTS);
+        entityDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_ENTITIES);
         return true;
     }
 
@@ -55,19 +70,11 @@ public class ChronorgContentProvider extends ContentProvider {
                         @Nullable String selection,
                         @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
-        int match = uriMatcher.match(uri);
+        Cursor result = null;
+        BaseDao dao = getDao(uri);
 
-        Cursor result;
-
-        switch (match) {
-            case ChronorgSchema.MATCH_PROJECTS:
-                result = chronorgDatabaseHelper.getProjectDao().query(projection, selection, selectionArgs, sortOrder);
-                break;
-            case ChronorgSchema.MATCH_PROJECT_ENTITIES:
-                result = chronorgDatabaseHelper.getEntityDao().query(projection, selection, selectionArgs, sortOrder);
-                break;
-            default:
-                result = null;
+        if (dao != null) {
+            result = dao.query(projection, selection, selectionArgs, sortOrder);
         }
 
         return result;
@@ -82,11 +89,11 @@ public class ChronorgContentProvider extends ContentProvider {
 
         switch (match) {
             case ChronorgSchema.MATCH_PROJECTS:
-                long projectId = chronorgDatabaseHelper.getProjectDao().insert(values);
+                long projectId = projectDao.insert(values);
                 result = chronorgSchema.projectUri(projectId);
                 break;
-            case ChronorgSchema.MATCH_PROJECT_ENTITIES:
-                long entityId = chronorgDatabaseHelper.getEntityDao().insert(values);
+            case ChronorgSchema.MATCH_ENTITIES:
+                long entityId = entityDao.insert(values);
                 result = chronorgSchema.entityUri(entityId);
                 break;
         }
@@ -98,15 +105,12 @@ public class ChronorgContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        int match = uriMatcher.match(uri);
-        int deleted;
 
-        switch (match) {
-            case ChronorgSchema.MATCH_PROJECTS:
-                deleted = chronorgDatabaseHelper.getProjectDao().delete(selection, selectionArgs);
-                break;
-            default:
-                deleted = 0;
+        int deleted = 0;
+        BaseDao dao = getDao(uri);
+
+        if (dao != null) {
+            deleted = dao.delete(selection, selectionArgs);
         }
         return deleted;
     }
@@ -116,24 +120,34 @@ public class ChronorgContentProvider extends ContentProvider {
                       @Nullable ContentValues values,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        int match = uriMatcher.match(uri);
-        int updated;
+        int updated = 0;
+        BaseDao dao = getDao(uri);
 
-        switch (match) {
-            case ChronorgSchema.MATCH_PROJECTS:
-                updated = chronorgDatabaseHelper.getProjectDao().update(values, selection, selectionArgs);
-                break;
-            default:
-                updated = 0;
+        if (dao != null) {
+            updated = dao.update(values, selection, selectionArgs);
         }
         return updated;
     }
 
+//    @Nullable
+//    @Override
+//    public Bundle call(@NonNull String method,
+//                       @Nullable String arg,
+//                       @Nullable Bundle extras) {
+//        return null;
+//    }
+
     @Nullable
-    @Override
-    public Bundle call(@NonNull String method,
-                       @Nullable String arg,
-                       @Nullable Bundle extras) {
-        return null;
+    private BaseDao getDao(Uri uri) {
+        int match = uriMatcher.match(uri);
+
+        switch (match) {
+            case ChronorgSchema.MATCH_PROJECTS:
+                return projectDao;
+            case ChronorgSchema.MATCH_ENTITIES:
+                return entityDao;
+            default:
+                return null;
+        }
     }
 }

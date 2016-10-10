@@ -56,7 +56,7 @@ public class EntityListPresenter implements EntityListContract.Presenter {
         entities.clear();
 
         Subscription subscription = entityRepository
-                .getEntities(project.getId())
+                .getEntitiesInProject(project.getId())
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

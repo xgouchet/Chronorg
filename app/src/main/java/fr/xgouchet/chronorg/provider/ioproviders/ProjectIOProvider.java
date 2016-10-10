@@ -4,30 +4,28 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.provider.cursorreaders.BaseCursorReader;
-import fr.xgouchet.chronorg.provider.cursorreaders.ProjectCursorReader;
-import fr.xgouchet.chronorg.provider.cvwriters.BaseContentValuesWriter;
-import fr.xgouchet.chronorg.provider.cvwriters.ProjectContentValuesWriter;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import fr.xgouchet.chronorg.provider.queriers.BaseContentQuerier;
+import fr.xgouchet.chronorg.provider.queriers.ProjectContentQuerier;
+import fr.xgouchet.chronorg.provider.readers.BaseCursorReader;
+import fr.xgouchet.chronorg.provider.readers.ProjectCursorReader;
+import fr.xgouchet.chronorg.provider.writers.BaseContentValuesWriter;
+import fr.xgouchet.chronorg.provider.writers.ProjectContentValuesWriter;
 
 /**
  * @author Xavier Gouchet
  */
 public class ProjectIOProvider implements BaseIOProvider<Project> {
 
-    @Override public BaseCursorReader<Project> provideReader(@NonNull Cursor cursor) {
+    @NonNull @Override public BaseCursorReader<Project> provideReader(@NonNull Cursor cursor) {
         return new ProjectCursorReader(cursor);
     }
 
-    @Override public BaseContentValuesWriter<Project> provideWriter() {
+    @NonNull @Override public BaseContentValuesWriter<Project> provideWriter() {
         return new ProjectContentValuesWriter();
     }
 
-    public String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
-    }
-
-    public String orderByName() {
-        return ChronorgSchema.COL_NAME + " ASC";
+    @NonNull @Override
+    public BaseContentQuerier<Project> provideQuerier() {
+        return new ProjectContentQuerier(this);
     }
 }

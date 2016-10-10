@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.provider.cursorreaders;
+package fr.xgouchet.chronorg.provider.readers;
 
 import android.database.Cursor;
 import android.graphics.Color;

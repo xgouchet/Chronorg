@@ -69,14 +69,14 @@ public class EntityTest {
     }
 
     @Test
-    public void should_get_ages_simple_timeline() {
+    public void shouldGetAgesSimpleTimeline() {
         assertThat(marty.getAgesAtInstant(DOC_BROWN_DEATH))
                 .hasSize(1)
                 .contains(new Period(17, 4, 1, 6, 13, 33, 0, 0));
     }
 
     @Test
-    public void should_not_get_ages_before_birth_simple_timeline() {
+    public void shouldNotGetAgesBeforeBirthSimpleTimeline() {
         assertThat(marty.getAgesAtInstant(HILL_VALLEY_FOUNDATION))
                 .isNotNull()
                 .isEmpty();
@@ -84,14 +84,14 @@ public class EntityTest {
 
 
     @Test
-    public void should_not_get_ages_after_death_simple_timeline() {
+    public void shouldNotGetAgesAfterDeathSimpleTimeline() {
         assertThat(marty.getAgesAtInstant(new DateTime(3015, 1, 1, 0, 0, 0, 0, DateTimeZone.UTC)))
                 .isNotNull()
                 .isEmpty();
     }
 
     @Test
-    public void should_get_multiple_ages_complex_timeline() {
+    public void shouldGetMultipleAgesComplexTimeline() {
         // Given
         marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
         marty.jump(CLOCK_TOWER_1955_DEPARTURE, CLOCK_TOWER_1985_LANDING);
@@ -105,7 +105,7 @@ public class EntityTest {
     }
 
     @Test
-    public void should_get_multiple_ages_complex_timeline_no_death() {
+    public void shouldGetMultipleAgesComplexTimelineNoDeath() {
         // Given
         marty.setDeath((ReadableInstant) null);
         marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
@@ -120,7 +120,7 @@ public class EntityTest {
     }
 
     @Test
-    public void should_not_get_ages_if_jumped_around() {
+    public void shouldNotGetAges_whenJumpedAround() {
         // Given
         marty.jump(LYON_ESTATE_1985_DEPARTURE, LYON_ESTATE_2015_LANDING);
 
@@ -132,7 +132,7 @@ public class EntityTest {
 
 
     @Test
-    public void should_get_ages_if_jumped_forward() {
+    public void shouldGetAges_whenJumpedForward() {
         // Given
         marty.jump(LYON_ESTATE_1985_DEPARTURE, LYON_ESTATE_2015_LANDING);
 
@@ -144,7 +144,7 @@ public class EntityTest {
 
 
     @Test
-    public void should_get_multiple_ages_if_jumped_forward_and_back() {
+    public void shouldGetMultipleAges_whenJumpedForwardAndBack() {
         // Given
         marty.jump(LYON_ESTATE_1985_DEPARTURE, LYON_ESTATE_2015_LANDING);
         marty.jump(HILLDALE_2015_DEPARTURE, HILLDALE_1985_LANDING);
@@ -157,7 +157,7 @@ public class EntityTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void should_throw_when_trying_impossible_jump() {
+    public void shouldThrow_whenTryingImpossibleJump() {
         marty.jump(new DateTime(1985, 10, 26, 10, 40, 0, 0, DateTimeZone.UTC),
                 new DateTime(2015, 10, 21, 18, 0, 0, 0, DateTimeZone.UTC));
         marty.jump(new DateTime(1985, 10, 27, 10, 40, 0, 0, DateTimeZone.UTC),
@@ -165,32 +165,32 @@ public class EntityTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void should_throw_when_trying_impossible_jump_before_birth() {
+    public void shouldThrow_whenTryingImpossibleJumpBeforeBirth() {
         marty.jump(new DateTime(1885, 10, 26, 10, 40, 0, 0, DateTimeZone.UTC),
                 new DateTime(2015, 10, 21, 18, 0, 0, 0, DateTimeZone.UTC));
     }
 
 
     @Test(expected = UnsupportedOperationException.class)
-    public void should_throw_when_trying_impossible_jump_after_death() {
+    public void shouldThrow_whenTryingImpossibleJumpAfterDeath() {
         marty.jump(new DateTime(3050, 10, 26, 10, 40, 0, 0, DateTimeZone.UTC),
                 new DateTime(2015, 10, 21, 18, 0, 0, 0, DateTimeZone.UTC));
     }
 
     @Test
-    public void should_get_instant_at_age_simple_timeline() {
+    public void shouldGetInstantAtAgeSimpleTimeline() {
         assertThat(marty.getInstantAtAge(standardDays(365 * 30)))
                 .isEqualTo(new DateTime(1998, 6, 5, 12, 0, 0, 0, DateTimeZone.UTC));
     }
 
     @Test
-    public void should_not_get_instant_after_death_simple_timeline() {
+    public void shouldNotGetInstantAfterDeathSimpleTimeline() {
         assertThat(marty.getInstantAtAge(standardDays(365 * 300)))
                 .isNull();
     }
 
     @Test
-    public void should_get_instant_at_age_complex_timeline() {
+    public void shouldGetInstantAtAgeComplexTimeline() {
         // Given
         marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
         marty.jump(CLOCK_TOWER_1955_DEPARTURE, CLOCK_TOWER_1985_LANDING);
@@ -223,7 +223,7 @@ public class EntityTest {
     }
 
     @Test
-    public void should_get_instant_at_age_complex_timeline_no_death() {
+    public void shouldGetInstantAtAgeComplexTimelineNoDeath() {
         // Given
         marty.setDeath((String) null);
         marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);

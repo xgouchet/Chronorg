@@ -20,8 +20,11 @@ import static fr.xgouchet.chronorg.provider.db.ColumnDescription.UNIQUE;
 public class ChronorgSchema implements SQLiteDescriptionProvider {
 
 
+    public static final int VERSION_BASE = 1;
+
+    public static final int CURRENT_VERSION = VERSION_BASE;
+
     public static final String NAME = "chronorg";
-    public static final int VERSION = 1;
 
     public static final String TABLE_PROJECTS = "projects";
     public static final String TABLE_ENTITIES = "entities";
@@ -35,10 +38,10 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public static final String COL_FROM_INSTANT = "from_instant";
     public static final String COL_TO_INSTANT = "to_instant";
+    public static final String COL_COLOUR = "colour";
     public static final String COL_BIRTH = "birth";
     public static final String COL_DEATH = "death";
-    public static final String COL_COLOUR = "colour";
-
+    private static final String COL_DELAY = "delay";
     public static final String COL_INSTANT = "instant";
 
     public static final String COL_PROJECT_ID = "project_id";
@@ -47,11 +50,12 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     @NonNull
     public SQLiteDescription getDescription() {
-        SQLiteDescription description = new SQLiteDescription(NAME, VERSION);
+        SQLiteDescription description = new SQLiteDescription(NAME, CURRENT_VERSION);
 
         description.addTable(buildProjectsTable());
         description.addTable(buildEntitiesTable());
-//        description.addTable(buildPortalsTable());
+        description.addTable(buildPortalsTable());
+        description.addTable(buildEventsTable());
         description.addTable(buildJumpsTable());
 
         return description;
@@ -88,8 +92,20 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
-        tableDescription.addColumn(new ColumnDescription(COL_FROM_INSTANT, TYPE_TEXT, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_TO_INSTANT, TYPE_TEXT, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_DELAY, TYPE_INTEGER, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
+
+        return tableDescription;
+    }
+
+    private TableDescription buildEventsTable() {
+        TableDescription tableDescription = new TableDescription(TABLE_EVENTS);
+
+        tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
+        tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
+        tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
+        tableDescription.addColumn(new ColumnDescription(COL_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
 
         return tableDescription;
@@ -116,7 +132,8 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     private static final String PATH_ENTITIES = "entities";
 
     public static final int MATCH_PROJECTS = 100;
-    public static final int MATCH_PROJECT_ENTITIES = 200;
+
+    public static final int MATCH_ENTITIES = 200;
 
     public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     public static final Uri PROJECTS_URI = BASE_URI.buildUpon().appendPath(PATH_PROJECTS).build();
@@ -126,17 +143,14 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS, MATCH_PROJECTS);
-        uriMatcher.addURI(AUTHORITY, PATH_PROJECTS + "/*/" + PATH_ENTITIES, MATCH_PROJECT_ENTITIES);
+
+        uriMatcher.addURI(AUTHORITY, PATH_ENTITIES, MATCH_ENTITIES);
 
         return uriMatcher;
     }
 
     public Uri projectUri(long projectId) {
         return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).build();
-    }
-
-    public static Uri projectEntitiesUri(int projectId) {
-        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).appendEncodedPath(PATH_ENTITIES).build();
     }
 
 

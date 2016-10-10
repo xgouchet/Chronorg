@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.provider.cvwriters;
+package fr.xgouchet.chronorg.provider.writers;
 
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
@@ -21,5 +21,6 @@ public class EntityContentValuesWriter extends BaseContentValuesWriter<Entity> {
         cv.put(ChronorgSchema.COL_BIRTH, entity.getBirth().toString());
         final ReadableInstant death = entity.getDeath();
         cv.put(ChronorgSchema.COL_DEATH, death == null ? null : death.toString());
+        cv.put(ChronorgSchema.COL_COLOUR, entity.getColour());
     }
 }
