@@ -1,7 +1,9 @@
 package fr.xgouchet.chronorg.data.models;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -24,18 +26,14 @@ public class Entity implements Parcelable {
     private int id;
     private int projectId;
 
-    @NonNull
-    private String name;
-    @Nullable
-    private String description;
+    @NonNull private String name;
+    @Nullable private String description;
 
-    @NonNull
-    private ReadableInstant birth;
-    @Nullable
-    private ReadableInstant death;
+    @NonNull private ReadableInstant birth;
+    @Nullable private ReadableInstant death;
 
-    @NonNull
-    private final List<Jump> jumps;
+    @ColorInt private int colour;
+    @NonNull private final List<Jump> jumps;
 
     public Entity() {
         id = -1;
@@ -57,6 +55,7 @@ public class Entity implements Parcelable {
         this.description = description;
         this.birth = birth;
         this.death = death;
+        this.colour = Color.RED;
         jumps = new LinkedList<>();
     }
 
@@ -167,6 +166,10 @@ public class Entity implements Parcelable {
         return death;
     }
 
+    @ColorInt public int getColour() {
+        return colour;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -199,6 +202,10 @@ public class Entity implements Parcelable {
         this.death = death == null ? null : new DateTime(death);
     }
 
+    public void setColour(@ColorInt int colour) {
+        this.colour = colour;
+    }
+
     @Override public int describeContents() {
         return 0;
     }
@@ -210,6 +217,7 @@ public class Entity implements Parcelable {
         dest.writeString(description);
         dest.writeString(birth.toString());
         dest.writeString(death == null ? null : death.toString());
+        dest.writeInt(colour);
     }
 
     protected Entity(Parcel in) {
@@ -220,6 +228,7 @@ public class Entity implements Parcelable {
         birth = new DateTime(in.readString());
         String deathStr = in.readString();
         death = deathStr == null ? null : new DateTime(deathStr);
+        colour = in.readInt();
         jumps = new LinkedList<>();
     }
 

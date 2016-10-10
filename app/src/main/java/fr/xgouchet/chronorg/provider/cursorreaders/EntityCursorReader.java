@@ -17,6 +17,7 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
     private int idxDesc;
     private int idxBirth;
     private int idxDeath;
+    private int idxColour;
 
     public EntityCursorReader(@NonNull Cursor cursor) {
         super(cursor);
@@ -29,6 +30,7 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
         idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
         idxBirth = getIndex(ChronorgSchema.COL_BIRTH);
         idxDeath = getIndex(ChronorgSchema.COL_DEATH);
+        idxColour = getIndex(ChronorgSchema.COL_COLOUR);
     }
 
     @NonNull @Override public Entity instantiate() {
@@ -37,9 +39,11 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
 
     @Override public void fill(@NonNull Entity entity) {
         entity.setId(readInt(idxId));
+        entity.setProjectId(readInt(idxProjectId));
         entity.setName(readString(idxName));
         entity.setDescription(readString(idxDesc));
         entity.setBirth(readString(idxBirth));
         entity.setDeath(readString(idxDeath));
+        entity.setColour(readInt(idxColour));
     }
 }

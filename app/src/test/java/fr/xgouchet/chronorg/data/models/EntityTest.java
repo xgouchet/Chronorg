@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Period;
+import org.joda.time.ReadableInstant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
+import fr.xgouchet.chronorg.ChronorgTestApplication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.Duration.standardDays;
@@ -25,7 +27,7 @@ import static org.joda.time.Duration.standardDays;
  * @author Xavier Gouchet
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 18)
+@Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
 public class EntityTest {
 
     public static final DateTime TWINE_PINE_MALL_1985_DEPARTURE = new DateTime(1985, 10, 26, 1, 35, 0, 0, DateTimeZone.UTC);
@@ -91,6 +93,21 @@ public class EntityTest {
     @Test
     public void should_get_multiple_ages_complex_timeline() {
         // Given
+        marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
+        marty.jump(CLOCK_TOWER_1955_DEPARTURE, CLOCK_TOWER_1985_LANDING);
+
+        // Then
+        assertThat(marty.getAgesAtInstant(DOC_BROWN_DEATH))
+                .hasSize(2)
+                .contains(
+                        new Period(17, 4, 1, 6, 13, 33, 0, 0),
+                        new Period(17, 4, 3, 0, 5, 33, 0, 0));
+    }
+
+    @Test
+    public void should_get_multiple_ages_complex_timeline_no_death() {
+        // Given
+        marty.setDeath((ReadableInstant) null);
         marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
         marty.jump(CLOCK_TOWER_1955_DEPARTURE, CLOCK_TOWER_1985_LANDING);
 
@@ -204,4 +221,39 @@ public class EntityTest {
                 .isEqualTo(new DateTime(1985, 10, 29, 18, 19, 0, 0, DateTimeZone.UTC));
 
     }
+
+    @Test
+    public void should_get_instant_at_age_complex_timeline_no_death() {
+        // Given
+        marty.setDeath((String) null);
+        marty.jump(TWINE_PINE_MALL_1985_DEPARTURE, PEABODY_FARM_1955_LANDING);
+        marty.jump(CLOCK_TOWER_1955_DEPARTURE, CLOCK_TOWER_1985_LANDING);
+        marty.jump(LYON_ESTATE_1985_DEPARTURE, LYON_ESTATE_2015_LANDING);
+        marty.jump(HILLDALE_2015_DEPARTURE, HILLDALE_1985_LANDING);
+        marty.jump(HELL_1985_DEPARTURE, HILL_VALLEY_1955_LANDING);
+        marty.jump(DESERT_1955_DEPARTURE, DESERT_1885_LANDING);
+        marty.jump(SONASH_RAVINE_1885_DEPARTURE, EASTWOOD_RAVINE_1985_LANDING);
+
+        // Then
+
+        // 17 years, 4 months and 19 days old
+        final Duration start = standardDays((365 * 17) + (30 * 4) + 19);
+        assertThat(marty.getInstantAtAge(start))
+                .isEqualTo(new DateTime(1985, 10, 25, 12, 0, 0, 0, DateTimeZone.UTC));
+
+        // Exactly two days later, he's in 1955
+        assertThat(marty.getInstantAtAge(standardDays(start.getStandardDays() + 2)))
+                .isEqualTo(new DateTime(1955, 11, 6, 16, 40, 0, 0, DateTimeZone.UTC));
+
+        // Exactly two weeks later, he's in 1885
+        assertThat(marty.getInstantAtAge(standardDays(start.getStandardDays() + 14)))
+                .isEqualTo(new DateTime(1885, 9, 2, 16, 19, 0, 0, DateTimeZone.UTC));
+
+
+        // Exactly three weeks later, he's four days later...
+        assertThat(marty.getInstantAtAge(standardDays(start.getStandardDays() + 21)))
+                .isEqualTo(new DateTime(1985, 10, 29, 18, 19, 0, 0, DateTimeZone.UTC));
+    }
+
+    // TODO test parcelable
 }

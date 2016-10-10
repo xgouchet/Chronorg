@@ -37,6 +37,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     public static final String COL_TO_INSTANT = "to_instant";
     public static final String COL_BIRTH = "birth";
     public static final String COL_DEATH = "death";
+    public static final String COL_COLOUR = "colour";
 
     public static final String COL_INSTANT = "instant";
 
@@ -75,6 +76,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_BIRTH, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DEATH, TYPE_TEXT));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
 
         return tableDescription;
     }
@@ -88,6 +90,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_FROM_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_TO_INSTANT, TYPE_TEXT, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
 
         return tableDescription;
     }
