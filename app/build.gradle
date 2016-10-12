@@ -46,6 +46,9 @@ dependencies {
     // TIME
     compile 'net.danlew:android.joda:2.9.4.1'
 
+    // UI
+    compile project(':colorpicker')
+
     // ARCHITECTURE
     compile 'com.jakewharton:butterknife:8.0.0'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
@@ -68,7 +71,7 @@ dependencies {
     testCompile 'com.squareup.assertj:assertj-android:1.0.0'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'com.android.support:support-annotations:24.2.0'
-    testCompile "org.robolectric:robolectric:3.1.2"
+    testCompile 'org.robolectric:robolectric:3.1.2'
 }
 
 

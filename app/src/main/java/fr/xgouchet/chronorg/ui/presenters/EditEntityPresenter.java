@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.ui.presenters;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class EditEntityPresenter implements EditEntityContract.Presenter {
     @Nullable private String description;
     @NonNull private ReadableInstant birth;
     @Nullable private ReadableInstant death;
+    @ColorInt private int colour;
 
     public EditEntityPresenter(@NonNull EntityRepository entityRepository,
                                @NonNull EditEntityContract.View view,
@@ -45,12 +47,13 @@ public class EditEntityPresenter implements EditEntityContract.Presenter {
         description = entity.getDescription();
         birth = entity.getBirth();
         death = entity.getDeath();
+        colour = entity.getColour();
 
         view.setPresenter(this);
     }
 
     @Override public void subscribe() {
-        view.setContent(name, description, birth, death);
+        view.setContent(name, description, birth, death, colour);
     }
 
     @Override public void unsubscribe() {
@@ -77,8 +80,12 @@ public class EditEntityPresenter implements EditEntityContract.Presenter {
         death = new DateTime(dateTimeIso8601);
     }
 
+    @Override public void setColour(@ColorInt int colour) {
+        this.colour = colour;
+    }
+
     @Override
-    public void saveProject(@NonNull String inputNameText, @NonNull String inputDescText) {
+    public void saveEntity(@NonNull String inputNameText, @NonNull String inputDescText) {
         // check input
         if (TextUtils.isEmpty(inputNameText)) {
             view.invalidName(EditProjectContract.EMPTY);
@@ -89,6 +96,7 @@ public class EditEntityPresenter implements EditEntityContract.Presenter {
         entity.setDescription(inputDescText);
         entity.setBirth(birth);
         entity.setDeath(death);
+        entity.setColour(colour);
         entityRepository.saveEntity(entity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -41,6 +41,7 @@ public class Entity implements Parcelable {
         description = null;
         birth = new DateTime("1970-01-01T00:00:00Z");
         death = null;
+        colour = Color.rgb(0xF6, 0x40, 0x2C);
         jumps = new LinkedList<>();
     }
 

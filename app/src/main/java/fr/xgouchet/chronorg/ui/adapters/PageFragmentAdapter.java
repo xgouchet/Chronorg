@@ -52,7 +52,7 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case PAGE_ENTITIES:
                 EntityRepository entityRepository = new EntityRepository(context, new EntityIOProvider());
-                final EntityListFragment fragment = new EntityListFragment();
+                final EntityListFragment fragment = EntityListFragment.createFragment(project.getId());
                 new EntityListPresenter(entityRepository, fragment, project);
                 return fragment;
             default:

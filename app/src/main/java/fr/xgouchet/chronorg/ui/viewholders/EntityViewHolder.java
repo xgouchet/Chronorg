@@ -17,13 +17,14 @@ import static butterknife.ButterKnife.bind;
  */
 public class EntityViewHolder extends BaseViewHolder<Entity> {
 
-    public static interface Listener {
+    public interface Listener {
 
         void onEntitySelected(@NonNull Entity entity);
     }
 
     @BindView(R.id.name) TextView name;
     @BindView(R.id.description) TextView description;
+    @BindView(R.id.underline) View underline;
 
     private Entity entity;
 
@@ -37,7 +38,9 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     @Override public void bindItem(@NonNull Entity entity) {
         this.entity = entity;
+
         name.setText(entity.getName());
+
         final String description = entity.getDescription();
         if (TextUtils.isEmpty(description)) {
             this.description.setVisibility(View.GONE);
@@ -45,6 +48,8 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
             this.description.setVisibility(View.VISIBLE);
             this.description.setText(description);
         }
+
+        underline.setBackgroundColor(entity.getColour());
     }
 
     @OnClick(R.id.project)

@@ -23,4 +23,5 @@
     <string name="error_entities_list">Error reading the entities in this list</string>
     <string name="error_project_details_empty">No project to display</string>
     <string name="error_entity_details_empty">No entity to display</string>
+    <string name="hint_colour">Colour</string>
 </resources>

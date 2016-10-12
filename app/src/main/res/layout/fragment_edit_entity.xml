@@ -107,6 +107,47 @@
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="15/4/2016 23:00:40 UTC"/>
 
+        <TextView
+            android:id="@+id/color_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:inputType="none"
+            android:maxLines="1"
+            android:text="@string/hint_colour"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+        <!--<com.ribell.colorpickerview.ColorPickerView-->
+            <!--android:id="@+id/input_colour"-->
+            <!--android:layout_margin="16dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:columnWidth="64dp"-->
+            <!--android:numColumns="auto_fit"-->
+            <!--android:verticalSpacing="8dp"-->
+            <!--android:horizontalSpacing="8dp"-->
+            <!--android:stretchMode="columnWidth"-->
+            <!--android:gravity="center"-->
+            <!--android:entries="@array/pickable_colours"-->
+            <!--android:layout_gravity="center"-->
+            <!--app:borderColorSelected="@color/colorAccent"-->
+            <!--app:borderColor="@android:color/transparent"/>-->
+
+        <ImageButton
+            android:id="@+id/input_colour"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/red"
+            android:src="@drawable/ic_palette_black_24dp"
+            android:scaleType="fitCenter"
+            android:inputType="none"
+            android:maxLines="1"
+            android:textAppearance="?android:textAppearanceMedium"/>
 
     </LinearLayout>
 </ScrollView>

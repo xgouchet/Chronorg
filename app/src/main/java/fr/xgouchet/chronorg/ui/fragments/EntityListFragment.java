@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.activities.EditEntityActivity;
@@ -33,18 +34,39 @@ import static butterknife.ButterKnife.bind;
  */
 public class EntityListFragment extends Fragment implements EntityListContract.View, EntityViewHolder.Listener {
 
+    private static final String ARGUMENT_PROJECT_ID = "project_id";
+
+
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
     private int projectId = -1;
-    private EntityListContract.Presenter presenter;
+    @Nullable private EntityListContract.Presenter presenter;
 
     /*package*/ final EntitiesAdapter adapter;
 
+    public static EntityListFragment createFragment(int projectId) {
+        EntityListFragment fragment = new EntityListFragment();
+
+        Bundle args = new Bundle(1);
+        args.putInt(ARGUMENT_PROJECT_ID, projectId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public EntityListFragment() {
         this.adapter = new EntitiesAdapter(new ArrayList<Entity>(), this);
+    }
+
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle args = getArguments();
+        if ((args != null) && args.containsKey(ARGUMENT_PROJECT_ID)) {
+            projectId = args.getInt(ARGUMENT_PROJECT_ID);
+        }
     }
 
     @Nullable @Override
@@ -60,12 +82,12 @@ public class EntityListFragment extends Fragment implements EntityListContract.V
 
     @Override public void onResume() {
         super.onResume();
-        presenter.subscribe();
+        if (presenter != null) presenter.subscribe();
     }
 
     @Override public void onPause() {
         super.onPause();
-        presenter.unsubscribe();
+        if (presenter != null) presenter.unsubscribe();
     }
 
     @Override public void setPresenter(@NonNull EntityListContract.Presenter presenter) {
@@ -108,5 +130,9 @@ public class EntityListFragment extends Fragment implements EntityListContract.V
 
     @Override public void onEntitySelected(@NonNull Entity entity) {
         presenter.itemSelected(entity);
+    }
+
+    @OnClick(R.id.fab) public void onFabClicked() {
+        presenter.createNewItem();
     }
 }

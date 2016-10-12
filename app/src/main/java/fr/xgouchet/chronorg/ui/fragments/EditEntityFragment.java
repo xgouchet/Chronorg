@@ -3,6 +3,7 @@ package fr.xgouchet.chronorg.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.colorpicker.ColorPickerDialog;
+import com.android.colorpicker.ColorPickerSwatch;
 
 import org.joda.time.ReadableInstant;
 
@@ -31,7 +35,9 @@ import static butterknife.ButterKnife.bind;
 /**
  * @author Xavier Gouchet
  */
-public class EditEntityFragment extends Fragment implements EditEntityContract.View {
+public class EditEntityFragment extends Fragment
+        implements EditEntityContract.View,
+        ColorPickerSwatch.OnColorSelectedListener {
 
     private static final int REQUEST_BIRTH_DATE = 42;
     private static final int REQUEST_DEATH_DATE = 666;
@@ -42,8 +48,12 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
     @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_birth) TextView inputBirth;
     @BindView(R.id.input_death) TextView inputDeath;
+    //    @BindView(R.id.input_colour) ColorPickerView inputColour;
+    @BindView(R.id.input_colour) View inputColour;
+
     private ReadableInstant birth;
     private ReadableInstant death;
+    private int[] colours;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +65,14 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
         View view = inflater.inflate(R.layout.fragment_edit_entity, container, false);
 
         bind(this, view);
+
+//        inputColour.setListener(this);
         return view;
     }
 
     @Override public void onResume() {
         super.onResume();
+        colours = getResources().getIntArray(R.array.pickable_colours);
         presenter.subscribe();
     }
 
@@ -127,11 +140,25 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
         startActivityForResult(intent, REQUEST_DEATH_DATE);
     }
 
+    @OnClick(R.id.input_colour) void onColourClicked() {
+        onNameFocusChanged(false);
+        onDescriptionFocusChanged(false);
+        // TODO find nearest selected color
+        ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
+                colours, 0, 4, ColorPickerDialog.SIZE_SMALL);
+        dialog.setOnColorSelectedListener(this);
+        dialog.show(getActivity().getFragmentManager(), "foo");
+    }
+
+    @Override public void onColorSelected(int color) {
+        presenter.setColour(color);
+    }
+
     private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
         String inputDescText = inputDescription.getText().toString();
 
-        presenter.saveProject(inputNameText, inputDescText);
+        presenter.saveEntity(inputNameText, inputDescText);
     }
 
     @Override public void setPresenter(@NonNull EditEntityContract.Presenter presenter) {
@@ -145,13 +172,18 @@ public class EditEntityFragment extends Fragment implements EditEntityContract.V
     }
 
     @Override
-    public void setContent(@NonNull String name, @Nullable String description, @NonNull ReadableInstant birth, @Nullable ReadableInstant death) {
+    public void setContent(@NonNull String name,
+                           @Nullable String description,
+                           @NonNull ReadableInstant birth,
+                           @Nullable ReadableInstant death,
+                           @ColorInt int colour) {
         inputName.setText(name);
         inputDescription.setText(description);
         this.birth = birth;
         inputBirth.setText(birth.toString());
         this.death = death;
         inputDeath.setText(death == null ? "" : death.toString());
+        inputColour.setBackgroundColor(colour);
     }
 
     @Override public void entitySaved() {

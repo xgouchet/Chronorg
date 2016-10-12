@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.ui.contracts;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -30,13 +31,14 @@ public interface EditEntityContract {
         void setContent(@NonNull String name,
                         @Nullable String description,
                         @NonNull ReadableInstant birth,
-                        @Nullable ReadableInstant death);
+                        @Nullable ReadableInstant death,
+                        @ColorInt int colour);
     }
 
     interface Presenter extends BasePresenter {
 
-        void saveProject(@NonNull String inputNameText,
-                         @NonNull String inputDescText);
+        void saveEntity(@NonNull String inputNameText,
+                        @NonNull String inputDescText);
 
         void setName(@NonNull String name);
 
@@ -45,5 +47,7 @@ public interface EditEntityContract {
         void setBirth(@NonNull String dateTimeIso8601);
 
         void setDeath(@NonNull String dateTimeIso8601);
+
+        void setColour(@ColorInt int colour);
     }
 }

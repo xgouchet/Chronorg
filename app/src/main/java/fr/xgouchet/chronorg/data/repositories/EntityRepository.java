@@ -82,7 +82,7 @@ public class EntityRepository {
                     if (success) {
                         subscriber.onCompleted();
                     } else {
-                        subscriber.onError(new RuntimeException("Unable to save entity !"));
+                        subscriber.onError(new RuntimeException("Unable to saveEntity entity !"));
                     }
                 } catch (Exception e) {
                     subscriber.onError(e);
