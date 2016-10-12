@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
+import fr.xgouchet.chronorg.ui.validators.DateTimeRegexValidator;
 
 /**
  * Activity to be used with startActivityForResult, to pick a date, time and timezone.
@@ -57,7 +58,8 @@ public class DateTimePickerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         // TODO read intent
-        DateTimePickerPresenter presenter = new DateTimePickerPresenter(this, null, null, null);
+        DateTimeRegexValidator validator = new DateTimeRegexValidator();
+        DateTimePickerPresenter presenter = new DateTimePickerPresenter(this, validator, null, null, null);
     }
 
     @Override protected void onResume() {
