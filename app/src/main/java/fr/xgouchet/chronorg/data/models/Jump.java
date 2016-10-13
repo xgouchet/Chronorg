@@ -1,18 +1,93 @@
 package fr.xgouchet.chronorg.data.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 
 /**
  * @author Xavier Gouchet
  */
 public class Jump {
-    @NonNull final ReadableInstant from;
-    @NonNull final ReadableInstant to;
 
-    Jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+    private int id;
+    private int entityId;
+    private int order;
+    @Nullable private String name;
+    @Nullable private String description;
+    @NonNull ReadableInstant from = new DateTime("1985-10-26T01:35:00-08:00");
+    @NonNull ReadableInstant to = new DateTime("1955-11-05T06:15:00-08:00");
+
+    public Jump() {
+    }
+
+    public Jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
         this.from = from;
         this.to = to;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setName(@Nullable String name) {
+        this.name = name;
+    }
+
+    @Nullable public String getName() {
+        return name;
+    }
+
+    public void setDescription(@Nullable String description) {
+        this.description = description;
+    }
+
+    @Nullable public String getDescription() {
+        return description;
+    }
+
+    public void setFrom(@NonNull ReadableInstant from) {
+        this.from = from;
+    }
+
+    public void setFrom(@NonNull String from) {
+        this.from = new DateTime(from);
+    }
+
+    @NonNull public ReadableInstant getFrom() {
+        return from;
+    }
+
+    public void setTo(@NonNull ReadableInstant to) {
+        this.to = to;
+    }
+
+    public void setTo(@NonNull String to) {
+        this.to = new DateTime(to);
+    }
+
+    @NonNull public ReadableInstant getTo() {
+        return to;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public int getOrder() {
+        return order;
     }
 }

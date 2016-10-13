@@ -47,8 +47,8 @@ public class EntityCursorReaderTest {
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_PROJECT_ID)).thenReturn(IDX_PROJECT_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_BIRTH)).thenReturn(IDX_BIRTH);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DEATH)).thenReturn(IDX_DEATH);
+        when(mockCursor.getColumnIndex(ChronorgSchema.COL_BIRTH_INSTANT)).thenReturn(IDX_BIRTH);
+        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DEATH_INSTANT)).thenReturn(IDX_DEATH);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_COLOUR)).thenReturn(IDX_COLOUR);
 
         entityCursorReader = new EntityCursorReader(mockCursor);

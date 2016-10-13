@@ -71,13 +71,12 @@ public class EntityListPresenter implements EntityListContract.Presenter {
                     }
 
                     @Override public void onError(Throwable e) {
-                        Log.e("Hey", "Ho", e);
                         view.setLoading(false);
                         view.setError(e);
                     }
 
-                    @Override public void onNext(List<Entity> projects) {
-                        onEntitiesLoaded(projects);
+                    @Override public void onNext(List<Entity> entities) {
+                        onEntitiesLoaded(entities);
                     }
                 });
 

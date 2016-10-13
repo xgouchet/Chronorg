@@ -62,8 +62,8 @@ public class EntityContentValuesWriterTest {
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
         verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
-        verify(mockContentValues).put(ChronorgSchema.COL_BIRTH, FAKE_BIRTH.toString());
-        verify(mockContentValues).put(ChronorgSchema.COL_DEATH, FAKE_DEATH.toString());
+        verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
+        verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, FAKE_DEATH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_COLOUR, FAKE_COLOUR);
     }
 
@@ -84,8 +84,8 @@ public class EntityContentValuesWriterTest {
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
         verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
-        verify(mockContentValues).put(ChronorgSchema.COL_BIRTH, FAKE_BIRTH.toString());
-        verify(mockContentValues).put(ChronorgSchema.COL_DEATH, (String) null);
+        verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
+        verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_COLOUR, FAKE_COLOUR);
     }
 }

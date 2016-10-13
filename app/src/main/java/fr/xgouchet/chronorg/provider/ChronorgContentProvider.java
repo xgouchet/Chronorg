@@ -24,6 +24,7 @@ public class ChronorgContentProvider extends ContentProvider {
 
     private BaseDao projectDao;
     private BaseDao entityDao;
+    private BaseDao jumpDao;
 
 
     @SuppressWarnings("unused")
@@ -38,11 +39,13 @@ public class ChronorgContentProvider extends ContentProvider {
 
     /*package*/ ChronorgContentProvider(@NonNull ChronorgSchema chronorgSchema,
                                         @NonNull BaseDao projectDao,
-                                        @NonNull BaseDao entityDao) {
+                                        @NonNull BaseDao entityDao,
+                                        @NonNull BaseDao jumpDao) {
         this.chronorgSchema = chronorgSchema;
         uriMatcher = chronorgSchema.buildUriMatcher();
         this.projectDao = projectDao;
         this.entityDao = entityDao;
+        this.jumpDao = jumpDao;
     }
 
     @Override public boolean onCreate() {
@@ -54,6 +57,7 @@ public class ChronorgContentProvider extends ContentProvider {
         SQLiteDescriptionHelper databaseHelper = new SQLiteDescriptionHelper(context, chronorgSchema, null);
         projectDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_PROJECTS);
         entityDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_ENTITIES);
+        jumpDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_JUMPS);
         return true;
     }
 
@@ -96,6 +100,10 @@ public class ChronorgContentProvider extends ContentProvider {
                 long entityId = entityDao.insert(values);
                 result = chronorgSchema.entityUri(entityId);
                 break;
+            case ChronorgSchema.MATCH_JUMPS:
+                long jumpId = jumpDao.insert(values);
+                result = chronorgSchema.jumpUri(jumpId);
+                break;
         }
 
         return result;
@@ -111,6 +119,7 @@ public class ChronorgContentProvider extends ContentProvider {
 
         if (dao != null) {
             deleted = dao.delete(selection, selectionArgs);
+            // TODO special delete on jumps to keep coherent order
         }
         return deleted;
     }
@@ -146,6 +155,8 @@ public class ChronorgContentProvider extends ContentProvider {
                 return projectDao;
             case ChronorgSchema.MATCH_ENTITIES:
                 return entityDao;
+            case ChronorgSchema.MATCH_JUMPS:
+                return jumpDao;
             default:
                 return null;
         }

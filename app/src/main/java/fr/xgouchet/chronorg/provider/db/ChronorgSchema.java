@@ -38,11 +38,13 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public static final String COL_FROM_INSTANT = "from_instant";
     public static final String COL_TO_INSTANT = "to_instant";
-    public static final String COL_COLOUR = "colour";
-    public static final String COL_BIRTH = "birth";
-    public static final String COL_DEATH = "death";
-    private static final String COL_DELAY = "delay";
+    public static final String COL_BIRTH_INSTANT = "birth";
+    public static final String COL_DEATH_INSTANT = "death";
     public static final String COL_INSTANT = "instant";
+
+    public static final String COL_COLOUR = "colour";
+    public static final String COL_DELAY = "delay";
+    public static final String COL_ORDER = "jump_order";
 
     public static final String COL_PROJECT_ID = "project_id";
     public static final String COL_ENTITY_ID = "entity_id";
@@ -78,8 +80,8 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
-        tableDescription.addColumn(new ColumnDescription(COL_BIRTH, TYPE_TEXT, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_DEATH, TYPE_TEXT));
+        tableDescription.addColumn(new ColumnDescription(COL_BIRTH_INSTANT, TYPE_TEXT, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_DEATH_INSTANT, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
 
         return tableDescription;
@@ -120,6 +122,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_FROM_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_TO_INSTANT, TYPE_TEXT, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_ORDER, TYPE_INTEGER));
 
         return tableDescription;
     }
@@ -130,14 +133,18 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     private static final String PATH_PROJECTS = "projects";
     private static final String PATH_ENTITIES = "entities";
+    private static final String PATH_JUMPS = "jumps";
 
     public static final int MATCH_PROJECTS = 100;
 
     public static final int MATCH_ENTITIES = 200;
 
+    public static final int MATCH_JUMPS = 300;
+
     public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     public static final Uri PROJECTS_URI = BASE_URI.buildUpon().appendPath(PATH_PROJECTS).build();
     public static final Uri ENTITIES_URI = BASE_URI.buildUpon().appendPath(PATH_ENTITIES).build();
+    public static final Uri JUMPS_URI = BASE_URI.buildUpon().appendPath(PATH_JUMPS).build();
 
     public UriMatcher buildUriMatcher() {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -145,6 +152,8 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS, MATCH_PROJECTS);
 
         uriMatcher.addURI(AUTHORITY, PATH_ENTITIES, MATCH_ENTITIES);
+
+        uriMatcher.addURI(AUTHORITY, PATH_JUMPS, MATCH_JUMPS);
 
         return uriMatcher;
     }
@@ -156,5 +165,10 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public Uri entityUri(long entityId) {
         return ENTITIES_URI.buildUpon().appendEncodedPath(Long.toString(entityId)).build();
+    }
+
+
+    public Uri jumpUri(long jumpId) {
+        return JUMPS_URI.buildUpon().appendEncodedPath(Long.toString(jumpId)).build();
     }
 }

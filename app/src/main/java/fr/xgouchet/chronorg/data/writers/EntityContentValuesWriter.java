@@ -18,9 +18,10 @@ public class EntityContentValuesWriter extends BaseContentValuesWriter<Entity> {
         cv.put(ChronorgSchema.COL_PROJECT_ID, entity.getProjectId());
         cv.put(ChronorgSchema.COL_NAME, entity.getName());
         cv.put(ChronorgSchema.COL_DESCRIPTION, entity.getDescription());
-        cv.put(ChronorgSchema.COL_BIRTH, entity.getBirth().toString());
-        final ReadableInstant death = entity.getDeath();
-        cv.put(ChronorgSchema.COL_DEATH, death == null ? null : death.toString());
+        cv.put(ChronorgSchema.COL_BIRTH_INSTANT, entity.getBirth().toString());
+
+        ReadableInstant death = entity.getDeath();
+        cv.put(ChronorgSchema.COL_DEATH_INSTANT, death == null ? null : death.toString());
         cv.put(ChronorgSchema.COL_COLOUR, entity.getColour());
     }
 }

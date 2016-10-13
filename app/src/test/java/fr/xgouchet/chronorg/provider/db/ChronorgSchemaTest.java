@@ -87,7 +87,8 @@ public class ChronorgSchemaTest {
                 "name TEXT NOT NULL UNIQUE," +
                 "desc TEXT," +
                 "from_instant TEXT NOT NULL," +
-                "to_instant TEXT NOT NULL)");
+                "to_instant TEXT NOT NULL," +
+                "jump_order INTEGER)");
         verify(database).setTransactionSuccessful();
         verify(database).endTransaction();
         verifyNoMoreInteractions(database);
@@ -125,21 +126,23 @@ public class ChronorgSchemaTest {
 
         // Then
         assertThat(uriMatcher.match(ChronorgSchema.PROJECTS_URI)).isEqualTo(ChronorgSchema.MATCH_PROJECTS);
-
         assertThat(uriMatcher.match(ChronorgSchema.ENTITIES_URI)).isEqualTo(ChronorgSchema.MATCH_ENTITIES);
+        assertThat(uriMatcher.match(ChronorgSchema.JUMPS_URI)).isEqualTo(ChronorgSchema.MATCH_JUMPS);
     }
 
     @Test
-    public void shouldBuildUris(){
+    public void shouldBuildUris() {
         // Given
         int id = 45;
 
         // When
         Uri entity = schema.entityUri(id);
         Uri project = schema.projectUri(id);
+        Uri jump = schema.jumpUri(id);
 
         // Then
         assertThat(entity.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/entities/45");
         assertThat(project.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/projects/45");
+        assertThat(jump.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/jumps/45");
     }
 }

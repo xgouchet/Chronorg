@@ -4,6 +4,7 @@ import android.content.Context;
 
 import dagger.Component;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
+import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationContext;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
@@ -25,6 +26,8 @@ public interface ChronorgComponent {
     ProjectRepository getProjectRepository();
 
     EntityRepository getEntityRepository();
+
+    JumpRepository getJumpRepository();
 
     DateTimeInputValidator getDateTimeInputValidator();
 

@@ -28,8 +28,8 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
         idxProjectId = getIndex(ChronorgSchema.COL_PROJECT_ID);
         idxName = getIndex(ChronorgSchema.COL_NAME);
         idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
-        idxBirth = getIndex(ChronorgSchema.COL_BIRTH);
-        idxDeath = getIndex(ChronorgSchema.COL_DEATH);
+        idxBirth = getIndex(ChronorgSchema.COL_BIRTH_INSTANT);
+        idxDeath = getIndex(ChronorgSchema.COL_DEATH_INSTANT);
         idxColour = getIndex(ChronorgSchema.COL_COLOUR);
     }
 

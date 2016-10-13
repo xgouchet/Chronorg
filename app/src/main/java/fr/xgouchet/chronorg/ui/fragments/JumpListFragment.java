@@ -1,12 +1,10 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,43 +12,28 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.deezer.android.counsel.annotations.Trace;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.ui.activities.EditProjectActivity;
-import fr.xgouchet.chronorg.ui.activities.ProjectDetailsActivity;
-import fr.xgouchet.chronorg.ui.adapters.ProjectsAdapter;
-import fr.xgouchet.chronorg.ui.contracts.ProjectListContract;
-import fr.xgouchet.chronorg.ui.viewholders.ProjectViewHolder;
+import fr.xgouchet.chronorg.data.models.Jump;
+import fr.xgouchet.chronorg.ui.contracts.JumpListContract;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-@Trace
-public class ProjectListFragment extends Fragment
-        implements ProjectListContract.View,
-        ProjectViewHolder.Listener {
+public class JumpListFragment extends Fragment
+        implements JumpListContract.View {
 
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
-    private final ProjectsAdapter adapter;
-
-    private ProjectListContract.Presenter presenter;
-
-    public ProjectListFragment() {
-        this.adapter = new ProjectsAdapter(new ArrayList<Project>(), this);
-    }
+    private JumpListContract.Presenter presenter;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,10 +41,11 @@ public class ProjectListFragment extends Fragment
 
         bind(this, view);
 
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        list.setAdapter(adapter);
+//        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        list.setAdapter(adapter);
         return view;
     }
+
 
     @Override public void onResume() {
         super.onResume();
@@ -73,7 +57,7 @@ public class ProjectListFragment extends Fragment
         presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(@NonNull ProjectListContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull JumpListContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -83,40 +67,40 @@ public class ProjectListFragment extends Fragment
     }
 
     @Override public void setEmpty() {
-        message.setText(R.string.empty_projects_list);
+        message.setText(R.string.empty_jumps_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
-        message.setText(R.string.error_projects_list);
+        message.setText(R.string.error_jumps_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }
 
-    @Override public void setContent(@NonNull List<Project> projects) {
-        adapter.update(projects);
+    @Override public void setContent(@NonNull List<Jump> jumps) {
+//  TODO      adapter.update(jumps);
         message.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
     }
 
     @Override public void showCreateItemUi() {
         // TODO handle tablet
-        Intent intent = EditProjectActivity.intentNewProject(getActivity());
-        getActivity().startActivity(intent);
+//        Intent intent = EditProjectActivity.intentNewProject(getActivity());
+//        getActivity().startActivity(intent);
     }
 
-    @OnClick(R.id.fab) public void onCreateNewProject() {
+    @OnClick(R.id.fab) public void onCreateNewJump() {
         presenter.createNewItem();
     }
 
-    @Override public void onProjectSelected(@NonNull Project project) {
-        presenter.itemSelected(project);
-    }
+//    @Override public void onProjectSelected(@NonNull Project project) {
+//        presenter.itemSelected(project);
+//    }
 
-    @Override public void showItem(@NonNull Project item) {
-        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), item);
-
-        getActivity().startActivity(intent);
+    @Override public void showItem(@NonNull Jump item) {
+//        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), item);
+//
+//        getActivity().startActivity(intent);
     }
 }
