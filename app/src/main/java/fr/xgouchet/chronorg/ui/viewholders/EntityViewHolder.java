@@ -52,8 +52,8 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
         underline.setBackgroundColor(entity.getColour());
     }
 
-    @OnClick(R.id.project)
-    public void onSelectProject() {
+    @OnClick(R.id.entity)
+    public void onSelectEntity() {
         if (entity != null) {
             listener.onEntitySelected(entity);
         }

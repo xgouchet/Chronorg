@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Jump;
+import fr.xgouchet.chronorg.ui.adapters.JumpsAdapter;
 import fr.xgouchet.chronorg.ui.contracts.JumpListContract;
+import fr.xgouchet.chronorg.ui.viewholders.JumpViewHolder;
 
 import static butterknife.ButterKnife.bind;
 
@@ -26,7 +30,7 @@ import static butterknife.ButterKnife.bind;
  * @author Xavier Gouchet
  */
 public class JumpListFragment extends Fragment
-        implements JumpListContract.View {
+        implements JumpListContract.View, JumpViewHolder.Listener {
 
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
@@ -34,6 +38,11 @@ public class JumpListFragment extends Fragment
     @BindView(R.id.message) TextView message;
 
     private JumpListContract.Presenter presenter;
+    private final JumpsAdapter adapter;
+
+    public JumpListFragment() {
+        adapter = new JumpsAdapter(new ArrayList<Jump>(), this);
+    }
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,8 +50,8 @@ public class JumpListFragment extends Fragment
 
         bind(this, view);
 
-//        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        list.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setAdapter(adapter);
         return view;
     }
 
@@ -79,7 +88,7 @@ public class JumpListFragment extends Fragment
     }
 
     @Override public void setContent(@NonNull List<Jump> jumps) {
-//  TODO      adapter.update(jumps);
+        adapter.update(jumps);
         message.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
     }
@@ -94,13 +103,13 @@ public class JumpListFragment extends Fragment
         presenter.createNewItem();
     }
 
-//    @Override public void onProjectSelected(@NonNull Project project) {
-//        presenter.itemSelected(project);
-//    }
-
     @Override public void showItem(@NonNull Jump item) {
 //        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), item);
 //
 //        getActivity().startActivity(intent);
+    }
+
+    @Override public void onJumpSelected(@NonNull Jump jump) {
+        presenter.itemSelected(jump);
     }
 }

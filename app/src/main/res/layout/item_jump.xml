@@ -11,22 +11,20 @@
                                     android:elevation="8dp"
                                     app:cardCornerRadius="8dp">
 
-    <RelativeLayout
-        android:id="@+id/entity"
+    <LinearLayout
+        android:id="@+id/jump"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="8dp">
 
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="start|center_vertical"
             android:ellipsize="end"
-            android:gravity="start|center_vertical"
+            android:gravity="start"
             android:maxLines="1"
             android:paddingBottom="4dp"
             android:paddingEnd="16dp"
@@ -35,26 +33,12 @@
             android:textAppearance="?android:textAppearanceListItem"
             tools:text="Foo (Bar) Spam"/>
 
-        <View
-            android:id="@+id/underline"
-            android:layout_width="64dp"
-            android:layout_height="3dp"
-            android:layout_alignEnd="@id/name"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/name"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
-            tools:background="@color/colorAccent"/>
-
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/underline"
-            android:layout_gravity="start"
             android:gravity="start"
+            android:lines="1"
             android:paddingBottom="4dp"
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
@@ -62,6 +46,39 @@
             android:textAppearance="?android:textAppearanceListItemSecondary"
             android:textColor="@color/textColorSecondary"
             android:textStyle="italic"
-            tools:text="Lorem ipsum dolor sit amet blabla blablablab bl blabla b balb la"/>
-    </RelativeLayout>
+            tools:text="Lorem ipsum dolor sit amet"/>
+
+
+        <TextView
+            android:id="@+id/from_instant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_jump_from_black_24dp"
+            android:gravity="start|center_vertical"
+            android:lines="1"
+            android:paddingBottom="4dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:textAppearanceListItemSecondary"
+            tools:text="1955-06-12"/>
+
+        <TextView
+            android:id="@+id/to_instant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:drawableEnd="@drawable/ic_jump_to_black_24dp"
+            android:drawablePadding="8dp"
+            android:gravity="end|center_vertical"
+            android:lines="1"
+            android:paddingBottom="4dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:textAppearanceListItemSecondary"
+            tools:text="1985-11-06"/>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

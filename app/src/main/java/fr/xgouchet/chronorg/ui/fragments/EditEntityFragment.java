@@ -21,6 +21,8 @@ import com.android.colorpicker.ColorPickerDialog;
 import com.android.colorpicker.ColorPickerSwatch;
 
 import org.joda.time.ReadableInstant;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +43,8 @@ public class EditEntityFragment extends Fragment
 
     private static final int REQUEST_BIRTH_DATE = 42;
     private static final int REQUEST_DEATH_DATE = 666;
+
+    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
 
     private EditEntityContract.Presenter presenter;
 
@@ -65,8 +69,6 @@ public class EditEntityFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_edit_entity, container, false);
 
         bind(this, view);
-
-//        inputColour.setListener(this);
         return view;
     }
 
@@ -181,9 +183,9 @@ public class EditEntityFragment extends Fragment
         inputName.setText(name);
         inputDescription.setText(description);
         this.birth = birth;
-        inputBirth.setText(birth.toString());
+        inputBirth.setText(dtf.print(birth));
         this.death = death;
-        inputDeath.setText(death == null ? "" : death.toString());
+        inputDeath.setText(death == null ? "" : dtf.print(death));
         inputColour.setBackgroundColor(colour);
     }
 

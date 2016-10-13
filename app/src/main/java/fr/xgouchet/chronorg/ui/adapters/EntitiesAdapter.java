@@ -19,7 +19,7 @@ public class EntitiesAdapter extends BaseSimpleAdapter<Entity, EntityViewHolder>
     @NonNull /*package*/ final List<Entity> entities;
     @NonNull private final EntityViewHolder.Listener listener;
 
-    public EntitiesAdapter(List<Entity> entities, EntityViewHolder.Listener listener) {
+    public EntitiesAdapter(@NonNull List<Entity> entities, @NonNull EntityViewHolder.Listener listener) {
         this.entities = entities;
         this.listener = listener;
     }
