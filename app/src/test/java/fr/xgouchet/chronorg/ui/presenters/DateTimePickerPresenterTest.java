@@ -11,6 +11,7 @@ import org.robolectric.annotation.Config;
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
 import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
+import fr.xgouchet.chronorg.ui.validators.DateTimeInputValidator;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -28,7 +29,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class DateTimePickerPresenterTest {
 
     @Mock DateTimePickerContract.View view;
-    @Mock DateTimePickerPresenter.DateTimeInputValidator validator;
+    @Mock DateTimeInputValidator validator;
     private DateTimePickerPresenter presenter;
 
     @Before
@@ -36,7 +37,9 @@ public class DateTimePickerPresenterTest {
 
         initMocks(this);
 
-        presenter = new DateTimePickerPresenter(view, validator, null, null, null);
+        presenter = new DateTimePickerPresenter(validator, null, null, null);
+
+        presenter.setView(view);
         verify(view).setPresenter(presenter);
     }
 
@@ -74,7 +77,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidDate(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, null, null, null);
+        presenter = new DateTimePickerPresenter(validator, null, null, null);
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -89,7 +93,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidDate(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "spam", null, null);
+        presenter = new DateTimePickerPresenter(validator, "spam", null, null);
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -105,7 +110,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidTime(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "1984-04-20", null, null);
+        presenter = new DateTimePickerPresenter(validator, "1984-04-20", null, null);
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -121,7 +127,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidTime(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "1984-04-20", "bar", null);
+        presenter = new DateTimePickerPresenter(validator, "1984-04-20", "bar", null);
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -138,7 +145,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidTimezone(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "1984-04-20", "19:37:18", null);
+        presenter = new DateTimePickerPresenter(validator, "1984-04-20", "19:37:18", null);
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -155,7 +163,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidTimezone(anyString())).thenReturn(false);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "1984-04-20", "19:37:18", "bacon");
+        presenter = new DateTimePickerPresenter(validator, "1984-04-20", "19:37:18", "bacon");
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then
@@ -172,7 +181,8 @@ public class DateTimePickerPresenterTest {
         when(validator.isValidTimezone(anyString())).thenReturn(true);
 
         // When
-        presenter = new DateTimePickerPresenter(view, validator, "1984-04-20", "19:37:18", "+04:30");
+        presenter = new DateTimePickerPresenter(validator, "1984-04-20", "19:37:18", "+04:30");
+        presenter.setView(view);
         presenter.subscribe();
 
         // Then

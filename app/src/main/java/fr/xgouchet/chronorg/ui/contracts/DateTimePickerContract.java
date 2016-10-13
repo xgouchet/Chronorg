@@ -13,6 +13,7 @@ import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 public interface DateTimePickerContract {
 
     interface Presenter extends BasePresenter {
+        void setView(View view);
 
         void onDateSelected(@NonNull String date);
 

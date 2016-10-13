@@ -8,6 +8,7 @@ import com.deezer.android.counsel.annotations.Trace;
 import org.joda.time.DateTime;
 
 import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
+import fr.xgouchet.chronorg.ui.validators.DateTimeInputValidator;
 
 /**
  * @author Xavier Gouchet
@@ -15,36 +16,30 @@ import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
 @Trace
 public class DateTimePickerPresenter implements DateTimePickerContract.Presenter {
 
-    public static interface DateTimeInputValidator {
-        boolean isValidDate(@Nullable String date);
 
-        boolean isValidTime(@Nullable String time);
-
-        boolean isValidTimezone(@Nullable String timezone);
-    }
-
-//    private static final String DATE_REGEX = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-//    private static final String TIME_REGEX = "[0-2][0-9]:[0-5][0-9](:[0-5][0-9](\\.[0-9]+)?)?";
-//    private static final String TIMEZONE_REGEX = "Z|([+-][0-2][0-9]:[0-5][0-9])";
-
-    @NonNull private final DateTimePickerContract.View view;
+    @Nullable private DateTimePickerContract.View view;
     @Nullable private String date, time, timezone;
     @NonNull private final DateTimeInputValidator validator;
 
-    public DateTimePickerPresenter(@NonNull DateTimePickerContract.View view,
-                                   @NonNull DateTimeInputValidator validator,
+    public DateTimePickerPresenter(@NonNull DateTimeInputValidator validator) {
+        this(validator, null, null, null);
+    }
+
+    public DateTimePickerPresenter(@NonNull DateTimeInputValidator validator,
                                    @Nullable String date,
                                    @Nullable String time,
                                    @Nullable String timezone) {
 
-        this.view = view;
         this.validator = validator;
 
         this.date = validator.isValidDate(date) ? date : null;
         this.time = validator.isValidTime(time) ? time : null;
         this.timezone = validator.isValidTimezone(timezone) ? timezone : null;
+    }
 
-        this.view.setPresenter(this);
+    @Override public void setView(@NonNull DateTimePickerContract.View view) {
+        this.view = view;
+        view.setPresenter(this);
     }
 
     @Override public void subscribe() {
@@ -58,6 +53,7 @@ public class DateTimePickerPresenter implements DateTimePickerContract.Presenter
     }
 
     @Override public void onDateSelected(@NonNull String date) {
+        if (view == null) return;
         if (!validator.isValidDate(date)) {
             view.setError(new IllegalArgumentException("Invalid date format \"" + date + "\""));
             return;
@@ -68,6 +64,7 @@ public class DateTimePickerPresenter implements DateTimePickerContract.Presenter
     }
 
     @Override public void onTimeSelected(@NonNull String time) {
+        if (view == null) return;
         if (!validator.isValidTime(time)) {
             view.setError(new IllegalArgumentException("Invalid time format \"" + time + "\""));
             return;
@@ -77,6 +74,7 @@ public class DateTimePickerPresenter implements DateTimePickerContract.Presenter
     }
 
     @Override public void onTimezoneSelected(@NonNull String timezone) {
+        if (view == null) return;
         if (!validator.isValidTimezone(timezone)) {
             view.setError(new IllegalArgumentException("Invalid time format \"" + time + "\""));
             return;
@@ -86,6 +84,7 @@ public class DateTimePickerPresenter implements DateTimePickerContract.Presenter
     }
 
     private void handleNextStep() {
+        if (view == null) return;
         if (date == null) {
             view.showDatePicker();
         } else if (time == null) {
@@ -100,8 +99,8 @@ public class DateTimePickerPresenter implements DateTimePickerContract.Presenter
 
     }
 
-
     @Override public void onCancel() {
+        if (view == null) return;
         view.dismiss();
     }
 }

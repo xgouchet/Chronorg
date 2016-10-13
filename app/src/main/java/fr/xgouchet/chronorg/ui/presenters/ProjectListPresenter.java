@@ -1,12 +1,15 @@
 package fr.xgouchet.chronorg.ui.presenters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.deezer.android.counsel.annotations.Trace;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
@@ -23,24 +26,30 @@ import rx.subscriptions.CompositeSubscription;
 @Trace
 public class ProjectListPresenter implements ProjectListContract.Presenter {
 
+
     @NonNull private final List<Project> projects;
 
-    @NonNull /*package*/ final ProjectListContract.View view;
+    @Nullable /*package*/ ProjectListContract.View view;
 
     @NonNull private final ProjectRepository projectRepository;
 
     @NonNull private final CompositeSubscription subscriptions;
 
-    public ProjectListPresenter(@NonNull ProjectRepository projectRepository,
-                                @NonNull ProjectListContract.View view) {
+    @Inject
+    public ProjectListPresenter(@NonNull ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.view = view;
         projects = new ArrayList<>();
         subscriptions = new CompositeSubscription();
+    }
+
+    public void setView(@NonNull ProjectListContract.View view) {
+        this.view = view;
         view.setPresenter(this);
     }
 
     @Override public void load(boolean force) {
+        if (view == null) return;
+
         if (!force) {
             view.setContent(projects);
         }
@@ -75,6 +84,8 @@ public class ProjectListPresenter implements ProjectListContract.Presenter {
 
     /*package*/ void onProjectsLoaded(List<Project> projects) {
         this.projects.addAll(projects);
+        if (view == null) return;
+
         if (this.projects.isEmpty()) {
             view.setEmpty();
         } else {
@@ -83,10 +94,12 @@ public class ProjectListPresenter implements ProjectListContract.Presenter {
     }
 
     @Override public void itemSelected(@NonNull Project project) {
+        if (view == null) return;
         view.showItem(project);
     }
 
     @Override public void createNewItem() {
+        if (view == null) return;
         view.showCreateItemUi();
     }
 

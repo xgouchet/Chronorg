@@ -10,7 +10,7 @@ import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 public interface EntityListContract {
 
     interface Presenter extends BaseListPresenter<Entity> {
-
+        void setView(View view);
     }
 
     interface View extends BaseListView<Presenter, Entity> {

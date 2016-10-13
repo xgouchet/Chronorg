@@ -150,8 +150,9 @@ public class EditEntityFragment extends Fragment
         dialog.show(getActivity().getFragmentManager(), "foo");
     }
 
-    @Override public void onColorSelected(int color) {
+    @Override public void onColorSelected(@ColorInt int color) {
         presenter.setColour(color);
+        inputColour.setBackgroundColor(color);
     }
 
     private void saveProject() {

@@ -1,6 +1,7 @@
 package fr.xgouchet.chronorg.ui.presenters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.deezer.android.counsel.annotations.Trace;
 
@@ -19,19 +20,24 @@ import rx.subscriptions.CompositeSubscription;
 @Trace
 public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter {
 
-    @NonNull /*package*/ Project project;
-    @NonNull /*package*/ final ProjectDetailsContract.View view;
+    @Nullable /*package*/ Project project;
+    @Nullable /*package*/ ProjectDetailsContract.View view;
     @NonNull private final ProjectRepository projectRepository;
 
     @NonNull private final CompositeSubscription subscriptions;
 
-    public ProjectDetailsPresenter(@NonNull ProjectRepository projectRepository,
-                                   @NonNull ProjectDetailsContract.View view,
-                                   @NonNull Project project) {
+    public ProjectDetailsPresenter(@NonNull ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.project = project;
-        this.view = view;
         subscriptions = new CompositeSubscription();
+
+    }
+
+    public void setProject(@NonNull Project project) {
+        this.project = project;
+    }
+
+    public void setView(@NonNull ProjectDetailsContract.View view) {
+        this.view = view;
         view.setPresenter(this);
     }
 

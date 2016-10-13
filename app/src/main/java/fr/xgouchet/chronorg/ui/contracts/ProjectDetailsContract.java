@@ -11,6 +11,7 @@ import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
  */
 public interface ProjectDetailsContract {
     interface Presenter extends BasePresenter {
+        void setView(View view);
 
         void deleteProject();
 

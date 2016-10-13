@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.provider.ioproviders.ProjectIOProvider;
+import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
 import rx.Observable;
 import rx.Subscriber;
 

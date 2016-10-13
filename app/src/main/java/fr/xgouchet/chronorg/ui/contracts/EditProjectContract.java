@@ -24,6 +24,8 @@ public interface EditProjectContract {
 
     interface Presenter extends BasePresenter {
 
+        void setView(View view);
+
         void saveProject(@NonNull String inputNameText, @NonNull String inputDescText);
     }
 }

@@ -11,9 +11,10 @@ import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 public interface ProjectListContract {
 
 
+
     interface Presenter extends BaseListPresenter<Project> {
 
-
+        void setView(View view);
     }
 
     interface View extends BaseListView<Presenter, Project> {

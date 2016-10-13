@@ -1,6 +1,7 @@
 package fr.xgouchet.chronorg.ui.presenters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.deezer.android.counsel.annotations.Trace;
@@ -25,28 +26,32 @@ import rx.subscriptions.CompositeSubscription;
 public class EntityListPresenter implements EntityListContract.Presenter {
 
     @NonNull private final List<Entity> entities;
-
-    @NonNull /*package*/ final EntityListContract.View view;
-
     @NonNull private final EntityRepository entityRepository;
-
     @NonNull private final CompositeSubscription subscriptions;
 
-    @NonNull private final Project project;
+    @Nullable /*package*/ EntityListContract.View view;
+    @Nullable private Project project;
 
-    public EntityListPresenter(@NonNull EntityRepository entityRepository,
-                               @NonNull EntityListContract.View view,
-                               @NonNull Project project) {
-        this.view = view;
+    public EntityListPresenter(@NonNull EntityRepository entityRepository) {
         this.entityRepository = entityRepository;
-        this.project = project;
         entities = new ArrayList<>();
         subscriptions = new CompositeSubscription();
+    }
 
+    public void setProject(@NonNull Project project) {
+        this.project = project;
+    }
+
+    public void setView(@NonNull EntityListContract.View view) {
+        this.view = view;
         view.setPresenter(this);
     }
 
+
     @Override public void load(boolean force) {
+        if (view == null) return;
+        if (project == null) return;
+
         if (!force) {
             view.setContent(entities);
         }
@@ -81,6 +86,8 @@ public class EntityListPresenter implements EntityListContract.Presenter {
 
     /*package*/ void onEntitiesLoaded(List<Entity> entities) {
         this.entities.addAll(entities);
+        if (view == null) return;
+
         if (this.entities.isEmpty()) {
             view.setEmpty();
         } else {
@@ -89,10 +96,12 @@ public class EntityListPresenter implements EntityListContract.Presenter {
     }
 
     @Override public void itemSelected(@NonNull Entity entity) {
+        if (view == null) return;
         view.showItem(entity);
     }
 
     @Override public void createNewItem() {
+        if (view == null) return;
         view.showCreateItemUi();
     }
 

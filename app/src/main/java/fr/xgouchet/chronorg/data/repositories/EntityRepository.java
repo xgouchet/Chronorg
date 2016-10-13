@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.provider.ioproviders.EntityIOProvider;
-import fr.xgouchet.chronorg.provider.queriers.EntityContentQuerier;
+import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
+import fr.xgouchet.chronorg.data.queriers.EntityContentQuerier;
 import rx.Observable;
 import rx.Subscriber;
 

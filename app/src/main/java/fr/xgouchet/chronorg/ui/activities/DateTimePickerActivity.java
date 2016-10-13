@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -21,7 +20,6 @@ import java.util.Locale;
 
 import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
-import fr.xgouchet.chronorg.ui.validators.DateTimeRegexValidator;
 
 /**
  * Activity to be used with startActivityForResult, to pick a date, time and timezone.
@@ -31,24 +29,12 @@ import fr.xgouchet.chronorg.ui.validators.DateTimeRegexValidator;
  * @author Xavier Gouchet
  */
 @Trace
-public class DateTimePickerActivity extends AppCompatActivity
-        implements DateTimePickerContract.View, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, DialogInterface.OnCancelListener {
+public class DateTimePickerActivity extends BaseActivity
+        implements DateTimePickerContract.View,
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener,
+        DialogInterface.OnCancelListener {
 
-
-    /**
-     * Sets the date "YYYY-MM-DD"
-     */
-    public static final String EXTRA_DATE = "date";
-
-    /**
-     * Sets the time "hh:mm:ss"
-     */
-    public static final String EXTRA_TIME = "time";
-
-    /**
-     * Sets the timezone "Z" / "+hh:mm" / "-hh:mm
-     */
-    public static final String EXTRA_TIMEZONE = "timezone";
 
     public static final String EXTRA_RESULT = "result";
 
@@ -57,9 +43,9 @@ public class DateTimePickerActivity extends AppCompatActivity
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO read intent
-        DateTimeRegexValidator validator = new DateTimeRegexValidator();
-        DateTimePickerPresenter presenter = new DateTimePickerPresenter(this, validator, null, null, null);
+        // TODO read intent to init the pickers with the given value
+        DateTimePickerPresenter presenter = getActivityComponent().getDateTimePickerPresenter();
+        presenter.setView(this);
     }
 
     @Override protected void onResume() {
@@ -88,6 +74,7 @@ public class DateTimePickerActivity extends AppCompatActivity
         finish();
     }
 
+    @SuppressWarnings("deprecation")
     @Override public void showDatePicker() {
         Date today = new Date();
         DatePickerDialog dialog = new DatePickerDialog(this,

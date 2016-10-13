@@ -5,19 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
-import fr.xgouchet.chronorg.provider.ioproviders.ProjectIOProvider;
 import fr.xgouchet.chronorg.ui.fragments.EditProjectFragment;
-import fr.xgouchet.chronorg.ui.presenters.EditProjectPresenter;
+import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 
 /**
  * @author Xavier Gouchet
  */
-public class EditProjectActivity extends AppCompatActivity {
+public class EditProjectActivity extends BaseActivity {
 
     private static final String EXTRA_PROJECT = "project";
 
@@ -45,8 +42,9 @@ public class EditProjectActivity extends AppCompatActivity {
             project = new Project();
         }
 
-        //TODO inject
-        ProjectRepository repository = new ProjectRepository(this, new ProjectIOProvider());
-        EditProjectPresenter presenter = new EditProjectPresenter(repository, fragment, project);
+        // Setup Presenter
+        ProjectEditPresenter presenter = getActivityComponent().getProjectEditPresenter();
+        presenter.setProject(project);
+        presenter.setView(fragment);
     }
 }

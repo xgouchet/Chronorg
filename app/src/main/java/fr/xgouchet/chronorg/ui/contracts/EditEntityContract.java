@@ -37,6 +37,8 @@ public interface EditEntityContract {
 
     interface Presenter extends BasePresenter {
 
+        void setView(View view);
+
         void saveEntity(@NonNull String inputNameText,
                         @NonNull String inputDescText);
 
