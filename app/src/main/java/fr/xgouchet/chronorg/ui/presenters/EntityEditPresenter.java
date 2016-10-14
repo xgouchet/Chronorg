@@ -10,8 +10,8 @@ import org.joda.time.ReadableInstant;
 
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
-import fr.xgouchet.chronorg.ui.contracts.EditEntityContract;
-import fr.xgouchet.chronorg.ui.contracts.EditProjectContract;
+import fr.xgouchet.chronorg.ui.contracts.EntityEditContract;
+import fr.xgouchet.chronorg.ui.contracts.ProjectEditContract;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -19,11 +19,11 @@ import rx.schedulers.Schedulers;
 /**
  * @author Xavier Gouchet
  */
-public class EntityEditPresenter implements EditEntityContract.Presenter {
+public class EntityEditPresenter implements EntityEditContract.Presenter {
 
     @Nullable private Entity entity;
 
-    @Nullable /*package*/ EditEntityContract.View view;
+    @Nullable /*package*/ EntityEditContract.View view;
 
     @NonNull private final EntityRepository entityRepository;
 
@@ -46,7 +46,7 @@ public class EntityEditPresenter implements EditEntityContract.Presenter {
         colour = entity.getColour();
     }
 
-    @Override public void setView(@NonNull EditEntityContract.View view) {
+    @Override public void setView(@NonNull EntityEditContract.View view) {
         this.view = view;
         view.setPresenter(this);
     }
@@ -92,7 +92,7 @@ public class EntityEditPresenter implements EditEntityContract.Presenter {
 
         // check input
         if (TextUtils.isEmpty(inputNameText)) {
-            view.invalidName(EditProjectContract.EMPTY);
+            view.invalidName(ProjectEditContract.EMPTY);
             return;
         }
 

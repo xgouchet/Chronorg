@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Jump;
+import fr.xgouchet.chronorg.ui.activities.JumpEditActivity;
 import fr.xgouchet.chronorg.ui.adapters.JumpsAdapter;
 import fr.xgouchet.chronorg.ui.contracts.JumpListContract;
 import fr.xgouchet.chronorg.ui.viewholders.JumpViewHolder;
@@ -32,6 +34,8 @@ import static butterknife.ButterKnife.bind;
 public class JumpListFragment extends Fragment
         implements JumpListContract.View, JumpViewHolder.Listener {
 
+    private static final String ARGUMENT_ENTITY_ID = "entity_id";
+
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -40,8 +44,14 @@ public class JumpListFragment extends Fragment
     private JumpListContract.Presenter presenter;
     private final JumpsAdapter adapter;
 
+    private int entityId = -1;
+
     public JumpListFragment() {
         adapter = new JumpsAdapter(new ArrayList<Jump>(), this);
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
     }
 
     @Nullable @Override
@@ -95,8 +105,8 @@ public class JumpListFragment extends Fragment
 
     @Override public void showCreateItemUi() {
         // TODO handle tablet
-//        Intent intent = EditProjectActivity.intentNewProject(getActivity());
-//        getActivity().startActivity(intent);
+        Intent intent = JumpEditActivity.intentNewJump(getActivity(), entityId);
+        getActivity().startActivity(intent);
     }
 
     @OnClick(R.id.fab) public void onCreateNewJump() {

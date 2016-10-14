@@ -3,7 +3,6 @@ package fr.xgouchet.chronorg.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.colorpicker.ColorPickerDialog;
-import com.android.colorpicker.ColorPickerSwatch;
-
 import org.joda.time.ReadableInstant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -28,36 +24,29 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.Entity;
+import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.ui.activities.DateTimePickerActivity;
-import fr.xgouchet.chronorg.ui.contracts.EditEntityContract;
+import fr.xgouchet.chronorg.ui.contracts.JumpEditContract;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class EditEntityFragment extends Fragment
-        implements EditEntityContract.View,
-        ColorPickerSwatch.OnColorSelectedListener {
+public class JumpEditFragment extends Fragment
+        implements JumpEditContract.View {
 
-    private static final int REQUEST_BIRTH_DATE = 42;
-    private static final int REQUEST_DEATH_DATE = 666;
+    private static final int REQUEST_FROM_DATE = 42;
+    private static final int REQUEST_TO_DATE = 666;
 
     final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
 
-    private EditEntityContract.Presenter presenter;
+    private JumpEditContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
     @BindView(R.id.input_description) EditText inputDescription;
-    @BindView(R.id.input_birth) TextView inputBirth;
-    @BindView(R.id.input_death) TextView inputDeath;
-    //    @BindView(R.id.input_colour) ColorPickerView inputColour;
-    @BindView(R.id.input_colour) View inputColour;
-
-    private ReadableInstant birth;
-    private ReadableInstant death;
-    private int[] colours;
+    @BindView(R.id.input_from) TextView inputFrom;
+    @BindView(R.id.input_to) TextView inputTo;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +55,7 @@ public class EditEntityFragment extends Fragment
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_entity, container, false);
+        View view = inflater.inflate(R.layout.fragment_jump_edit, container, false);
 
         bind(this, view);
         return view;
@@ -74,7 +63,6 @@ public class EditEntityFragment extends Fragment
 
     @Override public void onResume() {
         super.onResume();
-        colours = getResources().getIntArray(R.array.pickable_colours);
         presenter.subscribe();
     }
 
@@ -106,12 +94,12 @@ public class EditEntityFragment extends Fragment
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_BIRTH_DATE) {
+            if (requestCode == REQUEST_FROM_DATE) {
                 String dateTime = data.getStringExtra(DateTimePickerActivity.EXTRA_RESULT);
-                presenter.setBirth(dateTime);
-            } else if (requestCode == REQUEST_DEATH_DATE) {
+                presenter.setFrom(dateTime);
+            } else if (requestCode == REQUEST_TO_DATE) {
                 String dateTime = data.getStringExtra(DateTimePickerActivity.EXTRA_RESULT);
-                presenter.setDeath(dateTime);
+                presenter.setTo(dateTime);
             }
         }
     }
@@ -128,81 +116,62 @@ public class EditEntityFragment extends Fragment
         }
     }
 
-    @OnClick(R.id.input_birth) void onBirthClicked() {
+    @OnClick(R.id.input_from) void onBirthClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
         Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
-        startActivityForResult(intent, REQUEST_BIRTH_DATE);
+        startActivityForResult(intent, REQUEST_FROM_DATE);
     }
 
-    @OnClick(R.id.input_death) void onDeathClicked() {
+    @OnClick(R.id.input_to) void onDeathClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
         Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
-        startActivityForResult(intent, REQUEST_DEATH_DATE);
-    }
-
-    @OnClick(R.id.input_colour) void onColourClicked() {
-        onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
-        // TODO find nearest selected color
-        ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-                colours, 0, 4, ColorPickerDialog.SIZE_SMALL);
-        dialog.setOnColorSelectedListener(this);
-        dialog.show(getActivity().getFragmentManager(), "foo");
-    }
-
-    @Override public void onColorSelected(@ColorInt int color) {
-        presenter.setColour(color);
-        inputColour.setBackgroundColor(color);
+        startActivityForResult(intent, REQUEST_TO_DATE);
     }
 
     private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
         String inputDescText = inputDescription.getText().toString();
 
-        presenter.saveEntity(inputNameText, inputDescText);
+        presenter.saveJump(inputNameText, inputDescText);
     }
 
-    @Override public void setPresenter(@NonNull EditEntityContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull JumpEditContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
     }
 
-    @Override public void setContent(@NonNull Entity content) {
+    @Override public void setContent(@NonNull Jump content) {
     }
 
     @Override
-    public void setContent(@NonNull String name,
+    public void setContent(@Nullable String name,
                            @Nullable String description,
-                           @NonNull ReadableInstant birth,
-                           @Nullable ReadableInstant death,
-                           @ColorInt int colour) {
+                           @NonNull ReadableInstant from,
+                           @NonNull ReadableInstant to) {
         inputName.setText(name);
         inputDescription.setText(description);
-        this.birth = birth;
-        inputBirth.setText(dtf.print(birth));
-        this.death = death;
-        inputDeath.setText(death == null ? "" : dtf.print(death));
-        inputColour.setBackgroundColor(colour);
+        inputFrom.setText(dtf.print(from));
+        inputTo.setText(dtf.print(to));
     }
 
-    @Override public void entitySaved() {
+    @Override public void jumpSaved() {
         // TODO handle tablet
         getActivity().finish();
     }
 
-    @Override public void entitySaveError(Throwable e) {
+    @Override public void jumpSaveError(Throwable e) {
         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    @Override public void invalidName(int reason) {
+    @Override public void invalidFrom(int reason) {
 
     }
 
-    @Override public void invalidBirth(int reason) {
+    @Override public void invalidTo(int reason) {
 
     }
 }

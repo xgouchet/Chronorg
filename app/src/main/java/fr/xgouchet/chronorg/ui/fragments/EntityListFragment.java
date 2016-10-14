@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.ui.activities.EditEntityActivity;
+import fr.xgouchet.chronorg.ui.activities.EntityEditActivity;
 import fr.xgouchet.chronorg.ui.activities.EntityDetailsActivity;
 import fr.xgouchet.chronorg.ui.adapters.EntitiesAdapter;
 import fr.xgouchet.chronorg.ui.contracts.EntityListContract;
@@ -95,7 +95,7 @@ public class EntityListFragment extends Fragment implements EntityListContract.V
     }
 
     @Override public void showCreateItemUi() {
-        Intent intent = EditEntityActivity.intentNewEntity(getActivity(), projectId);
+        Intent intent = EntityEditActivity.intentNewEntity(getActivity(), projectId);
         getActivity().startActivity(intent);
     }
 

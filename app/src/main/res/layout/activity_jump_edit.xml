@@ -5,9 +5,9 @@
              android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/edit_project_fragment"
-        android:name="fr.xgouchet.chronorg.ui.fragments.ProjectEditFragment"
+        android:id="@+id/jump_edit_fragment"
+        android:name="fr.xgouchet.chronorg.ui.fragments.JumpEditFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_edit_project"/>
+        tools:layout="@layout/fragment_jump_edit"/>
 </FrameLayout>

@@ -18,17 +18,17 @@ import android.widget.Toast;
 import butterknife.BindView;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.ui.contracts.EditProjectContract;
+import fr.xgouchet.chronorg.ui.contracts.ProjectEditContract;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class EditProjectFragment extends Fragment
-        implements EditProjectContract.View {
+public class ProjectEditFragment extends Fragment
+        implements ProjectEditContract.View {
 
-    private EditProjectContract.Presenter presenter;
+    private ProjectEditContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
     @BindView(R.id.input_name_layout) TextInputLayout inputNameLayout;
@@ -64,7 +64,7 @@ public class EditProjectFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override public void setPresenter(@NonNull EditProjectContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull ProjectEditContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -88,7 +88,7 @@ public class EditProjectFragment extends Fragment
     @Override public void invalidName(int reason) {
         @StringRes int message;
         switch (reason) {
-            case EditProjectContract.EMPTY:
+            case ProjectEditContract.EMPTY:
                 message = R.string.error_empty_name;
                 break;
             default:

@@ -8,8 +8,10 @@ import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
 import fr.xgouchet.chronorg.inject.annotations.ActivityScope;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
+import fr.xgouchet.chronorg.ui.presenters.EntityDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
@@ -49,14 +51,26 @@ public class PresenterModule {
 
     @Provides
     @ActivityScope
+    public EntityDetailsPresenter provideEntityDetailsPresenter(EntityRepository entityRepository) {
+        return new EntityDetailsPresenter(entityRepository);
+    }
+
+    @Provides
+    @ActivityScope
     public EntityEditPresenter provideEntityEditPresenter(EntityRepository entityRepository) {
         return new EntityEditPresenter(entityRepository);
     }
 
     @Provides
     @ActivityScope
-    public JumpListPresenter provideJumpListPresenter(JumpRepository jumpRepository){
+    public JumpListPresenter provideJumpListPresenter(JumpRepository jumpRepository) {
         return new JumpListPresenter(jumpRepository);
+    }
+
+    @Provides
+    @ActivityScope
+    public JumpEditPresenter provideJumpEditPresenter(JumpRepository jumpRepository) {
+        return new JumpEditPresenter(jumpRepository);
     }
 
     @Provides

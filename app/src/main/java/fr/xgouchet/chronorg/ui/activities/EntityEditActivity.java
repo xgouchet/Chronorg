@@ -9,25 +9,25 @@ import android.widget.Toast;
 
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.ui.fragments.EditEntityFragment;
+import fr.xgouchet.chronorg.ui.fragments.EntityEditFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 
 /**
  * @author Xavier Gouchet
  */
-public class EditEntityActivity extends BaseActivity {
+public class EntityEditActivity extends BaseActivity {
 
     public static final String EXTRA_PROJECT_ID = "project_id";
     public static final String EXTRA_ENTITY = "entity";
 
     public static Intent intentNewEntity(@NonNull Context context, int projectId) {
-        Intent intent = new Intent(context, EditEntityActivity.class);
+        Intent intent = new Intent(context, EntityEditActivity.class);
         intent.putExtra(EXTRA_PROJECT_ID, projectId);
         return intent;
     }
 
     public static Intent intentEditEntity(@NonNull Context context, @NonNull Entity entity) {
-        Intent intent = new Intent(context, EditEntityActivity.class);
+        Intent intent = new Intent(context, EntityEditActivity.class);
         intent.putExtra(EXTRA_ENTITY, entity);
         return intent;
     }
@@ -35,7 +35,7 @@ public class EditEntityActivity extends BaseActivity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entity);
-        EditEntityFragment fragment = (EditEntityFragment) getSupportFragmentManager().findFragmentById(R.id.edit_entity_fragment);
+        EntityEditFragment fragment = (EntityEditFragment) getSupportFragmentManager().findFragmentById(R.id.edit_entity_fragment);
 
 
         Intent intent = getIntent();
@@ -49,6 +49,8 @@ public class EditEntityActivity extends BaseActivity {
             }
             entity = new Entity();
             entity.setProjectId(projectId);
+        } else if (intent.hasExtra(EXTRA_ENTITY)) {
+            entity = intent.getParcelableExtra(EXTRA_ENTITY);
         }
 
         if (entity == null) {

@@ -4,8 +4,10 @@ import dagger.Component;
 import fr.xgouchet.chronorg.inject.annotations.ActivityScope;
 import fr.xgouchet.chronorg.inject.modules.PresenterModule;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
+import fr.xgouchet.chronorg.ui.presenters.EntityDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
@@ -26,9 +28,13 @@ public interface ActivityComponent {
 
     EntityListPresenter getEntityListPresenter();
 
+    EntityDetailsPresenter getEntityDetailsPresenter();
+
     EntityEditPresenter getEntityEditPresenter();
 
     JumpListPresenter getJumpListPresenter();
+
+    JumpEditPresenter getJumpEditPresenter();
 
     DateTimePickerPresenter getDateTimePickerPresenter();
 }

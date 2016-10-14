@@ -8,7 +8,7 @@ import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
-import fr.xgouchet.chronorg.ui.contracts.EditProjectContract;
+import fr.xgouchet.chronorg.ui.contracts.ProjectEditContract;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -17,12 +17,12 @@ import rx.schedulers.Schedulers;
  * @author Xavier Gouchet
  */
 @Trace
-public class ProjectEditPresenter implements EditProjectContract.Presenter {
+public class ProjectEditPresenter implements ProjectEditContract.Presenter {
 
 
     @Nullable private Project project;
 
-    @Nullable /*package*/ EditProjectContract.View view;
+    @Nullable /*package*/ ProjectEditContract.View view;
 
     @NonNull private final ProjectRepository projectRepository;
 
@@ -34,7 +34,7 @@ public class ProjectEditPresenter implements EditProjectContract.Presenter {
         this.project = project;
     }
 
-    public void setView(@NonNull EditProjectContract.View view) {
+    public void setView(@NonNull ProjectEditContract.View view) {
         this.view = view;
         view.setPresenter(this);
     }
@@ -61,7 +61,7 @@ public class ProjectEditPresenter implements EditProjectContract.Presenter {
 
         // check input
         if (TextUtils.isEmpty(inputNameText)) {
-            view.invalidName(EditProjectContract.EMPTY);
+            view.invalidName(ProjectEditContract.EMPTY);
             return;
         }
 

@@ -27,5 +27,9 @@
     <string name="error_project_details_empty">No project to display</string>
     <string name="error_entity_details_empty">No entity to display</string>
     <string name="error_jump_details_empty">No jump to display</string>
+    <string name="hint_jump_name">Jump name</string>
+    <string name="hint_jump_to">Jump destination</string>
+    <string name="hint_jump_description">Jump Description</string>
+    <string name="hint_jump_from">Jump origin</string>
 
 </resources>

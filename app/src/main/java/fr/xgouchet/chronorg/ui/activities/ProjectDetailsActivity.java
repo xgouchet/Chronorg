@@ -107,7 +107,7 @@ public class ProjectDetailsActivity
     }
 
     @Override public void showEditProjectUi(@NonNull Project project) {
-        Intent intent = EditProjectActivity.intentEditProject(this, project);
+        Intent intent = ProjectEditActivity.intentEditProject(this, project);
         startActivity(intent);
     }
 

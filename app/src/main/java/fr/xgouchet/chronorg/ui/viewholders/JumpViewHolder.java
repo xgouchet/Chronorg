@@ -23,7 +23,6 @@ public class JumpViewHolder extends BaseViewHolder<Jump> {
     final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
 
     public interface Listener {
-
         void onJumpSelected(@NonNull Jump jump);
     }
 

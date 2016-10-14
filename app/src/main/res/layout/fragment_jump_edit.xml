@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_jump_name"
+                android:imeOptions="actionNext"
+                android:inputType="text|textCapWords"
+                android:maxLines="1"
+                tools:text="First jump"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_description_layout"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:errorEnabled="false">
+
+            <EditText
+                android:id="@+id/input_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|start"
+                android:hint="@string/hint_jump_description"
+                android:imeOptions="actionNone"
+                android:inputType="text|textCapSentences|textMultiLine"
+                android:maxLines="3"
+                tools:text="Toto\nsgfd\nsfg"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/from_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:inputType="none"
+            android:maxLines="1"
+            android:text="@string/hint_jump_from"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+        <Button
+            android:id="@+id/input_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackground"
+            android:drawableEnd="@drawable/ic_event_black_24dp"
+            android:inputType="none"
+            android:maxLines="1"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="15/4/2016 23:00:40 UTC"/>
+
+        <TextView
+            android:id="@+id/to_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:inputType="none"
+            android:maxLines="1"
+            android:text="@string/hint_jump_to"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+
+        <Button
+            android:id="@+id/input_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackground"
+            android:drawableEnd="@drawable/ic_event_black_24dp"
+            android:inputType="none"
+            android:maxLines="1"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="15/4/2016 23:00:40 UTC"/>
+
+
+    </LinearLayout>
+</ScrollView>

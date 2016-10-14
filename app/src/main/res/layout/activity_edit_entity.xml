@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/edit_entity_fragment"
-        android:name="fr.xgouchet.chronorg.ui.fragments.EditEntityFragment"
+        android:name="fr.xgouchet.chronorg.ui.fragments.EntityEditFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_edit_entity"/>

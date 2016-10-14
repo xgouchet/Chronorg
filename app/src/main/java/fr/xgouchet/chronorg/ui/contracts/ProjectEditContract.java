@@ -9,7 +9,7 @@ import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 /**
  * @author Xavier Gouchet
  */
-public interface EditProjectContract {
+public interface ProjectEditContract {
 
     public static final int EMPTY = 1;
 

@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.ui.activities.EditProjectActivity;
+import fr.xgouchet.chronorg.ui.activities.ProjectEditActivity;
 import fr.xgouchet.chronorg.ui.activities.ProjectDetailsActivity;
 import fr.xgouchet.chronorg.ui.adapters.ProjectsAdapter;
 import fr.xgouchet.chronorg.ui.contracts.ProjectListContract;
@@ -102,7 +102,7 @@ public class ProjectListFragment extends Fragment
 
     @Override public void showCreateItemUi() {
         // TODO handle tablet
-        Intent intent = EditProjectActivity.intentNewProject(getActivity());
+        Intent intent = ProjectEditActivity.intentNewProject(getActivity());
         getActivity().startActivity(intent);
     }
 
