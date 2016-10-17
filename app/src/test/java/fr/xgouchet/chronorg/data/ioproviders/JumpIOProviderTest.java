@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config;
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
 import fr.xgouchet.chronorg.data.models.Jump;
-import fr.xgouchet.chronorg.data.queriers.BaseContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.ContentQuerier;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.readers.JumpCursorReader;
@@ -62,7 +62,7 @@ public class JumpIOProviderTest {
     @Test
     public void shouldProvideQuerier() {
         // When
-        BaseContentQuerier<Jump> reader = provider.provideQuerier();
+        ContentQuerier<Jump> reader = provider.provideQuerier();
 
         // Then
         assertThat(reader).isExactlyInstanceOf(JumpContentQuerier.class);

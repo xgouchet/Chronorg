@@ -14,10 +14,10 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
-import fr.xgouchet.chronorg.data.models.Jump;
-import fr.xgouchet.chronorg.data.readers.JumpCursorReader;
-import fr.xgouchet.chronorg.data.writers.JumpContentValuesWriter;
+import fr.xgouchet.chronorg.data.ioproviders.EventIOProvider;
+import fr.xgouchet.chronorg.data.models.Event;
+import fr.xgouchet.chronorg.data.readers.EventCursorReader;
+import fr.xgouchet.chronorg.data.writers.EventContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
@@ -39,17 +39,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
-public class JumpContentQuerierTest {
+public class EventContentQuerierTest {
 
     @Mock ContentResolver contentResolver;
-    @Mock JumpIOProvider provider;
-    @Mock Action1<Jump> action;
-    @Mock JumpCursorReader reader;
-    @Mock JumpContentValuesWriter writer;
+    @Mock EventIOProvider provider;
+    @Mock Action1<Event> action;
+    @Mock EventCursorReader reader;
+    @Mock EventContentValuesWriter writer;
     @Mock Cursor cursor;
     @Mock ContentValues contentValues;
 
-    private JumpContentQuerier querier;
+    private EventContentQuerier querier;
 
     @Before
     public void setUp() {
@@ -59,27 +59,28 @@ public class JumpContentQuerierTest {
 
         when(provider.provideWriter())
                 .thenReturn(writer);
-        querier = new JumpContentQuerier(provider);
+        querier = new EventContentQuerier(provider);
     }
 
 
     @Test
-    public void shouldQueryInEntity() {
+    public void shouldQueryInProject() {
         // Given
         int entityId = 42;
-        Jump mock1 = mock(Jump.class);
+        Event mock1 = mock(Event.class);
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
                 .thenReturn(cursor);
-        when(reader.instantiateAndFill()).thenReturn(mock1, (Jump) null);
+        when(reader.instantiateAndFill()).thenReturn(mock1, (Event) null);
 
 
         // When
-        querier.queryInEntity(contentResolver, action, entityId);
+        querier.queryInProject(contentResolver, action, entityId);
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
+        verify(contentResolver).query(eq(ChronorgSchema.EVENTS_URI), isNull(String[].class),
+                eq("project_id=?"), eq(new String[]{"42"}), eq("instant ASC"));
         verify(provider).provideReader(same(cursor));
         verify(action).call(mock1);
         verify(cursor).close();
@@ -87,7 +88,7 @@ public class JumpContentQuerierTest {
     }
 
     @Test
-    public void shouldQueryInEntityWithException() {
+    public void shouldQueryInProjectWithException() {
         // Given
         int entityId = 42;
         when(cursor.getCount()).thenReturn(1);
@@ -99,13 +100,14 @@ public class JumpContentQuerierTest {
 
         // When
         try {
-            querier.queryInEntity(contentResolver, action, entityId);
+            querier.queryInProject(contentResolver, action, entityId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
+        verify(contentResolver).query(eq(ChronorgSchema.EVENTS_URI), isNull(String[].class),
+                eq("project_id=?"), eq(new String[]{"42"}), eq("instant ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
         verifyZeroInteractions(action);

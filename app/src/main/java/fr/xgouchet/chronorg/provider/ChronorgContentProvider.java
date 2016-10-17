@@ -25,6 +25,7 @@ public class ChronorgContentProvider extends ContentProvider {
     private BaseDao projectDao;
     private BaseDao entityDao;
     private BaseDao jumpDao;
+    private BaseDao eventDao;
 
 
     @SuppressWarnings("unused")
@@ -40,12 +41,14 @@ public class ChronorgContentProvider extends ContentProvider {
     /*package*/ ChronorgContentProvider(@NonNull ChronorgSchema chronorgSchema,
                                         @NonNull BaseDao projectDao,
                                         @NonNull BaseDao entityDao,
-                                        @NonNull BaseDao jumpDao) {
+                                        @NonNull BaseDao jumpDao,
+                                        @NonNull BaseDao eventDao) {
         this.chronorgSchema = chronorgSchema;
         uriMatcher = chronorgSchema.buildUriMatcher();
         this.projectDao = projectDao;
         this.entityDao = entityDao;
         this.jumpDao = jumpDao;
+        this.eventDao = eventDao;
     }
 
     @Override public boolean onCreate() {
@@ -58,6 +61,7 @@ public class ChronorgContentProvider extends ContentProvider {
         projectDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_PROJECTS);
         entityDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_ENTITIES);
         jumpDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_JUMPS);
+        eventDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_EVENTS);
         return true;
     }
 
@@ -104,6 +108,10 @@ public class ChronorgContentProvider extends ContentProvider {
                 long jumpId = jumpDao.insert(values);
                 result = chronorgSchema.jumpUri(jumpId);
                 break;
+            case ChronorgSchema.MATCH_EVENTS:
+                long eventId = eventDao.insert(values);
+                result = chronorgSchema.eventUri(eventId);
+                break;
         }
 
         return result;
@@ -122,6 +130,7 @@ public class ChronorgContentProvider extends ContentProvider {
             // TODO special delete on jumps to keep coherent order
             // TODO special delete on projects to also delete content...
         }
+
         return deleted;
     }
 
@@ -136,6 +145,7 @@ public class ChronorgContentProvider extends ContentProvider {
         if (dao != null) {
             updated = dao.update(values, selection, selectionArgs);
         }
+
         return updated;
     }
 
@@ -158,6 +168,8 @@ public class ChronorgContentProvider extends ContentProvider {
                 return entityDao;
             case ChronorgSchema.MATCH_JUMPS:
                 return jumpDao;
+            case ChronorgSchema.MATCH_EVENTS:
+                return eventDao;
             default:
                 return null;
         }

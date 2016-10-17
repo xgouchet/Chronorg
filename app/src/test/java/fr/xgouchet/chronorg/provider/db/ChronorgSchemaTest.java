@@ -128,6 +128,7 @@ public class ChronorgSchemaTest {
         assertThat(uriMatcher.match(ChronorgSchema.PROJECTS_URI)).isEqualTo(ChronorgSchema.MATCH_PROJECTS);
         assertThat(uriMatcher.match(ChronorgSchema.ENTITIES_URI)).isEqualTo(ChronorgSchema.MATCH_ENTITIES);
         assertThat(uriMatcher.match(ChronorgSchema.JUMPS_URI)).isEqualTo(ChronorgSchema.MATCH_JUMPS);
+        assertThat(uriMatcher.match(ChronorgSchema.EVENTS_URI)).isEqualTo(ChronorgSchema.MATCH_EVENTS);
     }
 
     @Test
@@ -139,10 +140,12 @@ public class ChronorgSchemaTest {
         Uri entity = schema.entityUri(id);
         Uri project = schema.projectUri(id);
         Uri jump = schema.jumpUri(id);
+        Uri event = schema.eventUri(id);
 
         // Then
         assertThat(entity.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/entities/45");
         assertThat(project.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/projects/45");
         assertThat(jump.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/jumps/45");
+        assertThat(event.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/events/45");
     }
 }

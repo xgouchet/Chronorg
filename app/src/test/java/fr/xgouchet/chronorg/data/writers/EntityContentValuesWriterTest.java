@@ -64,7 +64,7 @@ public class EntityContentValuesWriterTest {
         verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
         verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, FAKE_DEATH.toString());
-        verify(mockContentValues).put(ChronorgSchema.COL_COLOUR, FAKE_COLOUR);
+        verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOUR);
     }
 
     @Test
@@ -86,6 +86,6 @@ public class EntityContentValuesWriterTest {
         verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, (String) null);
-        verify(mockContentValues).put(ChronorgSchema.COL_COLOUR, FAKE_COLOUR);
+        verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOUR);
     }
 }

@@ -30,7 +30,7 @@ public class EntityCursorReader extends BaseCursorReader<Entity> {
         idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
         idxBirth = getIndex(ChronorgSchema.COL_BIRTH_INSTANT);
         idxDeath = getIndex(ChronorgSchema.COL_DEATH_INSTANT);
-        idxColor = getIndex(ChronorgSchema.COL_COLOUR);
+        idxColor = getIndex(ChronorgSchema.COL_COLOR);
     }
 
     @NonNull @Override public Entity instantiate() {

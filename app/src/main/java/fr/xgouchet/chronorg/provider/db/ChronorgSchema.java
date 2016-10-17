@@ -42,7 +42,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     public static final String COL_DEATH_INSTANT = "death";
     public static final String COL_INSTANT = "instant";
 
-    public static final String COL_COLOUR = "color";
+    public static final String COL_COLOR = "color";
     public static final String COL_DELAY = "delay";
     public static final String COL_ORDER = "jump_order";
 
@@ -82,7 +82,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_BIRTH_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DEATH_INSTANT, TYPE_TEXT));
-        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOR, TYPE_INTEGER));
 
         return tableDescription;
     }
@@ -92,10 +92,10 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
         tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
         tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_DELAY, TYPE_INTEGER, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOR, TYPE_INTEGER));
 
         return tableDescription;
     }
@@ -108,7 +108,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_INSTANT, TYPE_TEXT, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
+        tableDescription.addColumn(new ColumnDescription(COL_COLOR, TYPE_INTEGER));
 
         return tableDescription;
     }
@@ -134,26 +134,26 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     private static final String PATH_PROJECTS = "projects";
     private static final String PATH_ENTITIES = "entities";
     private static final String PATH_JUMPS = "jumps";
+    private static final String PATH_EVENTS = "events";
 
     public static final int MATCH_PROJECTS = 100;
-
     public static final int MATCH_ENTITIES = 200;
-
     public static final int MATCH_JUMPS = 300;
+    public static final int MATCH_EVENTS = 400;
 
     public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     public static final Uri PROJECTS_URI = BASE_URI.buildUpon().appendPath(PATH_PROJECTS).build();
     public static final Uri ENTITIES_URI = BASE_URI.buildUpon().appendPath(PATH_ENTITIES).build();
     public static final Uri JUMPS_URI = BASE_URI.buildUpon().appendPath(PATH_JUMPS).build();
+    public static final Uri EVENTS_URI = BASE_URI.buildUpon().appendPath(PATH_EVENTS).build();
 
     public UriMatcher buildUriMatcher() {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(AUTHORITY, PATH_PROJECTS, MATCH_PROJECTS);
-
         uriMatcher.addURI(AUTHORITY, PATH_ENTITIES, MATCH_ENTITIES);
-
         uriMatcher.addURI(AUTHORITY, PATH_JUMPS, MATCH_JUMPS);
+        uriMatcher.addURI(AUTHORITY, PATH_EVENTS, MATCH_EVENTS);
 
         return uriMatcher;
     }
@@ -170,5 +170,9 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
     public Uri jumpUri(long jumpId) {
         return JUMPS_URI.buildUpon().appendEncodedPath(Long.toString(jumpId)).build();
+    }
+
+    public Uri eventUri(long eventId) {
+        return EVENTS_URI.buildUpon().appendEncodedPath(Long.toString(eventId)).build();
     }
 }

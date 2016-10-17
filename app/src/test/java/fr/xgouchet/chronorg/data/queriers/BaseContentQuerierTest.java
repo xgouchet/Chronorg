@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +15,9 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
-import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.data.readers.ProjectCursorReader;
-import fr.xgouchet.chronorg.data.writers.ProjectContentValuesWriter;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
+import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
+import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
 import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,17 +39,26 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
-public class ProjectContentQuerierTest {
+public class BaseContentQuerierTest {
+
+    public static final String SELECT_BY_ID = "foo=?";
+    public static final String DEFAULT_ORDER = "bar ASC";
+    public static final Uri FAKE_URI = Uri.parse("http://foo.com/bar/baz/spam/42");
+    public static final int FAKE_ID = 42;
+    public static final String FAKE_ID_STR = "42";
 
     @Mock ContentResolver contentResolver;
-    @Mock ProjectIOProvider provider;
-    @Mock Action1<Project> action;
-    @Mock ProjectCursorReader reader;
-    @Mock ProjectContentValuesWriter writer;
+    @Mock IOProvider<Object> provider;
+    @Mock BaseCursorReader<Object> reader;
+    @Mock BaseContentValuesWriter<Object> writer;
+    @Mock Action1<Object> action;
     @Mock Cursor cursor;
     @Mock ContentValues contentValues;
 
-    private ProjectContentQuerier querier;
+    @Mock BaseContentQuerier<Object> contentQuerier;
+
+    private BaseContentQuerier<Object> proxyQuerier;
+
 
     @Before
     public void setUp() {
@@ -62,7 +70,13 @@ public class ProjectContentQuerierTest {
         when(provider.provideWriter())
                 .thenReturn(writer);
 
-        querier = new ProjectContentQuerier(provider);
+        when(contentQuerier.getUri()).thenReturn(FAKE_URI);
+        when(contentQuerier.defaultOrder()).thenReturn(DEFAULT_ORDER);
+        when(contentQuerier.getId(any())).thenReturn(FAKE_ID);
+        when(contentQuerier.selectById()).thenReturn(SELECT_BY_ID);
+
+
+        proxyQuerier = new ProxyContentQuerier(contentQuerier, provider);
     }
 
     @Test
@@ -72,16 +86,16 @@ public class ProjectContentQuerierTest {
         when(cursor.moveToNext()).thenReturn(true, true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
                 .thenReturn(cursor);
-        final Project mock1 = mock(Project.class);
-        final Project mock2 = mock(Project.class);
+        final Object mock1 = mock(Object.class);
+        final Object mock2 = mock(Object.class);
         when(reader.instantiateAndFill()).thenReturn(mock1, mock2, null);
 
-
         // When
-        querier.queryAll(contentResolver, action);
+        proxyQuerier.queryAll(contentResolver, action);
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
+        verify(contentResolver).query(eq(FAKE_URI), isNull(String[].class), isNull(String.class),
+                isNull(String[].class), eq(DEFAULT_ORDER));
         verify(provider).provideReader(same(cursor));
         verify(action).call(mock1);
         verify(action).call(mock2);
@@ -100,13 +114,14 @@ public class ProjectContentQuerierTest {
 
         // When
         try {
-            querier.queryAll(contentResolver, action);
+            proxyQuerier.queryAll(contentResolver, action);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
+        verify(contentResolver).query(eq(FAKE_URI), isNull(String[].class),
+                isNull(String.class), isNull(String[].class), eq(DEFAULT_ORDER));
         verify(provider).provideReader(same(cursor));
         verifyZeroInteractions(action);
     }
@@ -114,20 +129,21 @@ public class ProjectContentQuerierTest {
     @Test
     public void shouldQuery() {
         // Given
-        int projectId = 42;
-        Project mock1 = mock(Project.class);
+        int id = 42;
+        Object mock1 = mock(Object.class);
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
                 .thenReturn(cursor);
-        when(reader.instantiateAndFill()).thenReturn(mock1, (Project) null);
+        when(reader.instantiateAndFill()).thenReturn(mock1, (Object) null);
 
 
         // When
-        querier.query(contentResolver, action, projectId);
+        proxyQuerier.query(contentResolver, action, id);
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
+        verify(contentResolver).query(eq(FAKE_URI), isNull(String[].class), eq(SELECT_BY_ID),
+                eq(new String[]{FAKE_ID_STR}), eq(DEFAULT_ORDER));
         verify(provider).provideReader(same(cursor));
         verify(action).call(mock1);
         verifyNoMoreInteractions(action);
@@ -137,7 +153,6 @@ public class ProjectContentQuerierTest {
     public void shouldQueryWithException() {
         // Given
         int projectId = 42;
-        Project mock1 = mock(Project.class);
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
@@ -146,123 +161,147 @@ public class ProjectContentQuerierTest {
 
         // When
         try {
-            querier.query(contentResolver, action, projectId);
+            proxyQuerier.query(contentResolver, action, projectId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
+        verify(contentResolver).query(eq(FAKE_URI), isNull(String[].class),
+                eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}), eq(DEFAULT_ORDER));
         verify(provider).provideReader(same(cursor));
         verifyZeroInteractions(action);
     }
 
     @Test
-    public void shouldSaveNewProject() {
+    public void shouldSaveNew() {
         // Given
         Uri projectUri = mock(Uri.class);
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(-1);
+        Object item = mock(Object.class);
+        when(contentQuerier.getId(any())).thenReturn(-1);
         when(contentResolver.insert(any(Uri.class), any(ContentValues.class)))
                 .thenReturn(projectUri);
-        when(writer.toContentValues(any(Project.class)))
+        when(writer.toContentValues(any()))
                 .thenReturn(contentValues);
 
 
         // When
-        boolean success = querier.save(contentResolver, project);
+        boolean success = proxyQuerier.save(contentResolver, item);
 
         // Then
         assertThat(success).isTrue();
-        verify(contentResolver).insert(eq(ChronorgSchema.PROJECTS_URI), same(contentValues));
+        verify(contentResolver).insert(eq(FAKE_URI), same(contentValues));
     }
 
     @Test
-    public void shouldSaveNewProjectFail() {
+    public void shouldSaveNewFail() {
         // Given
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(-1);
+        Object item = mock(Object.class);
+        when(contentQuerier.getId(any())).thenReturn(-1);
         when(contentResolver.insert(any(Uri.class), any(ContentValues.class)))
                 .thenReturn(null);
-        when(writer.toContentValues(any(Project.class)))
+        when(writer.toContentValues(any()))
                 .thenReturn(contentValues);
 
 
         // When
-        boolean success = querier.save(contentResolver, project);
+        boolean success = proxyQuerier.save(contentResolver, item);
 
         // Then
         assertThat(success).isFalse();
-        verify(contentResolver).insert(eq(ChronorgSchema.PROJECTS_URI), same(contentValues));
+        verify(contentResolver).insert(eq(FAKE_URI), same(contentValues));
     }
 
     @Test
-    public void shouldSaveExistingProject() {
+    public void shouldSaveExisting() {
         // Given
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(42);
+        Object item = mock(Object.class);
         when(contentResolver.update(any(Uri.class), any(ContentValues.class), anyString(), any(String[].class)))
                 .thenReturn(1);
-        when(writer.toContentValues(any(Project.class)))
+        when(writer.toContentValues(any()))
                 .thenReturn(contentValues);
 
 
         // When
-        boolean success = querier.save(contentResolver, project);
+        boolean success = proxyQuerier.save(contentResolver, item);
 
         // Then
         assertThat(success).isTrue();
-        verify(contentResolver).update(eq(ChronorgSchema.PROJECTS_URI), same(contentValues), eq("id=?"), eq(new String[]{"42"}));
+        verify(contentResolver).update(eq(FAKE_URI), same(contentValues), eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}));
     }
 
     @Test
-    public void shouldSaveExistingProjectFail() {
+    public void shouldSaveExistingFail() {
         // Given
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(42);
+        Object item = mock(Object.class);
         when(contentResolver.update(any(Uri.class), any(ContentValues.class), anyString(), any(String[].class)))
                 .thenReturn(0);
-        when(writer.toContentValues(any(Project.class)))
+        when(writer.toContentValues(any()))
                 .thenReturn(contentValues);
 
 
         // When
-        boolean success = querier.save(contentResolver, project);
+        boolean success = proxyQuerier.save(contentResolver, item);
 
         // Then
         assertThat(success).isFalse();
-        verify(contentResolver).update(eq(ChronorgSchema.PROJECTS_URI), same(contentValues), eq("id=?"), eq(new String[]{"42"}));
+        verify(contentResolver).update(eq(FAKE_URI), same(contentValues), eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}));
     }
 
     @Test
-    public void shouldDeleteProject() {
+    public void shouldDelete() {
         // Given
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(42);
+        Object project = mock(Object.class);
         when(contentResolver.delete(any(Uri.class), anyString(), any(String[].class)))
                 .thenReturn(1);
 
         // When
-        boolean success = querier.delete(contentResolver, project);
+        boolean success = proxyQuerier.delete(contentResolver, project);
 
         // Then
         assertThat(success).isTrue();
-        verify(contentResolver).delete(eq(ChronorgSchema.PROJECTS_URI), eq("id=?"), eq(new String[]{"42"}));
+        verify(contentResolver).delete(eq(FAKE_URI), eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}));
     }
 
     @Test
-    public void shouldDeleteExistingProjectFail() {
+    public void shouldDeleteExistingFail() {
         // Given
-        Project project = mock(Project.class);
-        when(project.getId()).thenReturn(42);
+        Object project = mock(Object.class);
         when(contentResolver.delete(any(Uri.class), anyString(), any(String[].class)))
                 .thenReturn(0);
 
         // When
-        boolean success = querier.delete(contentResolver, project);
+        boolean success = proxyQuerier.delete(contentResolver, project);
 
         // Then
         assertThat(success).isFalse();
-        verify(contentResolver).delete(eq(ChronorgSchema.PROJECTS_URI), eq("id=?"), eq(new String[]{"42"}));
+        verify(contentResolver).delete(eq(FAKE_URI), eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}));
+    }
+
+
+    static class ProxyContentQuerier extends BaseContentQuerier<Object> {
+
+        private final BaseContentQuerier<Object> delegate;
+
+        ProxyContentQuerier(BaseContentQuerier<Object> delegate, IOProvider<Object> ioProvider) {
+            super(ioProvider);
+            this.delegate = delegate;
+        }
+
+        @NonNull @Override protected Uri getUri() {
+            return delegate.getUri();
+        }
+
+        @Override protected String selectById() {
+            return delegate.selectById();
+        }
+
+        @Override protected int getId(@NonNull Object item) {
+            return delegate.getId(item);
+        }
+
+        @Override protected String defaultOrder() {
+            return delegate.defaultOrder();
+        }
     }
 }

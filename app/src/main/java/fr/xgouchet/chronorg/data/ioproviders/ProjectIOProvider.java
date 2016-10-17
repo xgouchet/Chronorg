@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.data.queriers.BaseContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.ContentQuerier;
 import fr.xgouchet.chronorg.data.queriers.ProjectContentQuerier;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.readers.ProjectCursorReader;
@@ -14,7 +14,7 @@ import fr.xgouchet.chronorg.data.writers.ProjectContentValuesWriter;
 /**
  * @author Xavier Gouchet
  */
-public class ProjectIOProvider implements BaseIOProvider<Project> {
+public class ProjectIOProvider implements IOProvider<Project> {
 
     @NonNull @Override public BaseCursorReader<Project> provideReader(@NonNull Cursor cursor) {
         return new ProjectCursorReader(cursor);
@@ -25,7 +25,7 @@ public class ProjectIOProvider implements BaseIOProvider<Project> {
     }
 
     @NonNull @Override
-    public BaseContentQuerier<Project> provideQuerier() {
+    public ContentQuerier<Project> provideQuerier() {
         return new ProjectContentQuerier(this);
     }
 }

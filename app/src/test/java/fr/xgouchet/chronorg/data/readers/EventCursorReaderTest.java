@@ -1,7 +1,6 @@
 package fr.xgouchet.chronorg.data.readers;
 
 import android.database.Cursor;
-import android.graphics.Color;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.models.Entity;
+import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,18 +25,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
-public class EntityCursorReaderTest {
+public class EventCursorReaderTest {
 
     public static final int IDX_ID = 42;
     public static final int IDX_PROJECT_ID = 43;
     public static final int IDX_NAME = 44;
     public static final int IDX_DESCRIPTION = 45;
-    public static final int IDX_BIRTH = 46;
-    public static final int IDX_DEATH = 47;
-    public static final int IDX_COLOUR = 48;
+    public static final int IDX_INSTANT = 46;
+    public static final int IDX_COLOR = 47;
 
     @Mock Cursor mockCursor;
-    private EntityCursorReader entityCursorReader;
+    private EventCursorReader eventCursorReader;
 
     @Before
     public void setUp() {
@@ -47,42 +45,37 @@ public class EntityCursorReaderTest {
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_PROJECT_ID)).thenReturn(IDX_PROJECT_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_BIRTH_INSTANT)).thenReturn(IDX_BIRTH);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DEATH_INSTANT)).thenReturn(IDX_DEATH);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_COLOR)).thenReturn(IDX_COLOUR);
+        when(mockCursor.getColumnIndex(ChronorgSchema.COL_INSTANT)).thenReturn(IDX_INSTANT);
+        when(mockCursor.getColumnIndex(ChronorgSchema.COL_COLOR)).thenReturn(IDX_COLOR);
 
-        entityCursorReader = new EntityCursorReader(mockCursor);
+        eventCursorReader = new EventCursorReader(mockCursor);
     }
 
     @Test
-    public void should_instantiate_non_null() {
-        assertThat(entityCursorReader.instantiate()).isNotNull();
+    public void shouldInstantiateNonNull() {
+        assertThat(eventCursorReader.instantiate()).isNotNull();
     }
 
     @Test
-    public void should_fill_entity() {
+    public void shouldFillEvent() {
         // Given
-        Entity entity = mock(Entity.class);
+        Event event = mock(Event.class);
         when(mockCursor.getInt(IDX_ID)).thenReturn(42);
         when(mockCursor.getInt(IDX_PROJECT_ID)).thenReturn(815);
         when(mockCursor.getString(IDX_NAME)).thenReturn("Foo");
         when(mockCursor.getString(IDX_DESCRIPTION)).thenReturn("Lorem ipsum");
-        when(mockCursor.getString(IDX_BIRTH)).thenReturn("1968-12-06T12:00:00Z");
-        when(mockCursor.getString(IDX_DEATH)).thenReturn("2091-04-08T12:00:00Z");
-        when(mockCursor.getInt(IDX_COLOUR)).thenReturn(Color.RED);
+        when(mockCursor.getString(IDX_INSTANT)).thenReturn("1968-12-06T12:00:00Z");
+        when(mockCursor.getInt(IDX_COLOR)).thenReturn(0x0080FF);
 
         // When
-        entityCursorReader.fill(entity);
+        eventCursorReader.fill(event);
 
         // Then
-        verify(entity).setId(42);
-        verify(entity).setProjectId(815);
-        verify(entity).setName("Foo");
-        verify(entity).setDescription("Lorem ipsum");
-        verify(entity).setBirth("1968-12-06T12:00:00Z");
-        verify(entity).setDeath("2091-04-08T12:00:00Z");
-        verify(entity).setColor(Color.RED);
+        verify(event).setId(42);
+        verify(event).setProjectId(815);
+        verify(event).setName("Foo");
+        verify(event).setDescription("Lorem ipsum");
+        verify(event).setInstant("1968-12-06T12:00:00Z");
+        verify(event).setColor(0x0080FF);
     }
-
-
 }

@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Jump;
-import fr.xgouchet.chronorg.data.queriers.BaseContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.ContentQuerier;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.readers.JumpCursorReader;
@@ -14,7 +14,7 @@ import fr.xgouchet.chronorg.data.writers.JumpContentValuesWriter;
 /**
  * @author Xavier Gouchet
  */
-public class JumpIOProvider implements BaseIOProvider<Jump> {
+public class JumpIOProvider implements IOProvider<Jump> {
 
     @NonNull @Override public BaseCursorReader<Jump> provideReader(@NonNull Cursor cursor) {
         return new JumpCursorReader(cursor);
@@ -24,7 +24,7 @@ public class JumpIOProvider implements BaseIOProvider<Jump> {
         return new JumpContentValuesWriter();
     }
 
-    @NonNull @Override public BaseContentQuerier<Jump> provideQuerier() {
+    @NonNull @Override public ContentQuerier<Jump> provideQuerier() {
         return new JumpContentQuerier(this);
     }
 }

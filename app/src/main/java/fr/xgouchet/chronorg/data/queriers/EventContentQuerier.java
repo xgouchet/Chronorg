@@ -6,29 +6,29 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
-import fr.xgouchet.chronorg.data.models.Jump;
+import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
  */
-public class JumpContentQuerier extends BaseContentQuerier<Jump> {
+public class EventContentQuerier extends BaseContentQuerier<Event> {
 
 
-    public JumpContentQuerier(@NonNull IOProvider<Jump> provider) {
+    public EventContentQuerier(@NonNull IOProvider<Event> provider) {
         super(provider);
     }
 
 
-    public void queryInEntity(@NonNull ContentResolver contentResolver,
-                              @NonNull Action1<Jump> action,
-                              int entityId) {
+    public void queryInProject(@NonNull ContentResolver contentResolver,
+                               @NonNull Action1<Event> action,
+                               int entityId) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(getUri(),
                     null,
-                    selectByEntityId(),
+                    selectByProjectId(),
                     new String[]{Integer.toString(entityId)},
                     defaultOrder());
 
@@ -38,24 +38,23 @@ public class JumpContentQuerier extends BaseContentQuerier<Jump> {
         }
     }
 
-
     @NonNull @Override protected Uri getUri() {
-        return ChronorgSchema.JUMPS_URI;
-    }
-
-    @Override protected int getId(@NonNull Jump jump) {
-        return jump.getId();
+        return ChronorgSchema.EVENTS_URI;
     }
 
     @Override protected String selectById() {
         return ChronorgSchema.COL_ID + "=?";
     }
 
-    private String selectByEntityId() {
-        return ChronorgSchema.COL_ENTITY_ID + "=?";
+    private String selectByProjectId() {
+        return ChronorgSchema.COL_PROJECT_ID + "=?";
     }
 
     @Override protected String defaultOrder() {
-        return ChronorgSchema.COL_ORDER + " ASC";
+        return ChronorgSchema.COL_INSTANT + " ASC";
+    }
+
+    @Override protected int getId(@NonNull Event event) {
+        return event.getId();
     }
 }
