@@ -20,7 +20,7 @@ import static butterknife.ButterKnife.bind;
  */
 public class JumpViewHolder extends BaseViewHolder<Jump> {
 
-    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
+    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
 
     public interface Listener {
         void onJumpSelected(@NonNull Jump jump);

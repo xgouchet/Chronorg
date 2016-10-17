@@ -2,6 +2,7 @@ package fr.xgouchet.chronorg.ui.viewholders;
 
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.joda.time.format.DateTimeFormat;
@@ -20,8 +21,9 @@ import static butterknife.ButterKnife.bind;
 public class TimelineShardViewHolder extends BaseViewHolder<TimelineShard> {
 
 
-    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM");
+    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
 
+    @BindView(R.id.shard) ViewGroup parent;
     @BindView(R.id.legend) TextView legend;
     @BindView(R.id.instant) TextView instant;
     @BindView(R.id.timeline) TimelineShardView timelineShard;
@@ -38,6 +40,7 @@ public class TimelineShardViewHolder extends BaseViewHolder<TimelineShard> {
         instant.setText(dtf.print(shard.getInstant()));
         timelineShard.setTimelineShard(shard);
 
+        timelineShard.requestLayout();
     }
 
 }

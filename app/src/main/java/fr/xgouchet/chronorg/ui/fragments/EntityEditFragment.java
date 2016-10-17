@@ -44,7 +44,7 @@ public class EntityEditFragment extends Fragment
     private static final int REQUEST_BIRTH_DATE = 42;
     private static final int REQUEST_DEATH_DATE = 666;
 
-    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
+    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
 
     private EntityEditContract.Presenter presenter;
 
@@ -131,14 +131,14 @@ public class EntityEditFragment extends Fragment
     @OnClick(R.id.input_birth) void onBirthClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
-        Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
+        Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), birth);
         startActivityForResult(intent, REQUEST_BIRTH_DATE);
     }
 
     @OnClick(R.id.input_death) void onDeathClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
-        Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
+        Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), death);
         startActivityForResult(intent, REQUEST_DEATH_DATE);
     }
 

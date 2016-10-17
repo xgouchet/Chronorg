@@ -39,7 +39,7 @@ public class JumpEditFragment extends Fragment
     private static final int REQUEST_FROM_DATE = 42;
     private static final int REQUEST_TO_DATE = 666;
 
-    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MF");
+    final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
 
     private JumpEditContract.Presenter presenter;
 
@@ -47,6 +47,8 @@ public class JumpEditFragment extends Fragment
     @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_from) TextView inputFrom;
     @BindView(R.id.input_to) TextView inputTo;
+    private ReadableInstant from;
+    private ReadableInstant to;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,14 +121,14 @@ public class JumpEditFragment extends Fragment
     @OnClick(R.id.input_from) void onBirthClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
-        Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
+        Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), from);
         startActivityForResult(intent, REQUEST_FROM_DATE);
     }
 
     @OnClick(R.id.input_to) void onDeathClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
-        Intent intent = new Intent(getActivity(), DateTimePickerActivity.class);
+        Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), to);
         startActivityForResult(intent, REQUEST_TO_DATE);
     }
 
@@ -156,6 +158,8 @@ public class JumpEditFragment extends Fragment
         inputDescription.setText(description);
         inputFrom.setText(dtf.print(from));
         inputTo.setText(dtf.print(to));
+        this.from = from;
+        this.to = to;
     }
 
     @Override public void jumpSaved() {
