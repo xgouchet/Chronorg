@@ -12,16 +12,19 @@ import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.activities.BaseActivity;
 import fr.xgouchet.chronorg.ui.fragments.EntityListFragment;
+import fr.xgouchet.chronorg.ui.fragments.TimelineFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
 
 /**
  * @author Xavier Gouchet
  */
 public class PageFragmentAdapter extends FragmentStatePagerAdapter {
 
-    public static final int PAGE_ENTITIES = 0;
+    public static final int PAGE_TIMELINE = 0;
+    public static final int PAGE_ENTITIES = 1;
 
-    public static final int PAGE_COUNT = 1;
+    public static final int PAGE_COUNT = 2;
 
     private final WeakReference<BaseActivity> activityRef;
     @NonNull private final Project project;
@@ -48,12 +51,20 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
         }
 
         switch (position) {
-            case PAGE_ENTITIES:
+            case PAGE_TIMELINE: {
+                final TimelineFragment fragment = TimelineFragment.createFragment();
+                TimelinePresenter presenter = activity.getActivityComponent().getTimelinePresenter();
+                presenter.setProject(project);
+                presenter.setView(fragment);
+                return fragment;
+            }
+            case PAGE_ENTITIES: {
                 final EntityListFragment fragment = EntityListFragment.createFragment(project.getId());
                 EntityListPresenter presenter = activity.getActivityComponent().getEntityListPresenter();
                 presenter.setProject(project);
                 presenter.setView(fragment);
                 return fragment;
+            }
             default:
                 return null;
         }
@@ -65,6 +76,8 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
             return null;
         }
         switch (position) {
+            case PAGE_TIMELINE:
+                return context.getString(R.string.title_timeline);
             case PAGE_ENTITIES:
                 return context.getString(R.string.title_entities);
         }

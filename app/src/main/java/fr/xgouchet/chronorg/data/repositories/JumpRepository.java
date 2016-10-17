@@ -11,6 +11,7 @@ import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -31,10 +32,14 @@ public class JumpRepository {
     public Observable<Jump> getJumps() {
 
         return Observable.create(new Observable.OnSubscribe<Jump>() {
-            @Override public void call(Subscriber<? super Jump> subscriber) {
+            @Override public void call(final Subscriber<? super Jump> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().queryAll(contentResolver, subscriber);
+                    provider.provideQuerier().queryAll(contentResolver, new Action1<Jump>() {
+                        @Override public void call(Jump jump) {
+                            subscriber.onNext(jump);
+                        }
+                    });
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -45,10 +50,14 @@ public class JumpRepository {
 
     public Observable<Jump> getJump(final int jumpId) {
         return Observable.create(new Observable.OnSubscribe<Jump>() {
-            @Override public void call(Subscriber<? super Jump> subscriber) {
+            @Override public void call(final Subscriber<? super Jump> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().query(contentResolver, subscriber, jumpId);
+                    provider.provideQuerier().query(contentResolver, new Action1<Jump>() {
+                        @Override public void call(Jump jump) {
+                            subscriber.onNext(jump);
+                        }
+                    }, jumpId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -60,12 +69,16 @@ public class JumpRepository {
 
     public Observable<Jump> getJumpsInEntity(final int entityId) {
         return Observable.create(new Observable.OnSubscribe<Jump>() {
-            @Override public void call(Subscriber<? super Jump> subscriber) {
+            @Override public void call(final Subscriber<? super Jump> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
                     JumpContentQuerier jumpContentQuerier = (JumpContentQuerier) provider.provideQuerier();
 
-                    jumpContentQuerier.queryInEntity(contentResolver, subscriber, entityId);
+                    jumpContentQuerier.queryInEntity(contentResolver, new Action1<Jump>() {
+                        @Override public void call(Jump jump) {
+                            subscriber.onNext(jump);
+                        }
+                    }, entityId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);

@@ -53,7 +53,7 @@ public class EntityContentValuesWriterTest {
         when(mockEntity.getDescription()).thenReturn(FAKE_DESC);
         when(mockEntity.getBirth()).thenReturn(FAKE_BIRTH);
         when(mockEntity.getDeath()).thenReturn(FAKE_DEATH);
-        when(mockEntity.getColour()).thenReturn(FAKE_COLOUR);
+        when(mockEntity.getColor()).thenReturn(FAKE_COLOUR);
 
         // When
         writer.fillContentValues(mockContentValues, mockEntity);
@@ -75,7 +75,7 @@ public class EntityContentValuesWriterTest {
         when(mockEntity.getDescription()).thenReturn(null);
         when(mockEntity.getBirth()).thenReturn(FAKE_BIRTH);
         when(mockEntity.getDeath()).thenReturn(null);
-        when(mockEntity.getColour()).thenReturn(FAKE_COLOUR);
+        when(mockEntity.getColor()).thenReturn(FAKE_COLOUR);
 
         // When
         writer.fillContentValues(mockContentValues, mockEntity);

@@ -2,16 +2,17 @@ package fr.xgouchet.chronorg.ui.presenters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.deezer.android.counsel.annotations.Trace;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.models.Project;
+import fr.xgouchet.chronorg.data.models.TimelineShard;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
-import fr.xgouchet.chronorg.ui.contracts.EntityListContract;
+import fr.xgouchet.chronorg.data.transformers.EntityToSegmentFlatMap;
+import fr.xgouchet.chronorg.data.transformers.SegmentToShardFlatMap;
+import fr.xgouchet.chronorg.ui.contracts.TimelineContract;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,87 +22,75 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * @author Xavier Gouchet
  */
-@Trace
-public class EntityListPresenter implements EntityListContract.Presenter {
+public class TimelinePresenter implements TimelineContract.Presenter {
 
-    @NonNull private final List<Entity> entities;
     @NonNull private final EntityRepository entityRepository;
     @NonNull private final CompositeSubscription subscriptions;
+    @NonNull private final ArrayList<TimelineShard> shards;
 
-    @Nullable /*package*/ EntityListContract.View view;
+    @Nullable /*package*/ TimelineContract.View view;
     @Nullable private Project project;
 
-    public EntityListPresenter(@NonNull EntityRepository entityRepository) {
+    public TimelinePresenter(@NonNull EntityRepository entityRepository) {
         this.entityRepository = entityRepository;
-        entities = new ArrayList<>();
         subscriptions = new CompositeSubscription();
+        shards = new ArrayList<>();
     }
 
-    public void setProject(@NonNull Project project) {
+    @Override public void setProject(@NonNull Project project) {
         this.project = project;
     }
 
-    public void setView(@NonNull EntityListContract.View view) {
+    @Override public void setView(@NonNull TimelineContract.View view) {
         this.view = view;
         view.setPresenter(this);
     }
-
 
     @Override public void load(boolean force) {
         if (view == null) return;
         if (project == null) return;
 
         if (!force) {
-            view.setContent(entities);
+            view.setContent(shards);
         }
 
         view.setLoading(true);
-
-        entities.clear();
+        shards.clear();
 
         Subscription subscription = entityRepository
-                .getEntitiesInProject(project.getId())
+                .getFullEntitiesInProject(project.getId())
+                .flatMap(new EntityToSegmentFlatMap())
+                .toSortedList()
+                .flatMap(new SegmentToShardFlatMap())
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Entity>>() {
+                .subscribe(new Observer<List<TimelineShard>>() {
                     @Override public void onCompleted() {
                         view.setLoading(false);
                     }
 
                     @Override public void onError(Throwable e) {
-                        view.setLoading(false);
                         view.setError(e);
                     }
 
-                    @Override public void onNext(List<Entity> entities) {
-                        onEntitiesLoaded(entities);
+                    @Override public void onNext(List<TimelineShard> shards) {
+                        onShardsLoaded(shards);
                     }
                 });
 
         subscriptions.add(subscription);
-
     }
 
-    /*package*/ void onEntitiesLoaded(List<Entity> entities) {
-        this.entities.addAll(entities);
+    /*package*/ void onShardsLoaded(List<TimelineShard> shards) {
+        this.shards.addAll(shards);
         if (view == null) return;
 
-        if (this.entities.isEmpty()) {
+        if (this.shards.isEmpty()) {
             view.setEmpty();
         } else {
-            view.setContent(this.entities);
+            view.setContent(this.shards);
         }
-    }
-
-    @Override public void itemSelected(@NonNull Entity entity) {
-        if (view == null) return;
-        view.showItem(entity);
-    }
-
-    @Override public void createNewItem() {
-        if (view == null) return;
-        view.showCreateItemUi();
     }
 
     @Override public void subscribe() {
@@ -109,8 +98,14 @@ public class EntityListPresenter implements EntityListContract.Presenter {
     }
 
     @Override public void unsubscribe() {
-        entities.clear();
+        shards.clear();
     }
 
+    @Override public void createNewItem() {
+        // Ignore
+    }
 
+    @Override public void itemSelected(@NonNull TimelineShard item) {
+        // Ignore
+    }
 }

@@ -52,12 +52,12 @@ public class EntityEditFragment extends Fragment
     @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_birth) TextView inputBirth;
     @BindView(R.id.input_death) TextView inputDeath;
-    //    @BindView(R.id.input_colour) ColorPickerView inputColour;
-    @BindView(R.id.input_colour) View inputColour;
+    //    @BindView(R.id.input_color) ColorPickerView inputColor;
+    @BindView(R.id.input_color) View inputColor;
 
     private ReadableInstant birth;
     private ReadableInstant death;
-    private int[] colours;
+    private int[] colors;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +74,7 @@ public class EntityEditFragment extends Fragment
 
     @Override public void onResume() {
         super.onResume();
-        colours = getResources().getIntArray(R.array.pickable_colours);
+        colors = getResources().getIntArray(R.array.pickable_colors);
         presenter.subscribe();
     }
 
@@ -142,19 +142,19 @@ public class EntityEditFragment extends Fragment
         startActivityForResult(intent, REQUEST_DEATH_DATE);
     }
 
-    @OnClick(R.id.input_colour) void onColourClicked() {
+    @OnClick(R.id.input_color) void onColorClicked() {
         onNameFocusChanged(false);
         onDescriptionFocusChanged(false);
         // TODO find nearest selected color
         ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-                colours, 0, 4, ColorPickerDialog.SIZE_SMALL);
+                colors, 0, 4, ColorPickerDialog.SIZE_SMALL);
         dialog.setOnColorSelectedListener(this);
         dialog.show(getActivity().getFragmentManager(), "foo");
     }
 
     @Override public void onColorSelected(@ColorInt int color) {
-        presenter.setColour(color);
-        inputColour.setBackgroundColor(color);
+        presenter.setColor(color);
+        inputColor.setBackgroundColor(color);
     }
 
     private void saveProject() {
@@ -179,14 +179,14 @@ public class EntityEditFragment extends Fragment
                            @Nullable String description,
                            @NonNull ReadableInstant birth,
                            @Nullable ReadableInstant death,
-                           @ColorInt int colour) {
+                           @ColorInt int color) {
         inputName.setText(name);
         inputDescription.setText(description);
         this.birth = birth;
         inputBirth.setText(dtf.print(birth));
         this.death = death;
         inputDeath.setText(death == null ? "" : dtf.print(death));
-        inputColour.setBackgroundColor(colour);
+        inputColor.setBackgroundColor(color);
     }
 
     @Override public void entitySaved() {

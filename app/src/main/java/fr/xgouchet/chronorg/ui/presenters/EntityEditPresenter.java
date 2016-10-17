@@ -31,7 +31,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     @Nullable private String description;
     @NonNull private ReadableInstant birth = new DateTime("1970-01-01T00:00:00Z");
     @Nullable private ReadableInstant death;
-    @ColorInt private int colour;
+    @ColorInt private int color;
 
     public EntityEditPresenter(@NonNull EntityRepository entityRepository) {
         this.entityRepository = entityRepository;
@@ -43,7 +43,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
         description = entity.getDescription();
         birth = entity.getBirth();
         death = entity.getDeath();
-        colour = entity.getColour();
+        color = entity.getColor();
     }
 
     @Override public void setView(@NonNull EntityEditContract.View view) {
@@ -54,7 +54,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     @Override public void subscribe() {
         if (view == null) return;
 
-        view.setContent(name, description, birth, death, colour);
+        view.setContent(name, description, birth, death, color);
     }
 
     @Override public void unsubscribe() {
@@ -81,8 +81,8 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
         death = new DateTime(dateTimeIso8601);
     }
 
-    @Override public void setColour(@ColorInt int colour) {
-        this.colour = colour;
+    @Override public void setColor(@ColorInt int color) {
+        this.color = color;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
         entity.setDescription(inputDescText);
         entity.setBirth(birth);
         entity.setDeath(death);
-        entity.setColour(colour);
+        entity.setColor(color);
         entityRepository.saveEntity(entity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

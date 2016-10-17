@@ -22,6 +22,6 @@ public class EntityContentValuesWriter extends BaseContentValuesWriter<Entity> {
 
         ReadableInstant death = entity.getDeath();
         cv.put(ChronorgSchema.COL_DEATH_INSTANT, death == null ? null : death.toString());
-        cv.put(ChronorgSchema.COL_COLOUR, entity.getColour());
+        cv.put(ChronorgSchema.COL_COLOUR, entity.getColor());
     }
 }

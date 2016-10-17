@@ -12,6 +12,7 @@ import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
 
 /**
  * @author Xavier Gouchet
@@ -35,6 +36,8 @@ public interface ActivityComponent {
     JumpListPresenter getJumpListPresenter();
 
     JumpEditPresenter getJumpEditPresenter();
+
+    TimelinePresenter getTimelinePresenter();
 
     DateTimePickerPresenter getDateTimePickerPresenter();
 }

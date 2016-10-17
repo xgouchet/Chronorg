@@ -81,7 +81,7 @@ public class EntityCursorReaderTest {
         verify(entity).setDescription("Lorem ipsum");
         verify(entity).setBirth("1968-12-06T12:00:00Z");
         verify(entity).setDeath("2091-04-08T12:00:00Z");
-        verify(entity).setColour(Color.RED);
+        verify(entity).setColor(Color.RED);
     }
 
 

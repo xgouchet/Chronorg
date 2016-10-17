@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import fr.xgouchet.chronorg.ui.viewholders.BaseViewHolder;
 
 /**
@@ -23,6 +25,8 @@ public abstract class BaseSimpleAdapter<T, VH extends BaseViewHolder<T>> extends
         T item = getItem(position);
         holder.bindItem(item);
     }
+
+    public abstract void update(List<T> newContent);
 
     protected abstract VH instantiateViewHolder(int viewType, View view);
 

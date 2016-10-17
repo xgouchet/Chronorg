@@ -37,7 +37,7 @@
     <color name="grey">#9D9D9D</color>
     <color name="blue_grey">#5E7C8B</color>
 
-    <array name="pickable_colours">
+    <array name="pickable_colors">
         <item>@color/red</item>
         <item>@color/pink</item>
         <item>@color/purple</item>

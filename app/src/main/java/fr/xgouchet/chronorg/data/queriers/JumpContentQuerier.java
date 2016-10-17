@@ -12,7 +12,7 @@ import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
-import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -27,7 +27,7 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
 
     @Override
     public void queryAll(@NonNull ContentResolver contentResolver,
-                         @NonNull Subscriber<? super Jump> subscriber) {
+                         @NonNull Action1<Jump> action) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(ChronorgSchema.JUMPS_URI,
@@ -36,7 +36,7 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
                     null,
                     naturalOrder());
 
-            readEntities(subscriber, cursor);
+            readEntities(action, cursor);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -44,7 +44,7 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
 
     @Override
     public void query(@NonNull ContentResolver contentResolver,
-                      @NonNull Subscriber<? super Jump> subscriber,
+                      @NonNull Action1<Jump> action,
                       int entityId) {
         Cursor cursor = null;
         try {
@@ -54,14 +54,14 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
                     new String[]{Integer.toString(entityId)},
                     naturalOrder());
 
-            readEntities(subscriber, cursor);
+            readEntities(action, cursor);
         } finally {
             if (cursor != null) cursor.close();
         }
     }
 
     public void queryInEntity(@NonNull ContentResolver contentResolver,
-                              @NonNull Subscriber<? super Jump> subscriber,
+                              @NonNull Action1<Jump> action,
                               int entityId) {
         Cursor cursor = null;
         try {
@@ -71,7 +71,7 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
                     new String[]{Integer.toString(entityId)},
                     naturalOrder());
 
-            readEntities(subscriber, cursor);
+            readEntities(action, cursor);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -103,12 +103,12 @@ public class JumpContentQuerier implements BaseContentQuerier<Jump> {
         return deleted != 0;
     }
 
-    private void readEntities(@NonNull Subscriber<? super Jump> subscriber,
+    private void readEntities(@NonNull Action1<Jump> action,
                               @Nullable Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             BaseCursorReader<Jump> reader = provider.provideReader(cursor);
             while (cursor.moveToNext()) {
-                subscriber.onNext(reader.instantiateAndFill());
+                action.call(reader.instantiateAndFill());
             }
         }
     }

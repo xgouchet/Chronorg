@@ -14,12 +14,12 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
+import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.readers.EntityCursorReader;
 import fr.xgouchet.chronorg.data.writers.EntityContentValuesWriter;
-import rx.Subscriber;
+import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -44,12 +44,13 @@ public class EntityContentQuerierTest {
 
     @Mock ContentResolver contentResolver;
     @Mock EntityIOProvider provider;
-    @Mock Subscriber<Entity> subscriber;
+    @Mock Action1<Entity> action;
     @Mock EntityCursorReader reader;
     @Mock EntityContentValuesWriter writer;
     @Mock Cursor cursor;
     @Mock ContentValues contentValues;
 
+    @Mock JumpContentQuerier jumpContentQuerier;
     private EntityContentQuerier querier;
 
     @Before
@@ -60,7 +61,7 @@ public class EntityContentQuerierTest {
 
         when(provider.provideWriter())
                 .thenReturn(writer);
-        querier = new EntityContentQuerier(provider);
+        querier = new EntityContentQuerier(provider, jumpContentQuerier);
     }
 
 
@@ -77,15 +78,15 @@ public class EntityContentQuerierTest {
 
 
         // When
-        querier.queryAll(contentResolver, subscriber);
+        querier.queryAll(contentResolver, action);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
-        verify(subscriber).onNext(mock2);
+        verify(action).call(mock1);
+        verify(action).call(mock2);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -100,7 +101,7 @@ public class EntityContentQuerierTest {
 
         // When
         try {
-            querier.queryAll(contentResolver, subscriber);
+            querier.queryAll(contentResolver, action);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -109,7 +110,7 @@ public class EntityContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test
@@ -125,14 +126,14 @@ public class EntityContentQuerierTest {
 
 
         // When
-        querier.query(contentResolver, subscriber, entityId);
+        querier.query(contentResolver, action, entityId);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
+        verify(action).call(mock1);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -148,7 +149,7 @@ public class EntityContentQuerierTest {
 
         // When
         try {
-            querier.query(contentResolver, subscriber, entityId);
+            querier.query(contentResolver, action, entityId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -157,7 +158,7 @@ public class EntityContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
 
@@ -174,21 +175,20 @@ public class EntityContentQuerierTest {
 
 
         // When
-        querier.queryInProject(contentResolver, subscriber, projectId);
+        querier.queryInProject(contentResolver, action, projectId);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
+        verify(action).call(mock1);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
     public void shouldQueryInProjectWithException() {
         // Given
         int projectId = 42;
-        Entity mock1 = mock(Entity.class);
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
@@ -198,7 +198,7 @@ public class EntityContentQuerierTest {
 
         // When
         try {
-            querier.queryInProject(contentResolver, subscriber, projectId);
+            querier.queryInProject(contentResolver, action, projectId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -207,7 +207,7 @@ public class EntityContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test

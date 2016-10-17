@@ -5,6 +5,7 @@ import android.database.Cursor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -13,6 +14,7 @@ import fr.xgouchet.chronorg.ChronorgTestApplication;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.queriers.BaseContentQuerier;
 import fr.xgouchet.chronorg.data.queriers.EntityContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.readers.EntityCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
@@ -20,6 +22,7 @@ import fr.xgouchet.chronorg.data.writers.EntityContentValuesWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * @author Xavier Gouchet
@@ -29,10 +32,12 @@ import static org.mockito.Mockito.mock;
 public class EntityIOProviderTest {
 
     EntityIOProvider provider;
+    @Mock JumpContentQuerier jumpContentQuerier;
 
     @Before
     public void setUp() {
-        provider = new EntityIOProvider();
+        initMocks(this);
+        provider = new EntityIOProvider(jumpContentQuerier);
     }
 
     @Test

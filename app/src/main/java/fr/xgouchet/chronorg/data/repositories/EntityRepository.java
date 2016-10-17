@@ -6,11 +6,12 @@ import android.support.annotation.NonNull;
 
 import com.deezer.android.counsel.annotations.Trace;
 
-import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
+import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.queriers.EntityContentQuerier;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -30,10 +31,14 @@ public class EntityRepository {
 
     public Observable<Entity> getEntities() {
         return Observable.create(new Observable.OnSubscribe<Entity>() {
-            @Override public void call(Subscriber<? super Entity> subscriber) {
+            @Override public void call(final Subscriber<? super Entity> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().queryAll(contentResolver, subscriber);
+                    provider.provideQuerier().queryAll(contentResolver, new Action1<Entity>() {
+                        @Override public void call(Entity entity) {
+                            subscriber.onNext(entity);
+                        }
+                    });
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -44,12 +49,36 @@ public class EntityRepository {
 
     public Observable<Entity> getEntitiesInProject(final int projectId) {
         return Observable.create(new Observable.OnSubscribe<Entity>() {
-            @Override public void call(Subscriber<? super Entity> subscriber) {
+            @Override public void call(final Subscriber<? super Entity> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
                     EntityContentQuerier entityBaseContentQuerier = (EntityContentQuerier) provider.provideQuerier();
 
-                    entityBaseContentQuerier.queryInProject(contentResolver, subscriber, projectId);
+                    entityBaseContentQuerier.queryInProject(contentResolver, new Action1<Entity>() {
+                        @Override public void call(Entity entity) {
+                            subscriber.onNext(entity);
+                        }
+                    }, projectId);
+                    subscriber.onCompleted();
+                } catch (Exception err) {
+                    subscriber.onError(err);
+                }
+            }
+        });
+    }
+
+    public Observable<Entity> getFullEntitiesInProject(final int projectId) {
+        return Observable.create(new Observable.OnSubscribe<Entity>() {
+            @Override public void call(final Subscriber<? super Entity> subscriber) {
+                try {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    EntityContentQuerier entityBaseContentQuerier = (EntityContentQuerier) provider.provideQuerier();
+
+                    entityBaseContentQuerier.queryFullInProject(contentResolver, new Action1<Entity>() {
+                        @Override public void call(Entity entity) {
+                            subscriber.onNext(entity);
+                        }
+                    }, projectId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -60,10 +89,14 @@ public class EntityRepository {
 
     public Observable<Entity> getEntity(final int entityId) {
         return Observable.create(new Observable.OnSubscribe<Entity>() {
-            @Override public void call(Subscriber<? super Entity> subscriber) {
+            @Override public void call(final Subscriber<? super Entity> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().query(contentResolver, subscriber, entityId);
+                    provider.provideQuerier().query(contentResolver, new Action1<Entity>() {
+                        @Override public void call(Entity entity) {
+                            subscriber.onNext(entity);
+                        }
+                    }, entityId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);

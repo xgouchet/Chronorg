@@ -14,12 +14,12 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
+import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.readers.ProjectCursorReader;
 import fr.xgouchet.chronorg.data.writers.ProjectContentValuesWriter;
-import rx.Subscriber;
+import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -44,7 +44,7 @@ public class ProjectContentQuerierTest {
 
     @Mock ContentResolver contentResolver;
     @Mock ProjectIOProvider provider;
-    @Mock Subscriber<Project> subscriber;
+    @Mock Action1<Project> action;
     @Mock ProjectCursorReader reader;
     @Mock ProjectContentValuesWriter writer;
     @Mock Cursor cursor;
@@ -78,14 +78,14 @@ public class ProjectContentQuerierTest {
 
 
         // When
-        querier.queryAll(contentResolver, subscriber);
+        querier.queryAll(contentResolver, action);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
-        verify(subscriber).onNext(mock2);
-        verifyNoMoreInteractions(subscriber);
+        verify(action).call(mock1);
+        verify(action).call(mock2);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ProjectContentQuerierTest {
 
         // When
         try {
-            querier.queryAll(contentResolver, subscriber);
+            querier.queryAll(contentResolver, action);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -108,7 +108,7 @@ public class ProjectContentQuerierTest {
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test
@@ -124,13 +124,13 @@ public class ProjectContentQuerierTest {
 
 
         // When
-        querier.query(contentResolver, subscriber, projectId);
+        querier.query(contentResolver, action, projectId);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
-        verifyNoMoreInteractions(subscriber);
+        verify(action).call(mock1);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class ProjectContentQuerierTest {
 
         // When
         try {
-            querier.query(contentResolver, subscriber, projectId);
+            querier.query(contentResolver, action, projectId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -154,7 +154,7 @@ public class ProjectContentQuerierTest {
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.PROJECTS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test

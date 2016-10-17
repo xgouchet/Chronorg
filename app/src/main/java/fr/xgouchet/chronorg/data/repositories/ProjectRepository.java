@@ -10,6 +10,7 @@ import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -30,10 +31,14 @@ public class ProjectRepository {
     public Observable<Project> getProjects() {
 
         return Observable.create(new Observable.OnSubscribe<Project>() {
-            @Override public void call(Subscriber<? super Project> subscriber) {
+            @Override public void call(final Subscriber<? super Project> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().queryAll(contentResolver, subscriber);
+                    provider.provideQuerier().queryAll(contentResolver, new Action1<Project>() {
+                        @Override public void call(Project project) {
+                            subscriber.onNext(project);
+                        }
+                    });
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -44,10 +49,14 @@ public class ProjectRepository {
 
     public Observable<Project> getProject(final int projectId) {
         return Observable.create(new Observable.OnSubscribe<Project>() {
-            @Override public void call(Subscriber<? super Project> subscriber) {
+            @Override public void call(final Subscriber<? super Project> subscriber) {
                 try {
                     ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().query(contentResolver, subscriber, projectId);
+                    provider.provideQuerier().query(contentResolver, new Action1<Project>() {
+                        @Override public void call(Project project) {
+                            subscriber.onNext(project);
+                        }
+                    }, projectId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);

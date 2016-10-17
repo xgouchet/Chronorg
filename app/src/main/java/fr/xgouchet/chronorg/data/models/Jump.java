@@ -16,10 +16,10 @@ public class Jump implements Parcelable {
     private int id;
     private int entityId;
     private int order;
-    @Nullable private String name;
+    @NonNull private String name = "";
     @Nullable private String description;
-    @NonNull ReadableInstant from = new DateTime("1985-10-26T01:35:00-08:00");
-    @NonNull ReadableInstant to = new DateTime("1955-11-05T06:15:00-08:00");
+    @NonNull private ReadableInstant from = new DateTime("1985-10-26T01:35:00-08:00");
+    @NonNull private ReadableInstant to = new DateTime("1955-11-05T06:15:00-08:00");
 
     public Jump() {
     }
@@ -45,11 +45,11 @@ public class Jump implements Parcelable {
         return entityId;
     }
 
-    public void setName(@Nullable String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
-    @Nullable public String getName() {
+    @NonNull public String getName() {
         return name;
     }
 

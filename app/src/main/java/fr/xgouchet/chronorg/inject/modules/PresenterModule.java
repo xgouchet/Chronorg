@@ -16,6 +16,7 @@ import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
 import fr.xgouchet.chronorg.ui.validators.DateTimeInputValidator;
 
 /**
@@ -71,6 +72,12 @@ public class PresenterModule {
     @ActivityScope
     public JumpEditPresenter provideJumpEditPresenter(JumpRepository jumpRepository) {
         return new JumpEditPresenter(jumpRepository);
+    }
+
+    @Provides
+    @ActivityScope
+    public TimelinePresenter provideTimelinePresenter(EntityRepository entityRepository){
+        return new TimelinePresenter(entityRepository);
     }
 
     @Provides

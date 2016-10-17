@@ -19,7 +19,7 @@ import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.readers.JumpCursorReader;
 import fr.xgouchet.chronorg.data.writers.JumpContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
-import rx.Subscriber;
+import rx.functions.Action1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -44,7 +44,7 @@ public class JumpContentQuerierTest {
 
     @Mock ContentResolver contentResolver;
     @Mock JumpIOProvider provider;
-    @Mock Subscriber<Jump> subscriber;
+    @Mock Action1<Jump> action;
     @Mock JumpCursorReader reader;
     @Mock JumpContentValuesWriter writer;
     @Mock Cursor cursor;
@@ -77,15 +77,15 @@ public class JumpContentQuerierTest {
 
 
         // When
-        querier.queryAll(contentResolver, subscriber);
+        querier.queryAll(contentResolver, action);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
-        verify(subscriber).onNext(mock2);
+        verify(action).call(mock1);
+        verify(action).call(mock2);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class JumpContentQuerierTest {
 
         // When
         try {
-            querier.queryAll(contentResolver, subscriber);
+            querier.queryAll(contentResolver, action);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -109,7 +109,7 @@ public class JumpContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), isNull(String.class), isNull(String[].class), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test
@@ -125,14 +125,14 @@ public class JumpContentQuerierTest {
 
 
         // When
-        querier.query(contentResolver, subscriber, jumpId);
+        querier.query(contentResolver, action, jumpId);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
+        verify(action).call(mock1);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class JumpContentQuerierTest {
 
         // When
         try {
-            querier.query(contentResolver, subscriber, jumpId);
+            querier.query(contentResolver, action, jumpId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -157,7 +157,7 @@ public class JumpContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
 
@@ -174,14 +174,14 @@ public class JumpContentQuerierTest {
 
 
         // When
-        querier.queryInEntity(contentResolver, subscriber, entityId);
+        querier.queryInEntity(contentResolver, action, entityId);
 
         // Then
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
-        verify(subscriber).onNext(mock1);
+        verify(action).call(mock1);
         verify(cursor).close();
-        verifyNoMoreInteractions(subscriber);
+        verifyNoMoreInteractions(action);
     }
 
     @Test
@@ -198,7 +198,7 @@ public class JumpContentQuerierTest {
 
         // When
         try {
-            querier.queryInEntity(contentResolver, subscriber, entityId);
+            querier.queryInEntity(contentResolver, action, entityId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
@@ -207,7 +207,7 @@ public class JumpContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(subscriber);
+        verifyZeroInteractions(action);
     }
 
     @Test

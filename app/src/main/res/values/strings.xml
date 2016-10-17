@@ -13,7 +13,7 @@
     <string name="hint_entity_name">Entity Name</string>
     <string name="hint_entity_description">Entity description</string>
     <string name="hint_death">Death date and time</string>
-    <string name="hint_colour">Colour</string>
+    <string name="hint_color">Color</string>
 
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
@@ -31,5 +31,6 @@
     <string name="hint_jump_to">Jump destination</string>
     <string name="hint_jump_description">Jump Description</string>
     <string name="hint_jump_from">Jump origin</string>
+    <string name="title_timeline">Timeline</string>
 
 </resources>

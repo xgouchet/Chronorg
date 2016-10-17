@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.Instant;
 import org.joda.time.Period;
 import org.joda.time.ReadableInstant;
 
@@ -30,9 +29,9 @@ public class Entity implements Parcelable {
     @Nullable private String description;
 
     @NonNull private ReadableInstant birth;
-    @Nullable private ReadableInstant death;
+    @NonNull private ReadableInstant death;
 
-    @ColorInt private int colour;
+    @ColorInt private int color;
     @NonNull private final List<Jump> jumps;
 
     public Entity() {
@@ -40,8 +39,8 @@ public class Entity implements Parcelable {
         name = "‽";
         description = null;
         birth = new DateTime("1970-01-01T00:00:00Z");
-        death = null;
-        colour = Color.rgb(0xF6, 0x40, 0x2C);
+        death = new DateTime("2038-01-19T03:14:17Z");
+        color = Color.rgb(0xF6, 0x40, 0x2C);
         jumps = new LinkedList<>();
     }
 
@@ -49,98 +48,102 @@ public class Entity implements Parcelable {
                   @NonNull String name,
                   @Nullable String description,
                   @NonNull ReadableInstant birth,
-                  @Nullable ReadableInstant death) {
+                  @NonNull ReadableInstant death) {
         id = -1;
         this.projectId = projectId;
         this.name = name;
         this.description = description;
         this.birth = birth;
         this.death = death;
-        this.colour = Color.RED;
+        this.color = Color.RED;
         jumps = new LinkedList<>();
     }
 
 
-    public void jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+    public void jump(@NonNull Jump jump) {
+
+        final ReadableInstant from = jump.getFrom();
 
         // Safe check, can the jump occur ?
         if (jumps.isEmpty()) {
             if (from.isBefore(birth)) {
                 throw new UnsupportedOperationException("Can't jump from a date before birth");
             }
-            if ((death != null) && from.isAfter(death)) {
+            if (from.isAfter(death)) {
                 throw new UnsupportedOperationException("Can't jump from a date after death");
             }
         } else {
             Jump last = jumps.get(jumps.size() - 1);
-            if (from.isBefore(last.to)) {
+            if (from.isBefore(last.getTo())) {
                 throw new UnsupportedOperationException("Can't jump from a date before last jump's landing");
             }
         }
 
-        jumps.add(new Jump(from.toInstant(), to.toInstant()));
+        jumps.add(jump);
+    }
+
+    public void jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+        jump(new Jump(from, to));
+    }
+
+    public Segment[] timelineAsSegments() {
+        Segment[] segments = new Segment[1 + jumps.size()];
+        int index = 0;
+        ReadableInstant lastInstant = birth;
+        String lastLegend = name + " *";
+
+        // follow jumps
+        for (Jump jump : jumps) {
+            if (jump.getFrom().isBefore(lastInstant)) {
+                throw new IllegalStateException("Illegal jump at " + jump.getFrom() +
+                        " when last instant was " + lastInstant);
+            }
+            segments[index] = new Segment(lastInstant, lastLegend, jump.getFrom(), jump.getName(), color);
+            index++;
+            lastInstant = jump.getTo();
+            lastLegend = jump.getName();
+        }
+
+        // till death do us part
+        segments[index] = new Segment(lastInstant, lastLegend, death, name + " †", color);
+
+        return segments;
     }
 
     @NonNull
     public List<Period> getAgesAtInstant(@NonNull ReadableInstant instant) {
 
         List<Period> ages = new LinkedList<>();
-        Period ageAtLastInstant = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-        ReadableInstant lastInstant = new Instant(birth);
+        Period cumulativeAge = new Period(0, 0, 0, 0, 0, 0, 0, 0);
 
-        // Go through each jumps
-        for (Jump jump : jumps) {
-            if (lastInstant.isBefore(instant) && jump.from.isAfter(instant)) {
-                Period sinceLastInstant = new Period(lastInstant, instant);
-                ages.add(ageAtLastInstant.plus(sinceLastInstant).normalizedStandard());
+        for (Segment segment : timelineAsSegments()) {
+            if (segment.contains(instant)) {
+                Period sincePeriodStart = new Period(segment.getFrom(), instant);
+                ages.add(cumulativeAge.plus(sincePeriodStart).normalizedStandard());
             }
 
-            Period betweenJumps = new Period(lastInstant, jump.from);
-            ageAtLastInstant = ageAtLastInstant.plus(betweenJumps);
-            lastInstant = jump.to;
+            cumulativeAge = cumulativeAge.plus(segment.period());
         }
-
-        // after the last jump
-        if (lastInstant.isBefore(instant)) {
-            if ((death == null) || death.isAfter(instant)) {
-                Period sinceLastInstant = new Period(lastInstant, instant);
-                ages.add(ageAtLastInstant.plus(sinceLastInstant).normalizedStandard());
-            }
-        }
-
 
         return ages;
     }
 
     @Nullable
     public ReadableInstant getInstantAtAge(@NonNull Duration duration) {
-        Duration durationLeft = duration;
-        ReadableInstant lastInstant = birth;
-        Duration fragmentDuration;
 
-        // follow jumps
-        for (Jump jump : jumps) {
-            fragmentDuration = new Duration(lastInstant, jump.from);
-            if (durationLeft.isShorterThan(fragmentDuration)) {
-                return lastInstant.toInstant().plus(durationLeft);
+        Duration durationLeft = duration;
+        Duration segmentDuration;
+
+        for (Segment segment : timelineAsSegments()) {
+            segmentDuration = segment.duration();
+            if (durationLeft.isShorterThan(segmentDuration)) {
+                return segment.getFrom().toInstant().plus(durationLeft);
             }
 
-            durationLeft = durationLeft.minus(fragmentDuration);
-            lastInstant = jump.to;
+            durationLeft = durationLeft.minus(segmentDuration);
         }
 
-        // check death
-        if (death != null) {
-            fragmentDuration = new Duration(lastInstant, death);
-        } else {
-            fragmentDuration = durationLeft.plus(1);
-        }
-
-        if (durationLeft.isShorterThan(fragmentDuration)) {
-            return lastInstant.toInstant().plus(durationLeft);
-        } else {
-            return null;
-        }
+        return null;
     }
 
     public int getId() {
@@ -163,12 +166,12 @@ public class Entity implements Parcelable {
         return birth;
     }
 
-    @Nullable public ReadableInstant getDeath() {
+    @NonNull public ReadableInstant getDeath() {
         return death;
     }
 
-    @ColorInt public int getColour() {
-        return colour;
+    @ColorInt public int getColor() {
+        return color;
     }
 
     public void setId(int id) {
@@ -195,16 +198,16 @@ public class Entity implements Parcelable {
         this.birth = new DateTime(birth);
     }
 
-    public void setDeath(@Nullable ReadableInstant death) {
+    public void setDeath(@NonNull ReadableInstant death) {
         this.death = death;
     }
 
-    public void setDeath(@Nullable String death) {
-        this.death = death == null ? null : new DateTime(death);
+    public void setDeath(@NonNull String death) {
+        this.death = new DateTime(death);
     }
 
-    public void setColour(@ColorInt int colour) {
-        this.colour = colour;
+    public void setColor(@ColorInt int color) {
+        this.color = color;
     }
 
     @Override public int describeContents() {
@@ -217,8 +220,8 @@ public class Entity implements Parcelable {
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(birth.toString());
-        dest.writeString(death == null ? null : death.toString());
-        dest.writeInt(colour);
+        dest.writeString(death.toString());
+        dest.writeInt(color);
     }
 
     protected Entity(Parcel in) {
@@ -227,9 +230,8 @@ public class Entity implements Parcelable {
         name = in.readString();
         description = in.readString();
         birth = new DateTime(in.readString());
-        String deathStr = in.readString();
-        death = deathStr == null ? null : new DateTime(deathStr);
-        colour = in.readInt();
+        death = new DateTime(in.readString());
+        color = in.readInt();
         jumps = new LinkedList<>();
     }
 

@@ -16,11 +16,11 @@ import java.util.List;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
+import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.queriers.ProjectContentQuerier;
 import rx.Observable;
-import rx.Subscriber;
+import rx.functions.Action1;
 import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,13 +70,13 @@ public class ProjectRepositoryTest {
         final Project[] projects = new Project[]{mock(Project.class), mock(Project.class)};
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                Subscriber s = (Subscriber) invocation.getArguments()[1];
-                s.onNext(projects[0]);
-                s.onNext(projects[1]);
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(projects[0]);
+                s.call(projects[1]);
                 return null;
             }
         }).when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Project> observable = repository.getProjects();
@@ -87,7 +87,7 @@ public class ProjectRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).containsExactly(projects);
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ProjectRepositoryTest {
         // Given
         doNothing()
                 .when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Project> observable = repository.getProjects();
@@ -106,7 +106,7 @@ public class ProjectRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ProjectRepositoryTest {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Project> observable = repository.getProjects();
@@ -123,7 +123,7 @@ public class ProjectRepositoryTest {
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -132,13 +132,13 @@ public class ProjectRepositoryTest {
         final Project project = mock(Project.class);
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                Subscriber s = (Subscriber) invocation.getArguments()[1];
-                s.onNext(project);
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(project);
                 return null;
             }
         })
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Project> observable = repository.getProject(42);
@@ -149,7 +149,7 @@ public class ProjectRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).containsExactly(project);
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class ProjectRepositoryTest {
         // Given
         doNothing()
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Project> observable = repository.getProject(42);
@@ -168,7 +168,7 @@ public class ProjectRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -176,7 +176,7 @@ public class ProjectRepositoryTest {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Project> observable = repository.getProject(42);
@@ -185,7 +185,7 @@ public class ProjectRepositoryTest {
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
 

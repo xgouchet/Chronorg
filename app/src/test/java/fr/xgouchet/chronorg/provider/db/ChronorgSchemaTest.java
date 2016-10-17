@@ -66,21 +66,21 @@ public class ChronorgSchemaTest {
                 "desc TEXT," +
                 "birth TEXT NOT NULL," +
                 "death TEXT," +
-                "colour INTEGER)");
+                "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS portals (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL UNIQUE," +
                 "desc TEXT," +
                 "delay INTEGER NOT NULL," +
-                "colour INTEGER)");
+                "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS events (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL UNIQUE," +
                 "desc TEXT," +
                 "instant TEXT NOT NULL," +
-                "colour INTEGER)");
+                "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS jumps (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "entity_id INTEGER NOT NULL," +

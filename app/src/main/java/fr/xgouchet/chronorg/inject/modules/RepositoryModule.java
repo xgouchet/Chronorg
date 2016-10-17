@@ -7,6 +7,7 @@ import dagger.Provides;
 import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
+import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
@@ -34,8 +35,8 @@ public class RepositoryModule {
 
     @Provides
     @ApplicationScope
-    public EntityIOProvider provideEntityIOProvider() {
-        return new EntityIOProvider();
+    public EntityIOProvider provideEntityIOProvider( JumpIOProvider jumpIOProvider) {
+        return new EntityIOProvider((JumpContentQuerier) jumpIOProvider.provideQuerier());
     }
 
     @Provides
@@ -54,7 +55,8 @@ public class RepositoryModule {
     @Provides
     @ApplicationScope
     public JumpRepository provideJumpRepository(@ApplicationContext Context context,
-                                                  JumpIOProvider provider) {
+                                                JumpIOProvider provider) {
         return new JumpRepository(context, provider);
     }
+
 }

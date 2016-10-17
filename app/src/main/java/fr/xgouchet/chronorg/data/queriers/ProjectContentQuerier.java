@@ -7,12 +7,12 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import fr.xgouchet.chronorg.data.ioproviders.BaseIOProvider;
+import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
-import rx.Subscriber;
+import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -27,7 +27,7 @@ public class ProjectContentQuerier implements BaseContentQuerier<Project> {
 
     @Override
     public void queryAll(@NonNull ContentResolver contentResolver,
-                         @NonNull Subscriber<? super Project> subscriber) {
+                         @NonNull Action1<Project> action) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(ChronorgSchema.PROJECTS_URI,
@@ -36,7 +36,7 @@ public class ProjectContentQuerier implements BaseContentQuerier<Project> {
                     null,
                     orderByName());
 
-            readProjects(subscriber, cursor);
+            readProjects(action, cursor);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -44,7 +44,7 @@ public class ProjectContentQuerier implements BaseContentQuerier<Project> {
 
     @Override
     public void query(@NonNull ContentResolver contentResolver,
-                      @NonNull Subscriber<? super Project> subscriber,
+                      @NonNull Action1<Project> action,
                       int projectId) {
         Cursor cursor = null;
         try {
@@ -54,7 +54,7 @@ public class ProjectContentQuerier implements BaseContentQuerier<Project> {
                     new String[]{Integer.toString(projectId)},
                     orderByName());
 
-            readProjects(subscriber, cursor);
+            readProjects(action, cursor);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -89,12 +89,12 @@ public class ProjectContentQuerier implements BaseContentQuerier<Project> {
     }
 
 
-    private void readProjects(@NonNull Subscriber<? super Project> subscriber,
+    private void readProjects(@NonNull Action1<Project> action,
                               @Nullable Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             BaseCursorReader<Project> reader = provider.provideReader(cursor);
             while (cursor.moveToNext()) {
-                subscriber.onNext(reader.instantiateAndFill());
+                action.call(reader.instantiateAndFill());
             }
         }
     }

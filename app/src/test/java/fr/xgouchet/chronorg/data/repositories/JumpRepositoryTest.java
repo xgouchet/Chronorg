@@ -20,7 +20,7 @@ import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
 import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import rx.Observable;
-import rx.Subscriber;
+import rx.functions.Action1;
 import rx.observers.TestSubscriber;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,13 +69,13 @@ public class JumpRepositoryTest {
         final Jump[] jumps = new Jump[]{mock(Jump.class), mock(Jump.class)};
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                Subscriber s = (Subscriber) invocation.getArguments()[1];
-                s.onNext(jumps[0]);
-                s.onNext(jumps[1]);
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(jumps[0]);
+                s.call(jumps[1]);
                 return null;
             }
         }).when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Jump> observable = repository.getJumps();
@@ -86,7 +86,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).containsExactly(jumps);
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class JumpRepositoryTest {
         // Given
         doNothing()
                 .when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Jump> observable = repository.getJumps();
@@ -105,7 +105,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class JumpRepositoryTest {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
-                .queryAll(any(ContentResolver.class), any(Subscriber.class));
+                .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
         Observable<Jump> observable = repository.getJumps();
@@ -122,7 +122,7 @@ public class JumpRepositoryTest {
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).queryAll(same(contentResolver), any(Subscriber.class));
+        verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
@@ -132,13 +132,13 @@ public class JumpRepositoryTest {
         final Jump[] jumps = new Jump[]{mock(Jump.class), mock(Jump.class)};
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                Subscriber s = (Subscriber) invocation.getArguments()[1];
-                s.onNext(jumps[0]);
-                s.onNext(jumps[1]);
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(jumps[0]);
+                s.call(jumps[1]);
                 return null;
             }
         }).when(querier)
-                .queryInEntity(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .queryInEntity(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJumpsInEntity(entityId);
@@ -149,7 +149,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).containsExactly(jumps);
-        verify(querier).queryInEntity(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).queryInEntity(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class JumpRepositoryTest {
         int entityId = 42;
         doNothing()
                 .when(querier)
-                .queryInEntity(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .queryInEntity(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJumpsInEntity(entityId);
@@ -169,7 +169,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).queryInEntity(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).queryInEntity(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class JumpRepositoryTest {
         int entityId = 42;
         doThrow(new RuntimeException())
                 .when(querier)
-                .queryInEntity(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .queryInEntity(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJumpsInEntity(entityId);
@@ -187,7 +187,7 @@ public class JumpRepositoryTest {
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).queryInEntity(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).queryInEntity(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -196,13 +196,13 @@ public class JumpRepositoryTest {
         final Jump jump = mock(Jump.class);
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
-                Subscriber s = (Subscriber) invocation.getArguments()[1];
-                s.onNext(jump);
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(jump);
                 return null;
             }
         })
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJump(42);
@@ -213,7 +213,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).containsExactly(jump);
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -221,7 +221,7 @@ public class JumpRepositoryTest {
         // Given
         doNothing()
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJump(42);
@@ -232,7 +232,7 @@ public class JumpRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class JumpRepositoryTest {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
-                .query(any(ContentResolver.class), any(Subscriber.class), anyInt());
+                .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
         Observable<Jump> observable = repository.getJump(42);
@@ -249,7 +249,7 @@ public class JumpRepositoryTest {
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).query(same(contentResolver), any(Subscriber.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
     }
 
 

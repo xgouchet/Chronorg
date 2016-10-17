@@ -32,7 +32,7 @@ public interface EntityEditContract {
                         @Nullable String description,
                         @NonNull ReadableInstant birth,
                         @Nullable ReadableInstant death,
-                        @ColorInt int colour);
+                        @ColorInt int color);
     }
 
     interface Presenter extends BasePresenter {
@@ -50,6 +50,6 @@ public interface EntityEditContract {
 
         void setDeath(@NonNull String dateTimeIso8601);
 
-        void setColour(@ColorInt int colour);
+        void setColor(@ColorInt int color);
     }
 }

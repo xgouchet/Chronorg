@@ -42,7 +42,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     public static final String COL_DEATH_INSTANT = "death";
     public static final String COL_INSTANT = "instant";
 
-    public static final String COL_COLOUR = "colour";
+    public static final String COL_COLOUR = "color";
     public static final String COL_DELAY = "delay";
     public static final String COL_ORDER = "jump_order";
 

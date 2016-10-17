@@ -49,7 +49,7 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
             this.description.setText(description);
         }
 
-        underline.setBackgroundColor(entity.getColour());
+        underline.setBackgroundColor(entity.getColor());
     }
 
     @OnClick(R.id.entity)

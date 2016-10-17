@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.queriers.BaseContentQuerier;
 import fr.xgouchet.chronorg.data.queriers.EntityContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.readers.EntityCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
@@ -15,6 +16,12 @@ import fr.xgouchet.chronorg.data.writers.EntityContentValuesWriter;
  * @author Xavier Gouchet
  */
 public class EntityIOProvider implements BaseIOProvider<Entity> {
+
+    @NonNull private final JumpContentQuerier jumpContentQuerier;
+
+    public EntityIOProvider(@NonNull JumpContentQuerier jumpContentQuerier) {
+        this.jumpContentQuerier = jumpContentQuerier;
+    }
 
     @NonNull @Override public BaseCursorReader<Entity> provideReader(@NonNull Cursor cursor) {
         return new EntityCursorReader(cursor);
@@ -26,7 +33,7 @@ public class EntityIOProvider implements BaseIOProvider<Entity> {
 
     @NonNull @Override
     public BaseContentQuerier<Entity> provideQuerier() {
-        return new EntityContentQuerier(this);
+        return new EntityContentQuerier(this, jumpContentQuerier);
     }
 
 }

@@ -7,12 +7,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import fr.xgouchet.chronorg.data.ioproviders.BaseIOProvider;
+import fr.xgouchet.chronorg.data.models.Entity;
+import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
-import rx.Subscriber;
+import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
+import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
@@ -21,13 +22,17 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
 
     @NonNull private final BaseIOProvider<Entity> provider;
 
-    public EntityContentQuerier(@NonNull BaseIOProvider<Entity> provider) {
+    @NonNull private final JumpContentQuerier jumpContentQuerier;
+
+    public EntityContentQuerier(@NonNull BaseIOProvider<Entity> provider,
+                                @NonNull JumpContentQuerier jumpContentQuerier) {
         this.provider = provider;
+        this.jumpContentQuerier = jumpContentQuerier;
     }
 
     @Override
     public void queryAll(@NonNull ContentResolver contentResolver,
-                         @NonNull Subscriber<? super Entity> subscriber) {
+                         @NonNull Action1<Entity> action) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(ChronorgSchema.ENTITIES_URI,
@@ -36,7 +41,7 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
                     null,
                     orderByName());
 
-            readEntities(subscriber, cursor);
+            readEntities(contentResolver, action, cursor, false);
         } finally {
             if (cursor != null) cursor.close();
         }
@@ -44,7 +49,7 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
 
     @Override
     public void query(@NonNull ContentResolver contentResolver,
-                      @NonNull Subscriber<? super Entity> subscriber,
+                      @NonNull Action1<Entity> action,
                       int entityId) {
         Cursor cursor = null;
         try {
@@ -54,14 +59,14 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
                     new String[]{Integer.toString(entityId)},
                     orderByName());
 
-            readEntities(subscriber, cursor);
+            readEntities(contentResolver, action, cursor, false);
         } finally {
             if (cursor != null) cursor.close();
         }
     }
 
     public void queryInProject(@NonNull ContentResolver contentResolver,
-                               @NonNull Subscriber<? super Entity> subscriber,
+                               @NonNull Action1<Entity> action,
                                int projectId) {
         Cursor cursor = null;
         try {
@@ -71,11 +76,29 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
                     new String[]{Integer.toString(projectId)},
                     orderByName());
 
-            readEntities(subscriber, cursor);
+            readEntities(contentResolver, action, cursor, false);
         } finally {
             if (cursor != null) cursor.close();
         }
     }
+
+    public void queryFullInProject(@NonNull ContentResolver contentResolver,
+                                   @NonNull Action1<Entity> action,
+                                   int projectId) {
+        Cursor cursor = null;
+        try {
+            cursor = contentResolver.query(ChronorgSchema.ENTITIES_URI,
+                    null,
+                    selectByProjectId(),
+                    new String[]{Integer.toString(projectId)},
+                    orderByName());
+
+            readEntities(contentResolver, action, cursor, true);
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+    }
+
 
     @Override public boolean save(@NonNull ContentResolver contentResolver,
                                   @NonNull Entity entity) {
@@ -103,14 +126,31 @@ public class EntityContentQuerier implements BaseContentQuerier<Entity> {
         return deleted != 0;
     }
 
-    private void readEntities(@NonNull Subscriber<? super Entity> subscriber,
-                              @Nullable Cursor cursor) {
+    private void readEntities(@NonNull ContentResolver contentResolver,
+                              @NonNull Action1<Entity> subscriber,
+                              @Nullable Cursor cursor, boolean full) {
         if (cursor != null && cursor.getCount() > 0) {
             BaseCursorReader<Entity> reader = provider.provideReader(cursor);
             while (cursor.moveToNext()) {
-                subscriber.onNext(reader.instantiateAndFill());
+                final Entity entity = reader.instantiateAndFill();
+                if (full) {
+                    readEntityJumps(contentResolver, entity);
+                }
+                subscriber.call(entity);
             }
         }
+    }
+
+    private void readEntityJumps(@NonNull ContentResolver contentResolver,
+                                 @NonNull final Entity entity) {
+        jumpContentQuerier.queryInEntity(contentResolver,
+                new Action1<Jump>() {
+                    @Override public void call(Jump jump) {
+                        entity.jump(jump);
+                    }
+                },
+                entity.getId());
+
     }
 
     private String selectById() {
