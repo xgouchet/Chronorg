@@ -120,6 +120,7 @@ public class ChronorgContentProvider extends ContentProvider {
         if (dao != null) {
             deleted = dao.delete(selection, selectionArgs);
             // TODO special delete on jumps to keep coherent order
+            // TODO special delete on projects to also delete content...
         }
         return deleted;
     }

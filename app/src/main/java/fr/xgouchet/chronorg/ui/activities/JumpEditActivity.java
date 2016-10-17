@@ -49,7 +49,7 @@ public class JumpEditActivity extends BaseActivity {
             }
             jump = new Jump();
             jump.setEntityId(entityId);
-        } else if (intent.hasCategory(EXTRA_JUMP)) {
+        } else if (intent.hasExtra(EXTRA_JUMP)) {
             jump = intent.getParcelableExtra(EXTRA_JUMP);
         }
 

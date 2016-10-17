@@ -2,6 +2,6 @@
 <resources>
     <dimen name="line_width">16dp</dimen>
     <dimen name="line_stroke_width">4dp</dimen>
-    <dimen name="line_cap_width">8dp</dimen>
+    <dimen name="line_cap_width">10dp</dimen>
     <dimen name="line_cap_distance_from_top">24dp</dimen>
 </resources>

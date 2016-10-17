@@ -78,7 +78,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
         tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
         tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_BIRTH_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DEATH_INSTANT, TYPE_TEXT));
@@ -105,7 +105,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
         tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
         tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_COLOUR, TYPE_INTEGER));
@@ -118,7 +118,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
 
         tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
         tableDescription.addColumn(new ColumnDescription(COL_ENTITY_ID, TYPE_INTEGER, NOT_NULL));
-        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL, UNIQUE));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DESCRIPTION, TYPE_TEXT));
         tableDescription.addColumn(new ColumnDescription(COL_FROM_INSTANT, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_TO_INSTANT, TYPE_TEXT, NOT_NULL));

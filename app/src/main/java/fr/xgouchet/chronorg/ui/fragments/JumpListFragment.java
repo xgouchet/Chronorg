@@ -114,9 +114,8 @@ public class JumpListFragment extends Fragment
     }
 
     @Override public void showItem(@NonNull Jump item) {
-//        Intent intent = ProjectDetailsActivity.buildIntent(getActivity(), item);
-//
-//        getActivity().startActivity(intent);
+        Intent intent = JumpEditActivity.intentEditJump(getActivity(), item);
+        getActivity().startActivity(intent);
     }
 
     @Override public void onJumpSelected(@NonNull Jump jump) {
