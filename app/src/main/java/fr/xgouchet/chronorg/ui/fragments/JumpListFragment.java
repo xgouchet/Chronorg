@@ -23,7 +23,7 @@ import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.ui.activities.JumpEditActivity;
 import fr.xgouchet.chronorg.ui.adapters.JumpsAdapter;
-import fr.xgouchet.chronorg.ui.contracts.JumpListContract;
+import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 import fr.xgouchet.chronorg.ui.viewholders.JumpViewHolder;
 
 import static butterknife.ButterKnife.bind;
@@ -32,7 +32,8 @@ import static butterknife.ButterKnife.bind;
  * @author Xavier Gouchet
  */
 public class JumpListFragment extends Fragment
-        implements JumpListContract.View, JumpViewHolder.Listener {
+        implements BaseListView<Jump>,
+        JumpViewHolder.Listener {
 
     private static final String ARGUMENT_ENTITY_ID = "entity_id";
 
@@ -41,7 +42,7 @@ public class JumpListFragment extends Fragment
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
-    private JumpListContract.Presenter presenter;
+    private BaseListPresenter<Jump> presenter;
     private final JumpsAdapter adapter;
 
     private int entityId = -1;
@@ -76,7 +77,7 @@ public class JumpListFragment extends Fragment
         presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(@NonNull JumpListContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull BaseListPresenter<Jump> presenter) {
         this.presenter = presenter;
     }
 

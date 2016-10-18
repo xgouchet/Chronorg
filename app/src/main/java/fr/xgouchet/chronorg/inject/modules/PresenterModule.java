@@ -3,6 +3,7 @@ package fr.xgouchet.chronorg.inject.modules;
 import dagger.Module;
 import dagger.Provides;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
+import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
 import fr.xgouchet.chronorg.inject.annotations.ActivityScope;
@@ -11,6 +12,7 @@ import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
@@ -79,6 +81,14 @@ public class PresenterModule {
     public TimelinePresenter provideTimelinePresenter(EntityRepository entityRepository){
         return new TimelinePresenter(entityRepository);
     }
+
+    @Provides
+    @ActivityScope
+    public EventListPresenter provideEventListPresenter(EventRepository eventRepository){
+        return new EventListPresenter(eventRepository);
+    }
+
+
 
     @Provides
     @ActivityScope

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.fragments.BaseView;
-import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 
 /**
  * @author Xavier Gouchet
@@ -22,7 +21,7 @@ public interface ProjectEditContract {
         void invalidName(int reason);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
 
         void setView(View view);
 

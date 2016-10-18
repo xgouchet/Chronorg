@@ -8,7 +8,6 @@ import org.joda.time.ReadableInstant;
 
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.fragments.BaseView;
-import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 
 /**
  * @author Xavier Gouchet
@@ -35,7 +34,7 @@ public interface EntityEditContract {
                         @ColorInt int color);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
 
         void setView(View view);
 

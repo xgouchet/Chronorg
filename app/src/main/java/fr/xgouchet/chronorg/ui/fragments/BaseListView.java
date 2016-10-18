@@ -9,7 +9,7 @@ import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 /**
  * @author Xavier Gouchet
  */
-public interface BaseListView<P extends BaseListPresenter<T>, T> extends BaseView<P, List<T>> {
+public interface BaseListView<T> extends BaseView<BaseListPresenter<T>, List<T>> {
 
     void setLoading(boolean active);
 

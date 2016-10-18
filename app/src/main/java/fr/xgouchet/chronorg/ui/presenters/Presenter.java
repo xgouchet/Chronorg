@@ -3,7 +3,7 @@ package fr.xgouchet.chronorg.ui.presenters;
 /**
  * @author Xavier Gouchet
  */
-public interface BasePresenter {
+public interface Presenter {
 
     void subscribe();
 

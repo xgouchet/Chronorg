@@ -4,13 +4,12 @@ import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.fragments.BaseView;
-import fr.xgouchet.chronorg.ui.presenters.BasePresenter;
 
 /**
  * @author Xavier Gouchet
  */
 public interface EntityDetailsContract {
-    interface Presenter extends BasePresenter {
+    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
         void setView(View view);
 
         void deleteEntity();

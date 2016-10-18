@@ -5,10 +5,12 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
+import fr.xgouchet.chronorg.data.ioproviders.EventIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
+import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationContext;
@@ -59,4 +61,16 @@ public class RepositoryModule {
         return new JumpRepository(context, provider);
     }
 
+    @Provides
+    @ApplicationScope
+    public EventIOProvider provideEventIOProvider() {
+        return new EventIOProvider();
+    }
+
+    @Provides
+    @ApplicationScope
+    public EventRepository provideEventRepository(@ApplicationContext Context context,
+                                                 EventIOProvider provider) {
+        return new EventRepository(context, provider);
+    }
 }

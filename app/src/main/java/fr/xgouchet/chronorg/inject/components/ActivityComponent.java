@@ -7,6 +7,7 @@ import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
@@ -38,6 +39,8 @@ public interface ActivityComponent {
     JumpEditPresenter getJumpEditPresenter();
 
     TimelinePresenter getTimelinePresenter();
+
+    EventListPresenter getEventListPresenter();
 
     DateTimePickerPresenter getDateTimePickerPresenter();
 }

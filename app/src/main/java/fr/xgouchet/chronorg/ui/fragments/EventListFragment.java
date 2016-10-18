@@ -1,6 +1,5 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,37 +19,34 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.ui.activities.EntityDetailsActivity;
-import fr.xgouchet.chronorg.ui.activities.EntityEditActivity;
-import fr.xgouchet.chronorg.ui.adapters.EntitiesAdapter;
+import fr.xgouchet.chronorg.data.models.Event;
+import fr.xgouchet.chronorg.ui.adapters.EventsAdapter;
 import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
-import fr.xgouchet.chronorg.ui.viewholders.EntityViewHolder;
+import fr.xgouchet.chronorg.ui.viewholders.EventViewHolder;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class EntityListFragment extends Fragment
-        implements BaseListView<Entity>,
-        EntityViewHolder.Listener {
+public class EventListFragment extends Fragment
+        implements BaseListView<Event>,
+        EventViewHolder.Listener {
 
     private static final String ARGUMENT_PROJECT_ID = "project_id";
-
 
     @BindView(android.R.id.list) RecyclerView list;
     @BindView(R.id.loading) ProgressBar loading;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
+    private BaseListPresenter<Event> presenter;
+    private final EventsAdapter adapter;
+
     private int projectId = -1;
-    @Nullable private BaseListPresenter<Entity> presenter;
 
-    /*package*/ final EntitiesAdapter adapter;
-
-    public static EntityListFragment createFragment(int projectId) {
-        EntityListFragment fragment = new EntityListFragment();
+    public static EventListFragment createFragment(int projectId) {
+        EventListFragment fragment = new EventListFragment();
 
         Bundle args = new Bundle(1);
         args.putInt(ARGUMENT_PROJECT_ID, projectId);
@@ -58,13 +54,12 @@ public class EntityListFragment extends Fragment
         return fragment;
     }
 
-    public EntityListFragment() {
-        this.adapter = new EntitiesAdapter(new ArrayList<Entity>(), this);
+    public EventListFragment() {
+        adapter = new EventsAdapter(new ArrayList<Event>(), this);
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle args = getArguments();
         if ((args != null) && args.containsKey(ARGUMENT_PROJECT_ID)) {
             projectId = args.getInt(ARGUMENT_PROJECT_ID);
@@ -82,28 +77,19 @@ public class EntityListFragment extends Fragment
         return view;
     }
 
+
     @Override public void onResume() {
         super.onResume();
-        if (presenter != null) presenter.subscribe();
+        presenter.subscribe();
     }
 
     @Override public void onPause() {
         super.onPause();
-        if (presenter != null) presenter.unsubscribe();
+        presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(@NonNull BaseListPresenter<Entity> presenter) {
+    @Override public void setPresenter(@NonNull BaseListPresenter<Event> presenter) {
         this.presenter = presenter;
-    }
-
-    @Override public void showCreateItemUi() {
-        Intent intent = EntityEditActivity.intentNewEntity(getActivity(), projectId);
-        getActivity().startActivity(intent);
-    }
-
-    @Override public void showItem(@NonNull Entity entity) {
-        Intent intent = EntityDetailsActivity.buildIntent(getActivity(), entity);
-        getActivity().startActivity(intent);
     }
 
     @Override public void setLoading(boolean active) {
@@ -112,29 +98,39 @@ public class EntityListFragment extends Fragment
     }
 
     @Override public void setEmpty() {
-        message.setText(R.string.empty_entities_list);
+        message.setText(R.string.empty_events_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
-        message.setText(R.string.error_entities_list);
+        message.setText(R.string.error_events_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }
 
-
-    @Override public void setContent(@NonNull List<Entity> entities) {
-        adapter.update(entities);
+    @Override public void setContent(@NonNull List<Event> jumps) {
+        adapter.update(jumps);
         message.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
     }
 
-    @Override public void onEntitySelected(@NonNull Entity entity) {
-        presenter.itemSelected(entity);
+    @Override public void showCreateItemUi() {
+        // TODO handle tablet
+//        Intent intent = EventEditActivity.intentNewEvent(getActivity(), entityId);
+//        getActivity().startActivity(intent);
     }
 
-    @OnClick(R.id.fab) public void onFabClicked() {
+    @OnClick(R.id.fab) public void onCreateNewEvent() {
         presenter.createNewItem();
+    }
+
+    @Override public void showItem(@NonNull Event item) {
+//        Intent intent = EventEditActivity.intentEditEvent(getActivity(), item);
+//        getActivity().startActivity(intent);
+    }
+
+    @Override public void onEventSelected(@NonNull Event event) {
+        presenter.itemSelected(event);
     }
 }

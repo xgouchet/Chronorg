@@ -26,7 +26,7 @@ import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.activities.ProjectEditActivity;
 import fr.xgouchet.chronorg.ui.activities.ProjectDetailsActivity;
 import fr.xgouchet.chronorg.ui.adapters.ProjectsAdapter;
-import fr.xgouchet.chronorg.ui.contracts.ProjectListContract;
+import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 import fr.xgouchet.chronorg.ui.viewholders.ProjectViewHolder;
 
 import static butterknife.ButterKnife.bind;
@@ -36,7 +36,7 @@ import static butterknife.ButterKnife.bind;
  */
 @Trace
 public class ProjectListFragment extends Fragment
-        implements ProjectListContract.View,
+        implements BaseListView<Project>,
         ProjectViewHolder.Listener {
 
     @BindView(android.R.id.list) RecyclerView list;
@@ -46,7 +46,7 @@ public class ProjectListFragment extends Fragment
 
     private final ProjectsAdapter adapter;
 
-    private ProjectListContract.Presenter presenter;
+    private BaseListPresenter<Project> presenter;
 
     public ProjectListFragment() {
         this.adapter = new ProjectsAdapter(new ArrayList<Project>(), this);
@@ -73,7 +73,7 @@ public class ProjectListFragment extends Fragment
         presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(@NonNull ProjectListContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull BaseListPresenter<Project> presenter) {
         this.presenter = presenter;
     }
 

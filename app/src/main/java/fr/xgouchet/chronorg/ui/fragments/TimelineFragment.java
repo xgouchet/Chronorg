@@ -20,14 +20,15 @@ import butterknife.BindView;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.TimelineShard;
 import fr.xgouchet.chronorg.ui.adapters.TimelineShardsAdapter;
-import fr.xgouchet.chronorg.ui.contracts.TimelineContract;
+import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
 
 import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class TimelineFragment extends Fragment implements TimelineContract.View {
+public class TimelineFragment extends Fragment
+        implements BaseListView<TimelineShard> {
 
 
     @BindView(android.R.id.list) RecyclerView list;
@@ -35,7 +36,7 @@ public class TimelineFragment extends Fragment implements TimelineContract.View 
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.message) TextView message;
 
-    private TimelineContract.Presenter presenter;
+    private BaseListPresenter<TimelineShard> presenter;
     private final TimelineShardsAdapter adapter;
 
     public static TimelineFragment createFragment() {
@@ -68,7 +69,7 @@ public class TimelineFragment extends Fragment implements TimelineContract.View 
         presenter.unsubscribe();
     }
 
-    @Override public void setPresenter(@NonNull TimelineContract.Presenter presenter) {
+    @Override public void setPresenter(@NonNull BaseListPresenter<TimelineShard> presenter) {
         this.presenter = presenter;
     }
 
