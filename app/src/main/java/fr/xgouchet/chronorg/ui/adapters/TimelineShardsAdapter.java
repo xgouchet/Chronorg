@@ -32,7 +32,7 @@ public class TimelineShardsAdapter extends BaseSimpleAdapter<TimelineShard, Time
     }
 
     @Override protected TimelineShardViewHolder instantiateViewHolder(int viewType, View view) {
-        return new TimelineShardViewHolder(view);
+        return new TimelineShardViewHolder(null, view);
     }
 
     @Override protected int getLayout(int viewType) {

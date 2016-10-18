@@ -19,8 +19,9 @@ public class TimelineShard {
 
     public static final int TYPE_START = 1;
     public static final int TYPE_END = 2;
+    public static final int TYPE_EVENT = 3;
 
-    @IntDef({TYPE_START, TYPE_END})
+    @IntDef({TYPE_START, TYPE_END, TYPE_EVENT})
     @Retention(RetentionPolicy.CLASS)
     public @interface Type {
     }

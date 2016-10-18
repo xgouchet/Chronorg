@@ -20,6 +20,17 @@ public class Segment implements Comparable<Segment> {
     @ColorInt private final int color;
 
     public Segment(
+            @NonNull ReadableInstant instant,
+            @NonNull String legend,
+            int color) {
+        this.legendFrom = legend;
+        this.legendTo = legend;
+        this.from = instant;
+        this.to = instant;
+        this.color = color;
+    }
+
+    public Segment(
             @NonNull ReadableInstant from,
             @NonNull String legendFrom,
             @NonNull ReadableInstant to,

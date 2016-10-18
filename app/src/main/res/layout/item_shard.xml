@@ -14,23 +14,6 @@
         android:layout_height="72dp"/>
 
     <TextView
-        android:id="@+id/legend"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_gravity="end|center_vertical"
-        android:ellipsize="end"
-        android:gravity="start|center_vertical"
-        android:maxLines="1"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="4dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="24dp"
-        android:paddingTop="4dp"
-        android:textAppearance="?android:textAppearanceListItem"
-        tools:text="Foo (Bar) Spam"
-        android:layout_toEndOf="@+id/timeline"/>
-
-    <TextView
         android:id="@+id/instant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,5 +32,23 @@
         tools:text="Foo (Bar) Spam"
         android:layout_toEndOf="@+id/timeline"
         android:layout_below="@+id/legend"/>
+
+    <TextView
+        android:id="@+id/legend"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_gravity="end|center_vertical"
+        android:ellipsize="end"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:paddingBottom="4dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingTop="4dp"
+        android:textAppearance="?android:textAppearanceListItem"
+        tools:text="Foo (Bar) Spam"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/timeline"
+        android:layout_marginStart="15dp"/>
 
 </RelativeLayout>

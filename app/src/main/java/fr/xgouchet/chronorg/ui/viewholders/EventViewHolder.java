@@ -17,28 +17,17 @@ import static butterknife.ButterKnife.bind;
  */
 public class EventViewHolder extends BaseViewHolder<Event> {
 
-    public interface Listener {
-
-        void onEventSelected(@NonNull Event entity);
-    }
 
     @BindView(R.id.name) TextView name;
     @BindView(R.id.description) TextView description;
     @BindView(R.id.underline) View underline;
 
-    private Event event;
-
-    @NonNull private final Listener listener;
-
-    public EventViewHolder(@NonNull Listener listener, View itemView) {
-        super(itemView);
-        this.listener = listener;
+    public EventViewHolder(@NonNull Listener<Event> listener, View itemView) {
+        super(listener, itemView);
         bind(this, itemView);
     }
 
-    @Override public void bindItem(@NonNull Event event) {
-        this.event = event;
-
+    @Override public void onBindItem(@NonNull Event event) {
         name.setText(event.getName());
 
         final String description = event.getDescription();
@@ -52,10 +41,8 @@ public class EventViewHolder extends BaseViewHolder<Event> {
         underline.setBackgroundColor(event.getColor());
     }
 
-    @OnClick(R.id.entity)
-    public void onSelectEntity() {
-        if (event != null) {
-            listener.onEventSelected(event);
-        }
+    @OnClick(R.id.event)
+    public void onSelectEvent() {
+        fireSelected();
     }
 }

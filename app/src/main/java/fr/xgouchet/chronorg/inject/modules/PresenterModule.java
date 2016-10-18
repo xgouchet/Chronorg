@@ -12,6 +12,7 @@ import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.EventEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
@@ -78,17 +79,22 @@ public class PresenterModule {
 
     @Provides
     @ActivityScope
-    public TimelinePresenter provideTimelinePresenter(EntityRepository entityRepository){
-        return new TimelinePresenter(entityRepository);
+    public TimelinePresenter provideTimelinePresenter(EntityRepository entityRepository,
+                                                      EventRepository eventRepository) {
+        return new TimelinePresenter(entityRepository, eventRepository);
     }
 
     @Provides
     @ActivityScope
-    public EventListPresenter provideEventListPresenter(EventRepository eventRepository){
+    public EventListPresenter provideEventListPresenter(EventRepository eventRepository) {
         return new EventListPresenter(eventRepository);
     }
 
-
+    @Provides
+    @ActivityScope
+    public EventEditPresenter provideEventEditPresenter(EventRepository eventRepository) {
+        return new EventEditPresenter(eventRepository);
+    }
 
     @Provides
     @ActivityScope

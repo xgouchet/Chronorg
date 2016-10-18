@@ -1,6 +1,7 @@
 package fr.xgouchet.chronorg.ui.viewholders;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,12 +30,13 @@ public class TimelineShardViewHolder extends BaseViewHolder<TimelineShard> {
     @BindView(R.id.timeline) TimelineShardView timelineShard;
 
 
-    public TimelineShardViewHolder(View itemView) {
-        super(itemView);
+    public TimelineShardViewHolder(@Nullable Listener<TimelineShard> listener,
+                                   @NonNull View itemView) {
+        super(listener, itemView);
         bind(this, itemView);
     }
 
-    @Override public void bindItem(@NonNull TimelineShard shard) {
+    @Override public void onBindItem(@NonNull TimelineShard shard) {
 
         legend.setText(shard.getLegend());
         instant.setText(dtf.print(shard.getInstant()));

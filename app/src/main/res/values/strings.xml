@@ -2,10 +2,15 @@
     <string name="app_name">Chronorg</string>
 
     <string name="title_entities">Entities</string>
+    <string name="title_timeline">Timeline</string>
+    <string name="title_events">Events</string>
+
 
     <string name="empty_projects_list">No project yet…</string>
     <string name="empty_entities_list">No entities in this project yet</string>
     <string name="empty_jumps_list">No jumps in this entity yet</string>
+    <string name="empty_events_list">No events in this project yet</string>
+
 
     <string name="hint_project_name">Project name</string>
     <string name="hint_project_description">Project description</string>
@@ -14,6 +19,14 @@
     <string name="hint_entity_description">Entity description</string>
     <string name="hint_death">Death date and time</string>
     <string name="hint_color">Color</string>
+    <string name="hint_event_name">Event Name</string>
+    <string name="hint_event_description">Event description</string>
+    <string name="hint_event_instant">Event date and time</string>
+    <string name="hint_jump_name">Jump name</string>
+    <string name="hint_jump_to">Jump destination</string>
+    <string name="hint_jump_description">Jump Description</string>
+    <string name="hint_jump_from">Jump origin</string>
+
 
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
@@ -27,13 +40,6 @@
     <string name="error_project_details_empty">No project to display</string>
     <string name="error_entity_details_empty">No entity to display</string>
     <string name="error_jump_details_empty">No jump to display</string>
-    <string name="hint_jump_name">Jump name</string>
-    <string name="hint_jump_to">Jump destination</string>
-    <string name="hint_jump_description">Jump Description</string>
-    <string name="hint_jump_from">Jump origin</string>
-    <string name="title_timeline">Timeline</string>
-    <string name="title_events">Events</string>
-    <string name="empty_events_list">No events in this project yet</string>
     <string name="error_events_list">Error reading events</string>
 
 </resources>

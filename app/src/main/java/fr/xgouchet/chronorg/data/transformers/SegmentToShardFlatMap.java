@@ -62,9 +62,11 @@ public class SegmentToShardFlatMap
                 }
 
             } else if (nextToStart != null) {
+                boolean isEvent = nextToStart.getFrom() == nextToStart.getTo();
+
                 TimelineShard.Builder shardBuilder =
                         new TimelineShard.Builder(
-                                TimelineShard.TYPE_START,
+                                isEvent ? TimelineShard.TYPE_EVENT : TimelineShard.TYPE_START,
                                 nextToStart.getColor(),
                                 nextToStart.getFrom())
                                 .withLegend(nextToStart.getLegendFrom());
@@ -75,22 +77,22 @@ public class SegmentToShardFlatMap
                     if ((ongoing == null) && !added) {
                         ongoing = nextToStart;
                         shardBuilder.withPosition(i);
-                        openSegments.set(i, nextToStart);
+                        if (!isEvent) openSegments.set(i, nextToStart);
                         added = true;
                     }
                     shardBuilder.withOngoingSegment(ongoing);
                 }
                 if (!added) {
                     shardBuilder.withPosition(openSegments.size());
-                    openSegments.add(nextToStart);
+                    if (!isEvent) openSegments.add(nextToStart);
                     shardBuilder.withOngoingSegment(nextToStart);
                 }
                 shards.add(shardBuilder.build());
 
                 // update nextToClose
-                if ((nextToClose == null) || (nextToClose.getTo().isAfter(nextToStart.getTo()))) {
-                    nextToClose = nextToStart;
-                }
+                if (!isEvent)
+                    if ((nextToClose == null) || (nextToClose.getTo().isAfter(nextToStart.getTo())))
+                        nextToClose = nextToStart;
 
                 index++;
             }

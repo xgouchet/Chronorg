@@ -23,7 +23,7 @@
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_entity_name"
+                android:hint="@string/hint_event_name"
                 android:imeOptions="actionNext"
                 android:inputType="text|textCapWords"
                 android:maxLines="1"
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top|start"
-                android:hint="@string/hint_entity_description"
+                android:hint="@string/hint_event_description"
                 android:imeOptions="actionNone"
                 android:inputType="text|textCapSentences|textMultiLine"
                 android:maxLines="3"
@@ -55,7 +55,7 @@
 
 
         <TextView
-            android:id="@+id/birth_hint"
+            android:id="@+id/instant_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -63,11 +63,11 @@
             android:layout_marginTop="16dp"
             android:inputType="none"
             android:maxLines="1"
-            android:text="@string/hint_birth"
+            android:text="@string/hint_event_instant"
             android:textAppearance="?android:textAppearanceSmall"/>
 
         <Button
-            android:id="@+id/input_birth"
+            android:id="@+id/input_instant"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -80,32 +80,6 @@
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="15/4/2016 23:00:40 UTC"/>
 
-        <TextView
-            android:id="@+id/death_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:inputType="none"
-            android:maxLines="1"
-            android:text="@string/hint_death"
-            android:textAppearance="?android:textAppearanceSmall"/>
-
-
-        <Button
-            android:id="@+id/input_death"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="?android:selectableItemBackground"
-            android:drawableEnd="@drawable/ic_event_black_24dp"
-            android:inputType="none"
-            android:maxLines="1"
-            android:textAppearance="?android:textAppearanceMedium"
-            tools:text="15/4/2016 23:00:40 UTC"/>
 
         <TextView
             android:id="@+id/color_hint"
@@ -127,10 +101,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="@color/red"
+            android:src="@drawable/ic_palette_black_24dp"
+            android:scaleType="fitCenter"
             android:inputType="none"
             android:maxLines="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_palette_black_24dp"
             android:textAppearance="?android:textAppearanceMedium"/>
 
     </LinearLayout>

@@ -9,6 +9,7 @@ import java.util.List;
 
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
+import fr.xgouchet.chronorg.ui.viewholders.BaseViewHolder;
 import fr.xgouchet.chronorg.ui.viewholders.EntityViewHolder;
 
 /**
@@ -17,9 +18,10 @@ import fr.xgouchet.chronorg.ui.viewholders.EntityViewHolder;
 public class EntitiesAdapter extends BaseSimpleAdapter<Entity, EntityViewHolder> {
 
     @NonNull /*package*/ final List<Entity> entities;
-    @NonNull private final EntityViewHolder.Listener listener;
+    @NonNull private final BaseViewHolder.Listener<Entity> listener;
 
-    public EntitiesAdapter(@NonNull List<Entity> entities, @NonNull EntityViewHolder.Listener listener) {
+    public EntitiesAdapter(@NonNull List<Entity> entities,
+                           @NonNull BaseViewHolder.Listener<Entity> listener) {
         this.entities = entities;
         this.listener = listener;
     }

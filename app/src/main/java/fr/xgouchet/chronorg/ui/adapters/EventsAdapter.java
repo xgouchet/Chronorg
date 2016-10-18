@@ -7,6 +7,7 @@ import java.util.List;
 
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Event;
+import fr.xgouchet.chronorg.ui.viewholders.BaseViewHolder;
 import fr.xgouchet.chronorg.ui.viewholders.EventViewHolder;
 
 /**
@@ -16,9 +17,9 @@ public class EventsAdapter extends BaseSimpleAdapter<Event, EventViewHolder> {
 
 
     @NonNull /*package*/ final List<Event> events;
-    @NonNull private final EventViewHolder.Listener listener;
+    @NonNull private final BaseViewHolder.Listener<Event> listener;
 
-    public EventsAdapter(@NonNull List<Event> events, @NonNull EventViewHolder.Listener listener) {
+    public EventsAdapter(@NonNull List<Event> events, @NonNull BaseViewHolder.Listener<Event> listener) {
         this.events = events;
         this.listener = listener;
     }
@@ -38,7 +39,7 @@ public class EventsAdapter extends BaseSimpleAdapter<Event, EventViewHolder> {
     }
 
     @Override protected int getLayout(int viewType) {
-        return R.layout.item_shard;
+        return R.layout.item_event;
     }
 
     @Override protected Event getItem(int position) {

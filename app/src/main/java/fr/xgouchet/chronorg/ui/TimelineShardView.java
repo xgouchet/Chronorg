@@ -59,10 +59,11 @@ public class TimelineShardView extends View {
         lineMargin = (lineWidth - lineStrokeWidth) / 2;
 
         paint = new Paint();
+        paint.setAntiAlias(true);
 
         if (isInEditMode()) {
             final DateTime instant = new DateTime("1970-01-01T00:00Z");
-            timelineShard = new TimelineShard.Builder(TimelineShard.TYPE_END, Color.GREEN, instant)
+            timelineShard = new TimelineShard.Builder(TimelineShard.TYPE_EVENT, Color.GREEN, instant)
                     .withOngoingSegmentColor(Color.RED)
                     .withOngoingSegmentColor(Color.GREEN)
                     .withOngoingSegmentColor(Color.BLUE)
@@ -119,7 +120,7 @@ public class TimelineShardView extends View {
                             lineStartX + lineWidth - lineMargin,
                             height,
                             paint);
-                } else {
+                } else if (timelineShard.getType() == TimelineShard.TYPE_END){
                     canvas.drawRect(lineStartX + lineMargin,
                             0,
                             lineStartX + lineWidth - lineMargin,

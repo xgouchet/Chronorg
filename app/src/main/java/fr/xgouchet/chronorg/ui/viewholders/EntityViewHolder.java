@@ -17,28 +17,17 @@ import static butterknife.ButterKnife.bind;
  */
 public class EntityViewHolder extends BaseViewHolder<Entity> {
 
-    public interface Listener {
-
-        void onEntitySelected(@NonNull Entity entity);
-    }
-
     @BindView(R.id.name) TextView name;
     @BindView(R.id.description) TextView description;
     @BindView(R.id.underline) View underline;
 
-    private Entity entity;
 
-    @NonNull private final Listener listener;
-
-    public EntityViewHolder(@NonNull Listener listener, View itemView) {
-        super(itemView);
-        this.listener = listener;
+    public EntityViewHolder(@NonNull Listener<Entity> listener, View itemView) {
+        super(listener, itemView);
         bind(this, itemView);
     }
 
-    @Override public void bindItem(@NonNull Entity entity) {
-        this.entity = entity;
-
+    @Override public void onBindItem(@NonNull Entity entity) {
         name.setText(entity.getName());
 
         final String description = entity.getDescription();
@@ -54,8 +43,8 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     @OnClick(R.id.entity)
     public void onSelectEntity() {
-        if (entity != null) {
-            listener.onEntitySelected(entity);
-        }
+        fireSelected();
     }
+
+
 }

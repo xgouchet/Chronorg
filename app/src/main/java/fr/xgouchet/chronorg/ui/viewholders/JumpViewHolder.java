@@ -22,28 +22,17 @@ public class JumpViewHolder extends BaseViewHolder<Jump> {
 
     final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
 
-    public interface Listener {
-        void onJumpSelected(@NonNull Jump jump);
-    }
-
     @BindView(R.id.name) TextView name;
     @BindView(R.id.description) TextView description;
     @BindView(R.id.from_instant) TextView from_instant;
     @BindView(R.id.to_instant) TextView to_instant;
 
-    private Jump jump;
-
-    @NonNull private final Listener listener;
-
-    public JumpViewHolder(@NonNull Listener listener, View itemView) {
-        super(itemView);
-        this.listener = listener;
+    public JumpViewHolder(@NonNull Listener<Jump> listener, View itemView) {
+        super(listener, itemView);
         bind(this, itemView);
     }
 
-    @Override public void bindItem(@NonNull Jump jump) {
-        this.jump = jump;
-
+    @Override public void onBindItem(@NonNull Jump jump) {
         name.setText(jump.getName());
 
         final String description = jump.getDescription();
@@ -60,8 +49,6 @@ public class JumpViewHolder extends BaseViewHolder<Jump> {
 
     @OnClick(R.id.jump)
     public void onSelectProject() {
-        if (jump != null) {
-            listener.onJumpSelected(jump);
-        }
+        fireSelected();
     }
 }
