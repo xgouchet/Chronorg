@@ -17,7 +17,7 @@ import fr.xgouchet.chronorg.ui.viewholders.ProjectViewHolder;
 public class ProjectsAdapter extends BaseSimpleAdapter<Project, ProjectViewHolder> {
 
     @NonNull /*package*/ final List<Project> projects;
-    @NonNull private final ProjectViewHolder.Listener listener;
+    @NonNull /*package*/ final ProjectViewHolder.Listener listener;
 
     public ProjectsAdapter(@NonNull List<Project> projects, @NonNull ProjectViewHolder.Listener listener) {
         this.projects = projects;
@@ -45,12 +45,7 @@ public class ProjectsAdapter extends BaseSimpleAdapter<Project, ProjectViewHolde
             @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                 return TextUtils.equals(
                         projects.get(oldItemPosition).getName(),
-                        newContent.get(newItemPosition).getName())
-                        &&
-                        TextUtils.equals(
-                                projects.get(oldItemPosition).getDescription(),
-                                newContent.get(newItemPosition).getDescription())
-                        ;
+                        newContent.get(newItemPosition).getName());
             }
         });
 

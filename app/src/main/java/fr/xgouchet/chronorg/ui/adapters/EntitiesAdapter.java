@@ -50,10 +50,6 @@ public class EntitiesAdapter extends BaseSimpleAdapter<Entity, EntityViewHolder>
                         entities.get(oldItemPosition).getName(),
                         newContent.get(newItemPosition).getName())
                         &&
-                        TextUtils.equals(
-                                entities.get(oldItemPosition).getDescription(),
-                                newContent.get(newItemPosition).getDescription())
-                        &&
                         // TODO compare values and not toString
                         TextUtils.equals(
                                 entities.get(oldItemPosition).getBirth().toString(),

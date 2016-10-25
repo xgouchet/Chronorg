@@ -1,7 +1,6 @@
 package fr.xgouchet.chronorg.ui.viewholders;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import static butterknife.ButterKnife.bind;
 public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     @BindView(R.id.name) TextView name;
-    @BindView(R.id.description) TextView description;
     @BindView(R.id.underline) View underline;
 
 
@@ -29,14 +27,6 @@ public class EntityViewHolder extends BaseViewHolder<Entity> {
 
     @Override public void onBindItem(@NonNull Entity entity) {
         name.setText(entity.getName());
-
-        final String description = entity.getDescription();
-        if (TextUtils.isEmpty(description)) {
-            this.description.setVisibility(View.GONE);
-        } else {
-            this.description.setVisibility(View.VISIBLE);
-            this.description.setText(description);
-        }
 
         underline.setBackgroundColor(entity.getColor());
     }

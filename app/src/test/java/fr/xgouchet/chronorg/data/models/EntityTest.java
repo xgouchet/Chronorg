@@ -64,7 +64,7 @@ public class EntityTest {
     @Before
     public void setUp() {
         JodaTimeAndroid.init(RuntimeEnvironment.application);
-        marty = new Entity(42, "Marty", "Martin Seamus McFly", MARTY_BIRTH, MARTY_DEATH);
+        marty = new Entity(42, "Marty", MARTY_BIRTH, MARTY_DEATH);
     }
 
     @Test

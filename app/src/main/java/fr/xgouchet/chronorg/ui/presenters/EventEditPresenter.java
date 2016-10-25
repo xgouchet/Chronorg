@@ -37,7 +37,6 @@ public class EventEditPresenter implements EventEditContract.Presenter {
     public void setEvent(@NonNull Event event) {
         this.event = event;
         name = event.getName();
-        description = event.getDescription();
         instant = event.getInstant();
         color = event.getColor();
     }
@@ -50,7 +49,7 @@ public class EventEditPresenter implements EventEditContract.Presenter {
     @Override public void subscribe() {
         if (view == null) return;
 
-        view.setContent(name, description, instant, color);
+        view.setContent(name, instant, color);
     }
 
     @Override public void unsubscribe() {
@@ -78,12 +77,11 @@ public class EventEditPresenter implements EventEditContract.Presenter {
     }
 
     @Override
-    public void saveEvent(@NonNull String inputNameText, @NonNull String inputDescText) {
+    public void saveEvent(@NonNull String inputNameText) {
         if (view == null) return;
         if (event == null) return;
 
         event.setName(inputNameText);
-        event.setDescription(inputDescText);
         event.setInstant(instant);
         event.setColor(color);
         eventRepository.saveEvent(event)

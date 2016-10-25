@@ -36,7 +36,6 @@ public class JumpEditPresenter implements JumpEditContract.Presenter {
     public void setJump(@NonNull Jump jump) {
         this.jump = jump;
         name = jump.getName();
-        description = jump.getDescription();
         from = jump.getFrom();
         to = jump.getTo();
     }
@@ -49,7 +48,7 @@ public class JumpEditPresenter implements JumpEditContract.Presenter {
     @Override public void subscribe() {
         if (view == null) return;
 
-        view.setContent(name, description, from, to);
+        view.setContent(name, from, to);
     }
 
     @Override public void unsubscribe() {
@@ -77,12 +76,11 @@ public class JumpEditPresenter implements JumpEditContract.Presenter {
     }
 
     @Override
-    public void saveJump(@NonNull String inputNameText, @NonNull String inputDescText) {
+    public void saveJump(@NonNull String inputNameText) {
         if (view == null) return;
         if (jump == null) return;
 
         jump.setName(inputNameText);
-        jump.setDescription(inputDescText);
         jump.setFrom(from);
         jump.setTo(to);
         jumpRepository.saveJump(jump)

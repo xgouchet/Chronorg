@@ -15,7 +15,6 @@ public class EventCursorReader extends BaseCursorReader<Event> {
     private int idxId;
     private int idxProjectId;
     private int idxName;
-    private int idxDesc;
     private int idxInstant;
     private int idxColor;
 
@@ -27,7 +26,6 @@ public class EventCursorReader extends BaseCursorReader<Event> {
         idxId = getIndex(ChronorgSchema.COL_ID);
         idxProjectId = getIndex(ChronorgSchema.COL_PROJECT_ID);
         idxName = getIndex(ChronorgSchema.COL_NAME);
-        idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
         idxInstant = getIndex(ChronorgSchema.COL_INSTANT);
         idxColor = getIndex(ChronorgSchema.COL_COLOR);
     }
@@ -41,7 +39,6 @@ public class EventCursorReader extends BaseCursorReader<Event> {
         event.setId(readInt(idxId));
         event.setProjectId(readInt(idxProjectId));
         event.setName(readString(idxName));
-        event.setDescription(readString(idxDesc));
         event.setInstant(readString(idxInstant));
         event.setColor(readInt(idxColor));
     }

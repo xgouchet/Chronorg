@@ -49,10 +49,8 @@ public class EntityEditFragment extends Fragment
     private EntityEditContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
-    @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_birth) TextView inputBirth;
     @BindView(R.id.input_death) TextView inputDeath;
-    //    @BindView(R.id.input_color) ColorPickerView inputColor;
     @BindView(R.id.input_color) View inputColor;
 
     private ReadableInstant birth;
@@ -122,29 +120,20 @@ public class EntityEditFragment extends Fragment
         }
     }
 
-    @OnFocusChange(R.id.input_description) void onDescriptionFocusChanged(boolean hasFocus) {
-        if (!hasFocus) {
-            presenter.setDescription(inputDescription.getText().toString());
-        }
-    }
-
     @OnClick(R.id.input_birth) void onBirthClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), birth);
         startActivityForResult(intent, REQUEST_BIRTH_DATE);
     }
 
     @OnClick(R.id.input_death) void onDeathClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), death);
         startActivityForResult(intent, REQUEST_DEATH_DATE);
     }
 
     @OnClick(R.id.input_color) void onColorClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         // TODO find nearest selected color
         ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
                 colors, 0, 4, ColorPickerDialog.SIZE_SMALL);
@@ -159,9 +148,8 @@ public class EntityEditFragment extends Fragment
 
     private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
-        String inputDescText = inputDescription.getText().toString();
 
-        presenter.saveEntity(inputNameText, inputDescText);
+        presenter.saveEntity(inputNameText);
     }
 
     @Override public void setPresenter(@NonNull EntityEditContract.Presenter presenter) {
@@ -181,7 +169,6 @@ public class EntityEditFragment extends Fragment
                            @Nullable ReadableInstant death,
                            @ColorInt int color) {
         inputName.setText(name);
-        inputDescription.setText(description);
         this.birth = birth;
         inputBirth.setText(dtf.print(birth));
         this.death = death;

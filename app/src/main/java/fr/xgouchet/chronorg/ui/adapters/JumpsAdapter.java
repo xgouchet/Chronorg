@@ -48,10 +48,6 @@ public class JumpsAdapter extends BaseSimpleAdapter<Jump, JumpViewHolder> {
                         jumps.get(oldItemPosition).getName(),
                         newContent.get(newItemPosition).getName())
                         &&
-                        TextUtils.equals(
-                                jumps.get(oldItemPosition).getDescription(),
-                                newContent.get(newItemPosition).getDescription())
-                        &&
                         // TODO compare values and not toString
                         TextUtils.equals(
                                 jumps.get(oldItemPosition).getFrom().toString(),

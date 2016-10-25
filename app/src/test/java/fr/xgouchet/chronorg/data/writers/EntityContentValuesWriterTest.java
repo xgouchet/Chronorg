@@ -27,10 +27,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
 public class EntityContentValuesWriterTest {
 
-    public static final int FAKE_ID = 42;
     public static final int FAKE_PROJECT_ID = 815;
     public static final String FAKE_NAME = "Foo";
-    public static final String FAKE_DESC = "Lorem ipsum";
     public static final DateTime FAKE_BIRTH = new DateTime("1968-12-06T12:00:00Z");
     public static final DateTime FAKE_DEATH = new DateTime("2091-01-01T12:00:00Z");
     public static final int FAKE_COLOUR = Color.GREEN;
@@ -50,7 +48,6 @@ public class EntityContentValuesWriterTest {
         // Given
         when(mockEntity.getProjectId()).thenReturn(FAKE_PROJECT_ID);
         when(mockEntity.getName()).thenReturn(FAKE_NAME);
-        when(mockEntity.getDescription()).thenReturn(FAKE_DESC);
         when(mockEntity.getBirth()).thenReturn(FAKE_BIRTH);
         when(mockEntity.getDeath()).thenReturn(FAKE_DEATH);
         when(mockEntity.getColor()).thenReturn(FAKE_COLOUR);
@@ -61,7 +58,6 @@ public class EntityContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
         verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, FAKE_DEATH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOUR);
@@ -72,7 +68,6 @@ public class EntityContentValuesWriterTest {
         // Given
         when(mockEntity.getProjectId()).thenReturn(FAKE_PROJECT_ID);
         when(mockEntity.getName()).thenReturn(FAKE_NAME);
-        when(mockEntity.getDescription()).thenReturn(null);
         when(mockEntity.getBirth()).thenReturn(FAKE_BIRTH);
         when(mockEntity.getDeath()).thenReturn(null);
         when(mockEntity.getColor()).thenReturn(FAKE_COLOUR);
@@ -83,7 +78,6 @@ public class EntityContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_BIRTH_INSTANT, FAKE_BIRTH.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_DEATH_INSTANT, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOUR);

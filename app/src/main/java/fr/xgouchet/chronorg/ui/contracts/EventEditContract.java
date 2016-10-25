@@ -28,7 +28,6 @@ public interface EventEditContract {
 
 
         void setContent(@NonNull String name,
-                        @Nullable String description,
                         @NonNull ReadableInstant instant,
                         @ColorInt int color);
     }
@@ -37,8 +36,7 @@ public interface EventEditContract {
 
         void setView(View view);
 
-        void saveEvent(@NonNull String inputNameText,
-                       @NonNull String inputDescText);
+        void saveEvent(@NonNull String inputNameText);
 
         void setName(@NonNull String name);
 

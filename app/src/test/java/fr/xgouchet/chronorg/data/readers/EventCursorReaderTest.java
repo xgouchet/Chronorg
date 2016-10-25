@@ -44,7 +44,6 @@ public class EventCursorReaderTest {
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ID)).thenReturn(IDX_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_PROJECT_ID)).thenReturn(IDX_PROJECT_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_INSTANT)).thenReturn(IDX_INSTANT);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_COLOR)).thenReturn(IDX_COLOR);
 
@@ -74,7 +73,6 @@ public class EventCursorReaderTest {
         verify(event).setId(42);
         verify(event).setProjectId(815);
         verify(event).setName("Foo");
-        verify(event).setDescription("Lorem ipsum");
         verify(event).setInstant("1968-12-06T12:00:00Z");
         verify(event).setColor(0x0080FF);
     }

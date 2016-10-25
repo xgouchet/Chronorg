@@ -13,18 +13,14 @@
 
 
     <string name="hint_project_name">Project name</string>
-    <string name="hint_project_description">Project description</string>
     <string name="hint_birth">Birth date and time</string>
     <string name="hint_entity_name">Entity Name</string>
-    <string name="hint_entity_description">Entity description</string>
     <string name="hint_death">Death date and time</string>
     <string name="hint_color">Color</string>
     <string name="hint_event_name">Event Name</string>
-    <string name="hint_event_description">Event description</string>
     <string name="hint_event_instant">Event date and time</string>
     <string name="hint_jump_name">Jump name</string>
     <string name="hint_jump_to">Jump destination</string>
-    <string name="hint_jump_description">Jump Description</string>
     <string name="hint_jump_from">Jump origin</string>
 
 

@@ -26,7 +26,6 @@ public interface JumpEditContract {
         void invalidTo(int reason);
 
         void setContent(@Nullable String name,
-                        @Nullable String description,
                         @NonNull ReadableInstant from,
                         @NonNull ReadableInstant to);
     }
@@ -35,8 +34,7 @@ public interface JumpEditContract {
 
         void setView(View view);
 
-        void saveJump(@NonNull String inputNameText,
-                      @NonNull String inputDescText);
+        void saveJump(@NonNull String inputNameText);
 
         void setName(@NonNull String name);
 

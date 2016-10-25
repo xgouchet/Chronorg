@@ -46,7 +46,7 @@
         android:paddingStart="24dp"
         android:paddingTop="4dp"
         android:textAppearance="?android:textAppearanceListItem"
-        tools:text="Foo (Bar) Spam"
+        tools:text="Oct 10, 2016"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/timeline"
         android:layout_marginStart="15dp"/>

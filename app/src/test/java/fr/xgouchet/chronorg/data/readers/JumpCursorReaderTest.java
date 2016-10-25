@@ -45,7 +45,6 @@ public class JumpCursorReaderTest {
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ID)).thenReturn(IDX_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ENTITY_ID)).thenReturn(IDX_ENTITY_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_FROM_INSTANT)).thenReturn(IDX_FROM);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_TO_INSTANT)).thenReturn(IDX_TO);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ORDER)).thenReturn(IDX_ORDER);
@@ -77,7 +76,6 @@ public class JumpCursorReaderTest {
         verify(jump).setId(42);
         verify(jump).setEntityId(815);
         verify(jump).setName("Foo");
-        verify(jump).setDescription("Lorem ipsum");
         verify(jump).setFrom("1968-12-06T12:00:00Z");
         verify(jump).setTo("2091-04-08T12:00:00Z");
         verify(jump).setOrder(66);

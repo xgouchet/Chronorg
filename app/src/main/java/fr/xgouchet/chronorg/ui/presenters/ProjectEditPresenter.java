@@ -55,7 +55,7 @@ public class ProjectEditPresenter implements ProjectEditContract.Presenter {
     }
 
     @Override
-    public void saveProject(@NonNull String inputNameText, @NonNull String inputDescText) {
+    public void saveProject(@NonNull String inputNameText) {
         if (view == null) return;
         if (project == null) return;
 
@@ -66,7 +66,6 @@ public class ProjectEditPresenter implements ProjectEditContract.Presenter {
         }
 
         project.setName(inputNameText);
-        project.setDescription(inputDescText);
         projectRepository.saveProject(project)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

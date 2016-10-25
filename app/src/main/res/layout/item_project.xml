@@ -34,19 +34,5 @@
             android:textAppearance="?android:textAppearanceListItem"
             tools:text="Foo"/>
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="start"
-            android:paddingBottom="4dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:textStyle="italic"
-            android:textColor="@color/textColorSecondary"
-            android:textAppearance="?android:textAppearanceListItemSecondary"
-            tools:text="Lorem ipsum dolor sit amet blabla blablablab bl blabla b balb la"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

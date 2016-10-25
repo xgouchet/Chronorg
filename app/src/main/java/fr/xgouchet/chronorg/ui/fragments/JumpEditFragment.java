@@ -44,7 +44,6 @@ public class JumpEditFragment extends Fragment
     private JumpEditContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
-    @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_from) TextView inputFrom;
     @BindView(R.id.input_to) TextView inputTo;
     private ReadableInstant from;
@@ -57,7 +56,7 @@ public class JumpEditFragment extends Fragment
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_jump_edit, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_jump, container, false);
 
         bind(this, view);
         return view;
@@ -112,31 +111,22 @@ public class JumpEditFragment extends Fragment
         }
     }
 
-    @OnFocusChange(R.id.input_description) void onDescriptionFocusChanged(boolean hasFocus) {
-        if (!hasFocus) {
-            presenter.setDescription(inputDescription.getText().toString());
-        }
-    }
-
     @OnClick(R.id.input_from) void onBirthClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), from);
         startActivityForResult(intent, REQUEST_FROM_DATE);
     }
 
     @OnClick(R.id.input_to) void onDeathClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), to);
         startActivityForResult(intent, REQUEST_TO_DATE);
     }
 
     private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
-        String inputDescText = inputDescription.getText().toString();
 
-        presenter.saveJump(inputNameText, inputDescText);
+        presenter.saveJump(inputNameText);
     }
 
     @Override public void setPresenter(@NonNull JumpEditContract.Presenter presenter) {
@@ -151,11 +141,9 @@ public class JumpEditFragment extends Fragment
 
     @Override
     public void setContent(@Nullable String name,
-                           @Nullable String description,
                            @NonNull ReadableInstant from,
                            @NonNull ReadableInstant to) {
         inputName.setText(name);
-        inputDescription.setText(description);
         inputFrom.setText(dtf.print(from));
         inputTo.setText(dtf.print(to));
         this.from = from;

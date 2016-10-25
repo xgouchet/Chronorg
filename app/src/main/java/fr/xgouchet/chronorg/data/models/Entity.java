@@ -26,7 +26,6 @@ public class Entity implements Parcelable {
     private int projectId;
 
     @NonNull private String name;
-    @Nullable private String description;
 
     @NonNull private ReadableInstant birth;
     @NonNull private ReadableInstant death;
@@ -37,7 +36,6 @@ public class Entity implements Parcelable {
     public Entity() {
         id = -1;
         name = "‽";
-        description = null;
         birth = new DateTime("1970-01-01T00:00:00Z");
         death = new DateTime("2038-01-19T03:14:17Z");
         color = Color.rgb(0xF6, 0x40, 0x2C);
@@ -46,13 +44,11 @@ public class Entity implements Parcelable {
 
     public Entity(int projectId,
                   @NonNull String name,
-                  @Nullable String description,
                   @NonNull ReadableInstant birth,
                   @NonNull ReadableInstant death) {
         id = -1;
         this.projectId = projectId;
         this.name = name;
-        this.description = description;
         this.birth = birth;
         this.death = death;
         this.color = Color.RED;
@@ -158,10 +154,6 @@ public class Entity implements Parcelable {
         return name;
     }
 
-    @Nullable public String getDescription() {
-        return description;
-    }
-
     @NonNull public ReadableInstant getBirth() {
         return birth;
     }
@@ -184,10 +176,6 @@ public class Entity implements Parcelable {
 
     public void setName(@NonNull String name) {
         this.name = name;
-    }
-
-    public void setDescription(@Nullable String description) {
-        this.description = description;
     }
 
     public void setBirth(@NonNull ReadableInstant birth) {
@@ -218,7 +206,6 @@ public class Entity implements Parcelable {
         dest.writeInt(id);
         dest.writeInt(projectId);
         dest.writeString(name);
-        dest.writeString(description);
         dest.writeString(birth.toString());
         dest.writeString(death.toString());
         dest.writeInt(color);
@@ -228,7 +215,6 @@ public class Entity implements Parcelable {
         id = in.readInt();
         projectId = in.readInt();
         name = in.readString();
-        description = in.readString();
         birth = new DateTime(in.readString());
         death = new DateTime(in.readString());
         color = in.readInt();

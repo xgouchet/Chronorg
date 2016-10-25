@@ -3,7 +3,6 @@ package fr.xgouchet.chronorg.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
@@ -17,7 +16,6 @@ public class Jump implements Parcelable {
     private int entityId;
     private int order;
     @NonNull private String name = "";
-    @Nullable private String description;
     @NonNull private ReadableInstant from = new DateTime("1985-10-26T01:35:00-08:00");
     @NonNull private ReadableInstant to = new DateTime("1955-11-05T06:15:00-08:00");
 
@@ -51,14 +49,6 @@ public class Jump implements Parcelable {
 
     @NonNull public String getName() {
         return name;
-    }
-
-    public void setDescription(@Nullable String description) {
-        this.description = description;
-    }
-
-    @Nullable public String getDescription() {
-        return description;
     }
 
     public void setFrom(@NonNull ReadableInstant from) {
@@ -102,7 +92,6 @@ public class Jump implements Parcelable {
         dest.writeInt(this.entityId);
         dest.writeInt(this.order);
         dest.writeString(this.name);
-        dest.writeString(this.description);
         dest.writeString(this.from.toString());
         dest.writeString(this.to.toString());
     }
@@ -112,7 +101,6 @@ public class Jump implements Parcelable {
         this.entityId = in.readInt();
         this.order = in.readInt();
         this.name = in.readString();
-        this.description = in.readString();
         this.from = new DateTime(in.readString());
         this.to = new DateTime(in.readString());
     }

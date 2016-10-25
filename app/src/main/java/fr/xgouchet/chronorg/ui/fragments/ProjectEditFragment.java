@@ -32,7 +32,6 @@ public class ProjectEditFragment extends Fragment
 
     @BindView(R.id.input_name) EditText inputName;
     @BindView(R.id.input_name_layout) TextInputLayout inputNameLayout;
-    @BindView(R.id.input_description) EditText inputDesc;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,6 @@ public class ProjectEditFragment extends Fragment
 
     @Override public void setContent(@NonNull Project project) {
         inputName.setText(project.getName());
-        inputDesc.setText(project.getDescription());
     }
 
     @Override public void projectSaved() {
@@ -114,8 +112,7 @@ public class ProjectEditFragment extends Fragment
 
     private void saveProject() {
         String inputNameText = inputName.getText().toString().trim();
-        String inputDescText = inputDesc.getText().toString();
 
-        presenter.saveProject(inputNameText, inputDescText);
+        presenter.saveProject(inputNameText);
     }
 }

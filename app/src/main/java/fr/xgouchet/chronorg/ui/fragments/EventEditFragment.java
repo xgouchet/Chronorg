@@ -48,7 +48,6 @@ public class EventEditFragment extends Fragment
     private EventEditContract.Presenter presenter;
 
     @BindView(R.id.input_name) EditText inputName;
-    @BindView(R.id.input_description) EditText inputDescription;
     @BindView(R.id.input_instant) TextView inputInstant;
     @BindView(R.id.input_color) View inputColor;
 
@@ -115,22 +114,14 @@ public class EventEditFragment extends Fragment
         }
     }
 
-    @OnFocusChange(R.id.input_description) void onDescriptionFocusChanged(boolean hasFocus) {
-        if (!hasFocus) {
-            presenter.setDescription(inputDescription.getText().toString());
-        }
-    }
-
     @OnClick(R.id.input_instant) void onInstantClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         Intent intent = DateTimePickerActivity.createDateTimePicker(getActivity(), instant);
         startActivityForResult(intent, REQUEST_EVENT_DATE);
     }
 
     @OnClick(R.id.input_color) void onColorClicked() {
         onNameFocusChanged(false);
-        onDescriptionFocusChanged(false);
         // TODO find nearest selected color
         ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
                 colors, 0, 4, ColorPickerDialog.SIZE_SMALL);
@@ -145,9 +136,8 @@ public class EventEditFragment extends Fragment
 
     private void saveEvent() {
         String inputNameText = inputName.getText().toString().trim();
-        String inputDescText = inputDescription.getText().toString();
 
-        presenter.saveEvent(inputNameText, inputDescText);
+        presenter.saveEvent(inputNameText);
     }
 
     @Override public void setPresenter(@NonNull EventEditContract.Presenter presenter) {
@@ -162,11 +152,9 @@ public class EventEditFragment extends Fragment
 
     @Override
     public void setContent(@NonNull String name,
-                           @Nullable String description,
                            @NonNull ReadableInstant instant,
                            @ColorInt int color) {
         inputName.setText(name);
-        inputDescription.setText(description);
         this.instant = instant;
         inputInstant.setText(dtf.print(instant));
         inputColor.setBackgroundColor(color);

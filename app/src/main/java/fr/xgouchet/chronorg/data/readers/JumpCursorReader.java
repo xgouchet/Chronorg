@@ -15,7 +15,6 @@ public class JumpCursorReader extends BaseCursorReader<Jump> {
     private int idxId;
     private int idxEntityId;
     private int idxName;
-    private int idxDesc;
     private int idxFrom;
     private int idxTo;
     private int idxOrder;
@@ -28,7 +27,6 @@ public class JumpCursorReader extends BaseCursorReader<Jump> {
         idxId = getIndex(ChronorgSchema.COL_ID);
         idxEntityId = getIndex(ChronorgSchema.COL_ENTITY_ID);
         idxName = getIndex(ChronorgSchema.COL_NAME);
-        idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
         idxFrom = getIndex(ChronorgSchema.COL_FROM_INSTANT);
         idxTo = getIndex(ChronorgSchema.COL_TO_INSTANT);
         idxOrder = getIndex(ChronorgSchema.COL_ORDER);
@@ -43,7 +41,6 @@ public class JumpCursorReader extends BaseCursorReader<Jump> {
         jump.setId(readInt(idxId));
         jump.setEntityId(readInt(idxEntityId));
         jump.setName(readString(idxName));
-        jump.setDescription(readString(idxDesc));
         jump.setFrom(readString(idxFrom));
         jump.setTo(readString(idxTo));
         jump.setOrder(readInt(idxOrder));

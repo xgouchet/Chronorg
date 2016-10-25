@@ -40,7 +40,6 @@ public class ProjectCursorReaderTest {
 
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ID)).thenReturn(IDX_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
 
         projectCursorReader = new ProjectCursorReader(mockCursor);
     }
@@ -64,7 +63,6 @@ public class ProjectCursorReaderTest {
         // Then
         verify(entity).setId(42);
         verify(entity).setName("Foo");
-        verify(entity).setDescription("Lorem ipsum");
     }
 
 }

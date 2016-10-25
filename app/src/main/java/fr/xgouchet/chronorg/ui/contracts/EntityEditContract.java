@@ -38,8 +38,7 @@ public interface EntityEditContract {
 
         void setView(View view);
 
-        void saveEntity(@NonNull String inputNameText,
-                        @NonNull String inputDescText);
+        void saveEntity(@NonNull String inputNameText);
 
         void setName(@NonNull String name);
 

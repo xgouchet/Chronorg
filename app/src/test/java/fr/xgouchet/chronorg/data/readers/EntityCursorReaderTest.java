@@ -46,7 +46,6 @@ public class EntityCursorReaderTest {
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_ID)).thenReturn(IDX_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_PROJECT_ID)).thenReturn(IDX_PROJECT_ID);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_NAME)).thenReturn(IDX_NAME);
-        when(mockCursor.getColumnIndex(ChronorgSchema.COL_DESCRIPTION)).thenReturn(IDX_DESCRIPTION);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_BIRTH_INSTANT)).thenReturn(IDX_BIRTH);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_DEATH_INSTANT)).thenReturn(IDX_DEATH);
         when(mockCursor.getColumnIndex(ChronorgSchema.COL_COLOR)).thenReturn(IDX_COLOUR);
@@ -78,7 +77,6 @@ public class EntityCursorReaderTest {
         verify(entity).setId(42);
         verify(entity).setProjectId(815);
         verify(entity).setName("Foo");
-        verify(entity).setDescription("Lorem ipsum");
         verify(entity).setBirth("1968-12-06T12:00:00Z");
         verify(entity).setDeath("2091-04-08T12:00:00Z");
         verify(entity).setColor(Color.RED);

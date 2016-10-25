@@ -31,29 +31,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_description_layout"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            app:errorEnabled="false">
-
-            <EditText
-                android:id="@+id/input_description"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top|start"
-                android:hint="@string/hint_event_description"
-                android:imeOptions="actionNone"
-                android:inputType="text|textCapSentences|textMultiLine"
-                android:maxLines="3"
-                tools:text="Toto\nsgfd\nsfg"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
         <TextView
             android:id="@+id/instant_hint"
             android:layout_width="match_parent"
@@ -101,10 +78,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="@color/red"
-            android:src="@drawable/ic_palette_black_24dp"
-            android:scaleType="fitCenter"
             android:inputType="none"
             android:maxLines="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_palette_black_24dp"
             android:textAppearance="?android:textAppearanceMedium"/>
 
     </LinearLayout>

@@ -33,21 +33,6 @@
             android:textAppearance="?android:textAppearanceListItem"
             tools:text="Foo (Bar) Spam"/>
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:lines="1"
-            android:paddingBottom="4dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:textAppearance="?android:textAppearanceListItemSecondary"
-            android:textColor="@color/textColorSecondary"
-            android:textStyle="italic"
-            tools:text="Lorem ipsum dolor sit amet"/>
-
 
         <TextView
             android:id="@+id/from_instant"

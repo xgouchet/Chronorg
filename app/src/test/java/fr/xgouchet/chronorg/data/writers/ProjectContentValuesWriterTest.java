@@ -26,7 +26,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ProjectContentValuesWriterTest {
 
     public static final String FAKE_NAME = "Foo";
-    public static final String FAKE_DESC = "Lorem ipsum";
 
     @Mock ContentValues mockContentValues;
     @Mock Project mockProject;
@@ -42,27 +41,12 @@ public class ProjectContentValuesWriterTest {
     public void should_write_values() {
         // Given
         when(mockProject.getName()).thenReturn(FAKE_NAME);
-        when(mockProject.getDescription()).thenReturn(FAKE_DESC);
 
         // When
         writer.fillContentValues(mockContentValues, mockProject);
 
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
     }
 
-    @Test
-    public void should_write_values_nullables() {
-        // Given
-        when(mockProject.getName()).thenReturn(FAKE_NAME);
-        when(mockProject.getDescription()).thenReturn(null);
-
-        // When
-        writer.fillContentValues(mockContentValues, mockProject);
-
-        // Then
-        verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
-    }
 }

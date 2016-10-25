@@ -23,6 +23,8 @@ import java.util.Locale;
 import fr.xgouchet.chronorg.ui.contracts.DateTimePickerContract;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
 
+import static java.util.concurrent.TimeUnit.DAYS;
+
 /**
  * Activity to be used with startActivityForResult, to pick a date, time and timezone.
  * <p>
@@ -108,6 +110,11 @@ public class DateTimePickerActivity extends BaseActivity
         }
 
         DatePickerDialog dialog = new DatePickerDialog(this, this, year, month, dayOfMonth);
+        DatePicker picker = dialog.getDatePicker();
+        // Around the birth of JC, because date picker doesn't handle negative
+        picker.setMinDate(DAYS.toMillis(-718_000));
+        // +2739 years (around 41000 AD)
+        picker.setMaxDate(DAYS.toMillis(1_000_000));
         dialog.setOnCancelListener(this);
 
         dialog.show();
@@ -126,7 +133,7 @@ public class DateTimePickerActivity extends BaseActivity
             hourOfDay = 12;
             minute = 0;
         } else {
-            hourOfDay =  defaultValue.getHourOfDay();
+            hourOfDay = defaultValue.getHourOfDay();
             minute = defaultValue.getMinuteOfHour();
         }
         TimePickerDialog dialog = new TimePickerDialog(this,

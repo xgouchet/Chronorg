@@ -40,7 +40,6 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     public void setEntity(@NonNull Entity entity) {
         this.entity = entity;
         name = entity.getName();
-        description = entity.getDescription();
         birth = entity.getBirth();
         death = entity.getDeath();
         color = entity.getColor();
@@ -86,7 +85,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     }
 
     @Override
-    public void saveEntity(@NonNull String inputNameText, @NonNull String inputDescText) {
+    public void saveEntity(@NonNull String inputNameText) {
         if (view == null) return;
         if (entity == null) return;
 
@@ -97,7 +96,6 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
         }
 
         entity.setName(inputNameText);
-        entity.setDescription(inputDescText);
         entity.setBirth(birth);
         entity.setDeath(death);
         entity.setColor(color);

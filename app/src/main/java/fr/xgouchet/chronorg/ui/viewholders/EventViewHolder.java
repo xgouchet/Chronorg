@@ -1,7 +1,6 @@
 package fr.xgouchet.chronorg.ui.viewholders;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,7 +18,6 @@ public class EventViewHolder extends BaseViewHolder<Event> {
 
 
     @BindView(R.id.name) TextView name;
-    @BindView(R.id.description) TextView description;
     @BindView(R.id.underline) View underline;
 
     public EventViewHolder(@NonNull Listener<Event> listener, View itemView) {
@@ -29,14 +27,6 @@ public class EventViewHolder extends BaseViewHolder<Event> {
 
     @Override public void onBindItem(@NonNull Event event) {
         name.setText(event.getName());
-
-        final String description = event.getDescription();
-        if (TextUtils.isEmpty(description)) {
-            this.description.setVisibility(View.GONE);
-        } else {
-            this.description.setVisibility(View.VISIBLE);
-            this.description.setText(description);
-        }
 
         underline.setBackgroundColor(event.getColor());
     }

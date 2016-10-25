@@ -25,6 +25,6 @@ public interface ProjectEditContract {
 
         void setView(View view);
 
-        void saveProject(@NonNull String inputNameText, @NonNull String inputDescText);
+        void saveProject(@NonNull String inputNameText);
     }
 }

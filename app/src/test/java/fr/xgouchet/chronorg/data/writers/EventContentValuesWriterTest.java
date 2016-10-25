@@ -27,10 +27,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class EventContentValuesWriterTest {
 
 
-    public static final int FAKE_ID = 42;
     public static final int FAKE_PROJECT_ID = 815;
     public static final String FAKE_NAME = "Foo";
-    public static final String FAKE_DESC = "Lorem ipsum";
     public static final DateTime FAKE_INSTANT = new DateTime("1968-12-06T12:00:00Z");
     public static final int FAKE_COLOR = 0x0080FF;
 
@@ -49,7 +47,6 @@ public class EventContentValuesWriterTest {
         // Given
         when(mockEvent.getProjectId()).thenReturn(FAKE_PROJECT_ID);
         when(mockEvent.getName()).thenReturn(FAKE_NAME);
-        when(mockEvent.getDescription()).thenReturn(FAKE_DESC);
         when(mockEvent.getInstant()).thenReturn(FAKE_INSTANT);
         when(mockEvent.getColor()).thenReturn(FAKE_COLOR);
 
@@ -59,7 +56,6 @@ public class EventContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
         verify(mockContentValues).put(ChronorgSchema.COL_INSTANT, FAKE_INSTANT.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOR);
     }
@@ -69,7 +65,6 @@ public class EventContentValuesWriterTest {
         // Given
         when(mockEvent.getProjectId()).thenReturn(FAKE_PROJECT_ID);
         when(mockEvent.getName()).thenReturn(FAKE_NAME);
-        when(mockEvent.getDescription()).thenReturn(null);
         when(mockEvent.getInstant()).thenReturn(FAKE_INSTANT);
         when(mockEvent.getColor()).thenReturn(FAKE_COLOR);
 
@@ -79,7 +74,6 @@ public class EventContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_PROJECT_ID, FAKE_PROJECT_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_INSTANT, FAKE_INSTANT.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOR);
     }

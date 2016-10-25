@@ -27,10 +27,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class JumpContentValuesWriterTest {
 
 
-    public static final int FAKE_ID = 42;
     public static final int FAKE_ENTITY_ID = 815;
     public static final String FAKE_NAME = "Foo";
-    public static final String FAKE_DESC = "Lorem ipsum";
     public static final DateTime FAKE_FROM = new DateTime("1968-12-06T12:00:00Z");
     public static final DateTime FAKE_TO = new DateTime("2091-01-01T12:00:00Z");
     public static final int FAKE_ORDER = 66;
@@ -50,7 +48,6 @@ public class JumpContentValuesWriterTest {
         // Given
         when(mockJump.getEntityId()).thenReturn(FAKE_ENTITY_ID);
         when(mockJump.getName()).thenReturn(FAKE_NAME);
-        when(mockJump.getDescription()).thenReturn(FAKE_DESC);
         when(mockJump.getFrom()).thenReturn(FAKE_FROM);
         when(mockJump.getTo()).thenReturn(FAKE_TO);
         when(mockJump.getOrder()).thenReturn(FAKE_ORDER);
@@ -61,7 +58,6 @@ public class JumpContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_ENTITY_ID, FAKE_ENTITY_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, FAKE_DESC);
         verify(mockContentValues).put(ChronorgSchema.COL_FROM_INSTANT, FAKE_FROM.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_TO_INSTANT, FAKE_TO.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_ORDER, FAKE_ORDER);
@@ -72,7 +68,6 @@ public class JumpContentValuesWriterTest {
         // Given
         when(mockJump.getEntityId()).thenReturn(FAKE_ENTITY_ID);
         when(mockJump.getName()).thenReturn(null);
-        when(mockJump.getDescription()).thenReturn(null);
         when(mockJump.getFrom()).thenReturn(FAKE_FROM);
         when(mockJump.getTo()).thenReturn(FAKE_TO);
         when(mockJump.getOrder()).thenReturn(FAKE_ORDER);
@@ -83,7 +78,6 @@ public class JumpContentValuesWriterTest {
         // Then
         verify(mockContentValues).put(ChronorgSchema.COL_ENTITY_ID, FAKE_ENTITY_ID);
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, (String) null);
-        verify(mockContentValues).put(ChronorgSchema.COL_DESCRIPTION, (String) null);
         verify(mockContentValues).put(ChronorgSchema.COL_FROM_INSTANT, FAKE_FROM.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_TO_INSTANT, FAKE_TO.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_ORDER, FAKE_ORDER);

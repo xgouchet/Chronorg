@@ -14,7 +14,6 @@ public class ProjectCursorReader extends BaseCursorReader<Project> {
 
     private int idxId;
     private int idxName;
-    private int idxDesc;
 
     public ProjectCursorReader(@NonNull Cursor cursor) {
         super(cursor);
@@ -23,7 +22,6 @@ public class ProjectCursorReader extends BaseCursorReader<Project> {
     @Override protected void cacheIndices() {
         idxId = getIndex(ChronorgSchema.COL_ID);
         idxName = getIndex(ChronorgSchema.COL_NAME);
-        idxDesc = getIndex(ChronorgSchema.COL_DESCRIPTION);
     }
 
 
@@ -34,6 +32,5 @@ public class ProjectCursorReader extends BaseCursorReader<Project> {
     @Override public void fill(@NonNull Project project) {
         project.setId(readInt(idxId));
         project.setName(readString(idxName));
-        project.setDescription(readString(idxDesc));
     }
 }

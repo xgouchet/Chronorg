@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
@@ -17,7 +16,6 @@ public class Event implements Parcelable {
     private int id;
     private int projectId;
     @NonNull private String name = "";
-    @Nullable private String description;
     @NonNull private ReadableInstant instant = new DateTime("1970-01-01T00:00:00Z");
     @ColorInt private int color;
 
@@ -49,14 +47,6 @@ public class Event implements Parcelable {
         return name;
     }
 
-    public void setDescription(@Nullable String description) {
-        this.description = description;
-    }
-
-    @Nullable public String getDescription() {
-        return description;
-    }
-
     public void setInstant(@NonNull ReadableInstant instant) {
         this.instant = instant;
     }
@@ -86,7 +76,6 @@ public class Event implements Parcelable {
         dest.writeInt(this.id);
         dest.writeInt(this.projectId);
         dest.writeString(this.name);
-        dest.writeString(this.description);
         dest.writeString(this.instant.toString());
         dest.writeInt(this.color);
     }
@@ -95,7 +84,6 @@ public class Event implements Parcelable {
         this.id = in.readInt();
         this.projectId = in.readInt();
         this.name = in.readString();
-        this.description = in.readString();
         this.instant = new DateTime(in.readString());
         this.color = in.readInt();
     }
