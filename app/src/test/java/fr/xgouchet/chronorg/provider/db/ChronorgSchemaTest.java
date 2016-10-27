@@ -57,13 +57,11 @@ public class ChronorgSchemaTest {
         verify(database).beginTransaction();
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS projects (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "name TEXT NOT NULL UNIQUE," +
-                "desc TEXT)");
+                "name TEXT NOT NULL UNIQUE)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS entities (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
-                "desc TEXT," +
                 "birth TEXT NOT NULL," +
                 "death TEXT," +
                 "color INTEGER)");
@@ -71,21 +69,20 @@ public class ChronorgSchemaTest {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
-                "desc TEXT," +
                 "delay INTEGER NOT NULL," +
+                "two_way INTEGER," +
+                "timeline INTEGER," +
                 "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS events (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
-                "desc TEXT," +
                 "instant TEXT NOT NULL," +
                 "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS jumps (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "entity_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
-                "desc TEXT," +
                 "from_instant TEXT NOT NULL," +
                 "to_instant TEXT NOT NULL," +
                 "jump_order INTEGER)");

@@ -22,24 +22,18 @@ import java.util.List;
  */
 public class Entity implements Parcelable {
 
-    private int id;
-    private int projectId;
+    private int id = -1;
+    private int projectId = -1;
 
-    @NonNull private String name;
+    @NonNull private String name = "";
 
-    @NonNull private ReadableInstant birth;
-    @NonNull private ReadableInstant death;
+    @NonNull private ReadableInstant birth = new DateTime("1970-01-01T00:00:00Z");
+    @NonNull private ReadableInstant death = new DateTime("2038-01-19T03:14:17Z");
 
-    @ColorInt private int color;
-    @NonNull private final List<Jump> jumps;
+    @ColorInt private int color = Color.rgb(0xF6, 0x40, 0x2C);
+    @NonNull private final List<Jump> jumps = new LinkedList<>();
 
     public Entity() {
-        id = -1;
-        name = "‽";
-        birth = new DateTime("1970-01-01T00:00:00Z");
-        death = new DateTime("2038-01-19T03:14:17Z");
-        color = Color.rgb(0xF6, 0x40, 0x2C);
-        jumps = new LinkedList<>();
     }
 
     public Entity(int projectId,
@@ -52,7 +46,6 @@ public class Entity implements Parcelable {
         this.birth = birth;
         this.death = death;
         this.color = Color.RED;
-        jumps = new LinkedList<>();
     }
 
 
@@ -218,7 +211,6 @@ public class Entity implements Parcelable {
         birth = new DateTime(in.readString());
         death = new DateTime(in.readString());
         color = in.readInt();
-        jumps = new LinkedList<>();
     }
 
     public static final Parcelable.Creator<Entity> CREATOR = new Parcelable.Creator<Entity>() {

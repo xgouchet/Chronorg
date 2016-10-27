@@ -12,14 +12,15 @@
     <string name="empty_events_list">No events in this project yet</string>
 
 
-    <string name="hint_project_name">Project name</string>
-    <string name="hint_birth">Birth date and time</string>
-    <string name="hint_entity_name">Entity Name</string>
-    <string name="hint_death">Death date and time</string>
+    <string name="hint_name">Name</string>
     <string name="hint_color">Color</string>
-    <string name="hint_event_name">Event Name</string>
+    <string name="hint_portal_name">Portal name</string>
+    <string name="hint_portal_delay">Delay reference points</string>
+    <string name="hint_portal_two_way">Two-way portal</string>
+    <string name="hint_portal_timeline">Timeline</string>
+    <string name="hint_entity_birth">Birth date and time</string>
+    <string name="hint_entity_death">Death date and time</string>
     <string name="hint_event_instant">Event date and time</string>
-    <string name="hint_jump_name">Jump name</string>
     <string name="hint_jump_to">Jump destination</string>
     <string name="hint_jump_from">Jump origin</string>
 
@@ -37,5 +38,26 @@
     <string name="error_entity_details_empty">No entity to display</string>
     <string name="error_jump_details_empty">No jump to display</string>
     <string name="error_events_list">Error reading events</string>
+    <string name="hint_years">Years</string>
+    <string name="hint_months">Months</string>
+    <string name="hint_days">Days</string>
+    <string name="hint_hours">Hours</string>
+    <string name="hint_seconds">Seconds</string>
+    <string name="hint_minutes">Minutes</string>
+    <string name="hint_weeks">Weeks</string>
+    <string name="hint_portal_direction">Direction</string>
+
+
+    <string-array name="directions">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="direction_names">
+        <item>Future</item>
+        <item>Past</item>
+        <item>Both</item>
+    </string-array>
 
 </resources>

@@ -151,7 +151,6 @@ public class JumpEditFragment extends Fragment
     }
 
     @Override public void jumpSaved() {
-        // TODO handle tablet
         getActivity().finish();
     }
 

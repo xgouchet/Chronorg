@@ -206,5 +206,4 @@ public class EntityTest {
 
     }
 
-    // TODO test parcelable
 }

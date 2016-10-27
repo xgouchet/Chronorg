@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
-
+import fr.xgouchet.chronorg.data.formatters.ReadableInstantFormatter;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.activities.EntityDetailsActivity;
 import fr.xgouchet.chronorg.ui.activities.EntityEditActivity;
@@ -40,7 +39,8 @@ public class EntityListFragment extends BaseListFragment<Entity, EntitiesAdapter
     }
 
     @Override protected EntitiesAdapter getAdapter() {
-        return new EntitiesAdapter(new ArrayList<Entity>(), this);
+        // TODO inject formatter
+        return new EntitiesAdapter(this, new ReadableInstantFormatter());
     }
 
     @Override public void showCreateItemUi() {

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +43,7 @@ public class TimelineFragment extends Fragment
     }
 
     public TimelineFragment() {
-        this.adapter = new TimelineShardsAdapter(new ArrayList<TimelineShard>());
+        this.adapter = new TimelineShardsAdapter();
     }
 
     @Nullable @Override

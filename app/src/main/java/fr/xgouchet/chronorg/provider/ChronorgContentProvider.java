@@ -26,6 +26,7 @@ public class ChronorgContentProvider extends ContentProvider {
     private BaseDao entityDao;
     private BaseDao jumpDao;
     private BaseDao eventDao;
+    private BaseDao portalDao;
 
 
     @SuppressWarnings("unused")
@@ -62,6 +63,7 @@ public class ChronorgContentProvider extends ContentProvider {
         entityDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_ENTITIES);
         jumpDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_JUMPS);
         eventDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_EVENTS);
+        portalDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_PORTALS);
         return true;
     }
 
@@ -112,6 +114,10 @@ public class ChronorgContentProvider extends ContentProvider {
                 long eventId = eventDao.insert(values);
                 result = chronorgSchema.eventUri(eventId);
                 break;
+            case ChronorgSchema.MATCH_PORTALS:
+                long portalId = portalDao.insert(values);
+                result = chronorgSchema.portalUri(portalId);
+                break;
         }
 
         return result;
@@ -128,6 +134,7 @@ public class ChronorgContentProvider extends ContentProvider {
         if (dao != null) {
             deleted = dao.delete(selection, selectionArgs);
             // TODO special delete on jumps to keep coherent order
+            // TODO special delete on entities to keep coherent order
             // TODO special delete on projects to also delete content...
         }
 
@@ -149,13 +156,6 @@ public class ChronorgContentProvider extends ContentProvider {
         return updated;
     }
 
-//    @Nullable
-//    @Override
-//    public Bundle call(@NonNull String method,
-//                       @Nullable String arg,
-//                       @Nullable Bundle extras) {
-//        return null;
-//    }
 
     @Nullable
     private BaseDao getDao(Uri uri) {
@@ -170,8 +170,12 @@ public class ChronorgContentProvider extends ContentProvider {
                 return jumpDao;
             case ChronorgSchema.MATCH_EVENTS:
                 return eventDao;
+            case ChronorgSchema.MATCH_PORTALS:
+                return portalDao;
             default:
                 return null;
         }
     }
+
+
 }

@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
-import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.ui.fragments.EntityEditFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
@@ -15,7 +13,7 @@ import fr.xgouchet.chronorg.ui.presenters.EntityEditPresenter;
 /**
  * @author Xavier Gouchet
  */
-public class EntityEditActivity extends BaseActivity {
+public class EntityEditActivity extends BaseFragmentActivity<Entity, EntityEditFragment> {
 
     public static final String EXTRA_PROJECT_ID = "project_id";
     public static final String EXTRA_ENTITY = "entity";
@@ -34,34 +32,30 @@ public class EntityEditActivity extends BaseActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_entity);
-        EntityEditFragment fragment = (EntityEditFragment) getSupportFragmentManager().findFragmentById(R.id.edit_entity_fragment);
 
+        EntityEditPresenter presenter = getActivityComponent().getEntityEditPresenter();
+        presenter.setEntity(item);
+        presenter.setView(fragment);
+    }
 
-        Intent intent = getIntent();
-        Entity entity = null;
-        if (intent.hasExtra(EXTRA_PROJECT_ID)) {
+    @NonNull @Override protected Entity readItem(@Nullable Intent intent) {
+        Entity entity;
+        if ((intent != null) && intent.hasExtra(EXTRA_PROJECT_ID)) {
             int projectId = intent.getIntExtra(EXTRA_PROJECT_ID, -1);
             if (projectId <= 0) {
-                Toast.makeText(this, "Bad project id", Toast.LENGTH_SHORT).show();
-                finish();
-                return;
+                throw new IllegalArgumentException("Invalid project id " + projectId);
             }
             entity = new Entity();
             entity.setProjectId(projectId);
-        } else if (intent.hasExtra(EXTRA_ENTITY)) {
+        } else if ((intent != null) && intent.hasExtra(EXTRA_ENTITY)) {
             entity = intent.getParcelableExtra(EXTRA_ENTITY);
+        } else {
+            throw new IllegalArgumentException("No arguments for jump");
         }
+        return entity;
+    }
 
-        if (entity == null) {
-            Toast.makeText(this, "Null entity", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        EntityEditPresenter presenter = getActivityComponent().getEntityEditPresenter();
-        presenter.setEntity(entity);
-        presenter.setView(fragment);
-
+    @NonNull @Override protected EntityEditFragment createFragment() {
+        return new EntityEditFragment();
     }
 }

@@ -161,7 +161,6 @@ public class EventEditFragment extends Fragment
     }
 
     @Override public void eventSaved() {
-        // TODO handle tablet
         getActivity().finish();
     }
 

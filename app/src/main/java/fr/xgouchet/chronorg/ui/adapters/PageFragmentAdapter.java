@@ -13,9 +13,11 @@ import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.activities.BaseActivity;
 import fr.xgouchet.chronorg.ui.fragments.EntityListFragment;
 import fr.xgouchet.chronorg.ui.fragments.EventListFragment;
+import fr.xgouchet.chronorg.ui.fragments.PortalListFragment;
 import fr.xgouchet.chronorg.ui.fragments.TimelineFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
 
 /**
@@ -26,8 +28,9 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
     public static final int PAGE_TIMELINE = 0;
     public static final int PAGE_ENTITIES = 1;
     public static final int PAGE_EVENTS = 2;
+    public static final int PAGE_PORTALS = 3;
 
-    public static final int PAGE_COUNT = 3;
+    public static final int PAGE_COUNT = 4;
 
     private final WeakReference<BaseActivity> activityRef;
     @NonNull private final Project project;
@@ -75,6 +78,13 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
                 presenter.setView(fragment);
                 return fragment;
             }
+            case PAGE_PORTALS:{
+                final PortalListFragment fragment = PortalListFragment.createFragment(project.getId());
+                PortalListPresenter presenter = activity.getActivityComponent().getPortalListPresenter();
+                presenter.setProject(project);
+                presenter.setView(fragment);
+                return fragment;
+            }
             default:
                 return null;
         }
@@ -92,6 +102,8 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
                 return context.getString(R.string.title_entities);
             case PAGE_EVENTS:
                 return context.getString(R.string.title_events);
+            case PAGE_PORTALS:
+                return "Portals";
         }
 
 

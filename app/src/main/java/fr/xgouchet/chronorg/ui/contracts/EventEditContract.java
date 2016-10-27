@@ -2,7 +2,6 @@ package fr.xgouchet.chronorg.ui.contracts;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.joda.time.ReadableInstant;
 
@@ -39,8 +38,6 @@ public interface EventEditContract {
         void saveEvent(@NonNull String inputNameText);
 
         void setName(@NonNull String name);
-
-        void setDescription(@Nullable String description);
 
         void setInstant(@NonNull String dateTimeIso8601);
 

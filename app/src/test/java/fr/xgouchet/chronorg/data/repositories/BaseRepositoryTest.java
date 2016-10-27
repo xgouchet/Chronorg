@@ -16,9 +16,8 @@ import java.util.List;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
-import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.data.queriers.ProjectContentQuerier;
+import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
+import fr.xgouchet.chronorg.data.queriers.ContentQuerier;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.observers.TestSubscriber;
@@ -42,15 +41,16 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
-public class ProjectRepositoryTest {
+public class BaseRepositoryTest {
 
 
+    public static final int FAKE_ID = 42;
     @Mock Context context;
-    @Mock ProjectIOProvider provider;
-    @Mock ProjectContentQuerier querier;
+    @Mock IOProvider provider;
+    @Mock ContentQuerier querier;
     @Mock ContentResolver contentResolver;
 
-    private ProjectRepository repository;
+    private BaseRepository repository;
     private TestSubscriber<Object> subscriber;
 
     @Before
@@ -60,45 +60,45 @@ public class ProjectRepositoryTest {
         when(context.getContentResolver()).thenReturn(contentResolver);
         when(provider.provideQuerier()).thenReturn(querier);
 
-        repository = new ProjectRepository(context, provider);
+        repository = new BaseRepository<>(context, provider);
         subscriber = new TestSubscriber<>();
     }
 
     @Test
-    public void shouldGetProjects() throws Exception {
+    public void shouldGetAll() throws Exception {
         // Given
-        final Project[] projects = new Project[]{mock(Project.class), mock(Project.class)};
+        final Object[] items = new Object[]{mock(Object.class), mock(Object.class)};
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
                 Action1 s = (Action1) invocation.getArguments()[1];
-                s.call(projects[0]);
-                s.call(projects[1]);
+                s.call(items[0]);
+                s.call(items[1]);
                 return null;
             }
         }).when(querier)
                 .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
-        Observable<Project> observable = repository.getProjects();
+        Observable<Object> observable = repository.getAll();
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
-        assertThat(result).containsExactly(projects);
+        assertThat(result).containsExactly(items);
         verify(querier).queryAll(same(contentResolver), any(Action1.class));
     }
 
     @Test
-    public void shouldGetProjectsEmpty() throws Exception {
+    public void shouldGetAllEmpty() throws Exception {
         // Given
         doNothing()
                 .when(querier)
                 .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
-        Observable<Project> observable = repository.getProjects();
+        Observable<Object> observable = repository.getAll();
         observable.subscribe(subscriber);
 
         // Then
@@ -110,14 +110,14 @@ public class ProjectRepositoryTest {
     }
 
     @Test
-    public void shouldGetProjectsWithError() throws Exception {
+    public void shouldGetAllWithError() throws Exception {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
                 .queryAll(any(ContentResolver.class), any(Action1.class));
 
         // When
-        Observable<Project> observable = repository.getProjects();
+        Observable<Object> observable = repository.getAll();
         observable.subscribe(subscriber);
 
         // Then
@@ -127,13 +127,13 @@ public class ProjectRepositoryTest {
     }
 
     @Test
-    public void shouldGetProject() throws Exception {
+    public void shouldGet() throws Exception {
         // Given
-        final Project project = mock(Project.class);
+        final Object item = mock(Object.class);
         doAnswer(new Answer() {
             @Override public Void answer(InvocationOnMock invocation) throws Throwable {
                 Action1 s = (Action1) invocation.getArguments()[1];
-                s.call(project);
+                s.call(item);
                 return null;
             }
         })
@@ -141,26 +141,26 @@ public class ProjectRepositoryTest {
                 .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
-        Observable<Project> observable = repository.getProject(42);
+        Observable<Object> observable = repository.get(FAKE_ID);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
-        assertThat(result).containsExactly(project);
-        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
+        assertThat(result).containsExactly(item);
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(FAKE_ID));
     }
 
     @Test
-    public void shouldGetProjectEmpty() throws Exception {
+    public void shouldGetEmpty() throws Exception {
         // Given
         doNothing()
                 .when(querier)
                 .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
-        Observable<Project> observable = repository.getProject(42);
+        Observable<Object> observable = repository.get(FAKE_ID);
         observable.subscribe(subscriber);
 
         // Then
@@ -168,127 +168,127 @@ public class ProjectRepositoryTest {
         subscriber.assertCompleted();
         List result = subscriber.getOnNextEvents();
         assertThat(result).isEmpty();
-        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(FAKE_ID));
     }
 
     @Test
-    public void shouldGetProjectWithError() throws Exception {
+    public void shouldGetWithError() throws Exception {
         // Given
         doThrow(new RuntimeException())
                 .when(querier)
                 .query(any(ContentResolver.class), any(Action1.class), anyInt());
 
         // When
-        Observable<Project> observable = repository.getProject(42);
+        Observable<Object> observable = repository.get(FAKE_ID);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).query(same(contentResolver), any(Action1.class), eq(42));
+        verify(querier).query(same(contentResolver), any(Action1.class), eq(FAKE_ID));
     }
 
 
     @Test
-    public void shouldSaveProject() throws Exception {
+    public void shouldSave() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.save(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.save(any(ContentResolver.class), any(Object.class)))
                 .thenReturn(true);
 
         // When
-        Observable<Void> observable = repository.saveProject(project);
+        Observable<Void> observable = repository.save(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
-        verify(querier).save(same(contentResolver), same(project));
+        verify(querier).save(same(contentResolver), same(item));
     }
 
 
     @Test
-    public void shouldSaveProjectFail() throws Exception {
+    public void shouldSaveFail() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.save(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.save(any(ContentResolver.class), any(Object.class)))
                 .thenReturn(false);
 
         // When
-        Observable<Void> observable = repository.saveProject(project);
+        Observable<Void> observable = repository.save(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).save(same(contentResolver), same(project));
+        verify(querier).save(same(contentResolver), same(item));
     }
 
     @Test
-    public void shouldSaveProjectWithError() throws Exception {
+    public void shouldSaveWithError() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.save(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.save(any(ContentResolver.class), any(Object.class)))
                 .thenThrow(new RuntimeException());
 
         // When
-        Observable<Void> observable = repository.saveProject(project);
+        Observable<Void> observable = repository.save(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).save(same(contentResolver), same(project));
+        verify(querier).save(same(contentResolver), same(item));
     }
 
     @Test
-    public void shouldDeleteProject() throws Exception {
+    public void shouldDelete() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.delete(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.delete(any(ContentResolver.class), any(Object.class)))
                 .thenReturn(true);
 
         // When
-        Observable<Void> observable = repository.deleteProject(project);
+        Observable<Void> observable = repository.delete(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
-        verify(querier).delete(same(contentResolver), eq(project));
+        verify(querier).delete(same(contentResolver), same(item));
     }
 
     @Test
-    public void shouldDeleteProjectFail() throws Exception {
+    public void shouldDeleteFail() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.delete(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.delete(any(ContentResolver.class), any(Object.class)))
                 .thenReturn(false);
 
         // When
-        Observable<Void> observable = repository.deleteProject(project);
+        Observable<Void> observable = repository.delete(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).delete(same(contentResolver), eq(project));
+        verify(querier).delete(same(contentResolver), same(item));
     }
 
     @Test
-    public void shouldDeleteProjectWithError() throws Exception {
+    public void shouldDeleteWithError() throws Exception {
         // Given
-        Project project = mock(Project.class);
-        when(querier.delete(any(ContentResolver.class), any(Project.class)))
+        Object item = mock(Object.class);
+        when(querier.delete(any(ContentResolver.class), any(Object.class)))
                 .thenThrow(new RuntimeException());
 
         // When
-        Observable<Void> observable = repository.deleteProject(project);
+        Observable<Void> observable = repository.delete(item);
         observable.subscribe(subscriber);
 
         // Then
         subscriber.assertError(RuntimeException.class);
         subscriber.assertNotCompleted();
-        verify(querier).delete(same(contentResolver), eq(project));
+        verify(querier).delete(same(contentResolver), same(item));
     }
 }

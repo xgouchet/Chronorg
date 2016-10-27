@@ -3,6 +3,8 @@ package fr.xgouchet.chronorg.ui.presenters;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 
@@ -16,6 +18,7 @@ import rx.schedulers.Schedulers;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class JumpEditPresenter implements JumpEditContract.Presenter {
 
     @Nullable private Jump jump;
@@ -83,7 +86,7 @@ public class JumpEditPresenter implements JumpEditContract.Presenter {
         jump.setName(inputNameText);
         jump.setFrom(from);
         jump.setTo(to);
-        jumpRepository.saveJump(jump)
+        jumpRepository.save(jump)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
 
               android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:errorEnabled="true">
-        <!--app:errorTextAppearance="@style/TextErrorAppearance"-->
-
-        <EditText
-            android:id="@+id/input_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_project_name"
-            android:imeOptions="actionNext"
-            android:inputType="text|textCapWords"
-            android:maxLines="1"
-            tools:text="Back to the Future"/>
-
-    </android.support.design.widget.TextInputLayout>
+    <include layout="@layout/atom_input_name"/>
 
 </LinearLayout>

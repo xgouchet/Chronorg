@@ -2,39 +2,35 @@ package fr.xgouchet.chronorg.ui.viewholders;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-import fr.xgouchet.chronorg.R;
+import org.joda.time.ReadableInstant;
+
+import fr.xgouchet.chronorg.data.formatters.Formatter;
 import fr.xgouchet.chronorg.data.models.Entity;
-
-import static butterknife.ButterKnife.bind;
 
 /**
  * @author Xavier Gouchet
  */
-public class EntityViewHolder extends BaseViewHolder<Entity> {
+public class EntityViewHolder extends BaseProjectItemViewHolder<Entity> {
 
-    @BindView(R.id.name) TextView name;
-    @BindView(R.id.underline) View underline;
+    @NonNull final Formatter<ReadableInstant> formatter;
 
-
-    public EntityViewHolder(@NonNull Listener<Entity> listener, View itemView) {
+    public EntityViewHolder(@NonNull Listener<Entity> listener,
+                            View itemView,
+                            @NonNull Formatter<ReadableInstant> formatter) {
         super(listener, itemView);
-        bind(this, itemView);
+        this.formatter = formatter;
     }
 
-    @Override public void onBindItem(@NonNull Entity entity) {
-        name.setText(entity.getName());
-
-        underline.setBackgroundColor(entity.getColor());
+    @Override protected String getName(@NonNull Entity item) {
+        return item.getName();
     }
 
-    @OnClick(R.id.entity)
-    public void onSelectEntity() {
-        fireSelected();
+    @Override protected int getColor(@NonNull Entity item) {
+        return item.getColor();
     }
 
-
+    @Override protected String getInfo(@NonNull Entity item) {
+        return "* " + formatter.format(item.getBirth()) + "\n† " + formatter.format(item.getDeath());
+    }
 }

@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
@@ -13,6 +15,7 @@ import rx.functions.Action1;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class EventContentQuerier extends BaseContentQuerier<Event> {
 
 
@@ -23,13 +26,13 @@ public class EventContentQuerier extends BaseContentQuerier<Event> {
 
     public void queryInProject(@NonNull ContentResolver contentResolver,
                                @NonNull Action1<Event> action,
-                               int entityId) {
+                               int projectId) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(getUri(),
                     null,
                     selectByProjectId(),
-                    new String[]{Integer.toString(entityId)},
+                    new String[]{Integer.toString(projectId)},
                     defaultOrder());
 
             readRows(action, cursor);

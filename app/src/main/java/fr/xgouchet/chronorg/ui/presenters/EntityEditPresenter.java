@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 
@@ -19,6 +21,7 @@ import rx.schedulers.Schedulers;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class EntityEditPresenter implements EntityEditContract.Presenter {
 
     @Nullable private Entity entity;
@@ -30,7 +33,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     @NonNull private String name = "‽";
     @Nullable private String description;
     @NonNull private ReadableInstant birth = new DateTime("1970-01-01T00:00:00Z");
-    @Nullable private ReadableInstant death;
+    @NonNull private ReadableInstant death = new DateTime("2038-01-23T00:00:00Z");
     @ColorInt private int color;
 
     public EntityEditPresenter(@NonNull EntityRepository entityRepository) {
@@ -99,7 +102,7 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
         entity.setBirth(birth);
         entity.setDeath(death);
         entity.setColor(color);
-        entityRepository.saveEntity(entity)
+        entityRepository.save(entity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

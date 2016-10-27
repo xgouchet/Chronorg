@@ -3,6 +3,8 @@ package fr.xgouchet.chronorg.ui.presenters;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.models.Segment;
 import fr.xgouchet.chronorg.data.models.TimelineShard;
@@ -16,6 +18,7 @@ import rx.Observable;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class TimelinePresenter extends BaseListPresenter<TimelineShard> {
 
     @NonNull private final EntityRepository entityRepository;

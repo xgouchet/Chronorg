@@ -3,6 +3,8 @@ package fr.xgouchet.chronorg.data.queriers;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
@@ -10,6 +12,7 @@ import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class ProjectContentQuerier extends BaseContentQuerier<Project> {
 
 

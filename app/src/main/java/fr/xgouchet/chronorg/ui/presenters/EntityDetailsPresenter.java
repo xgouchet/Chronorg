@@ -59,7 +59,7 @@ public class EntityDetailsPresenter implements EntityDetailsContract.Presenter {
         }
 
         Subscription subscription = entityRepository
-                .getEntity(entity.getId())
+                .get(entity.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Entity>() {
@@ -97,7 +97,7 @@ public class EntityDetailsPresenter implements EntityDetailsContract.Presenter {
         if (view == null) return;
         if (entity == null) return;
         Subscription subscription = entityRepository
-                .deleteEntity(entity)
+                .delete(entity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {

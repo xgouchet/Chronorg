@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -10,26 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_name_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            app:errorEnabled="true">
-
-            <EditText
-                android:id="@+id/input_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_event_name"
-                android:imeOptions="actionNext"
-                android:inputType="text|textCapWords"
-                android:maxLines="1"
-                tools:text="Back to the Future"/>
-
-        </android.support.design.widget.TextInputLayout>
+        <include layout="@layout/atom_input_name"/>
 
         <TextView
             android:id="@+id/instant_hint"
@@ -57,32 +37,7 @@
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="15/4/2016 23:00:40 UTC"/>
 
-
-        <TextView
-            android:id="@+id/color_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:inputType="none"
-            android:maxLines="1"
-            android:text="@string/hint_color"
-            android:textAppearance="?android:textAppearanceSmall"/>
-
-        <ImageButton
-            android:id="@+id/input_color"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/red"
-            android:inputType="none"
-            android:maxLines="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_palette_black_24dp"
-            android:textAppearance="?android:textAppearanceMedium"/>
+        <include layout="@layout/atom_input_color"/>
 
     </LinearLayout>
 </ScrollView>

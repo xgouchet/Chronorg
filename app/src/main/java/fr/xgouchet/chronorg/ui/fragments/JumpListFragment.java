@@ -3,8 +3,6 @@ package fr.xgouchet.chronorg.ui.fragments;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-
 import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.ui.activities.JumpEditActivity;
 import fr.xgouchet.chronorg.ui.adapters.JumpsAdapter;
@@ -18,7 +16,7 @@ public class JumpListFragment extends BaseListFragment<Jump, JumpsAdapter> {
 
 
     @Override protected JumpsAdapter getAdapter() {
-        return new JumpsAdapter(new ArrayList<Jump>(), this);
+        return new JumpsAdapter(this);
     }
 
     public void setEntityId(int entityId) {
@@ -27,7 +25,6 @@ public class JumpListFragment extends BaseListFragment<Jump, JumpsAdapter> {
 
 
     @Override public void showCreateItemUi() {
-        // TODO handle tablet
         Intent intent = JumpEditActivity.intentNewJump(getActivity(), entityId);
         getActivity().startActivity(intent);
     }

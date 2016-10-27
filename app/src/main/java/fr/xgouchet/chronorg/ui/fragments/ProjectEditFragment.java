@@ -75,7 +75,6 @@ public class ProjectEditFragment extends Fragment
     }
 
     @Override public void projectSaved() {
-        // TODO handle tablet
         getActivity().finish();
     }
 

@@ -30,7 +30,7 @@ public interface EntityEditContract {
         void setContent(@NonNull String name,
                         @Nullable String description,
                         @NonNull ReadableInstant birth,
-                        @Nullable ReadableInstant death,
+                        @NonNull ReadableInstant death,
                         @ColorInt int color);
     }
 

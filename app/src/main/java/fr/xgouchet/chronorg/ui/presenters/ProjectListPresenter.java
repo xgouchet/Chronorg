@@ -24,6 +24,6 @@ public class ProjectListPresenter extends BaseListPresenter<Project> {
     }
 
     @Override protected Observable<Project> getItemsObservable() {
-        return projectRepository.getProjects();
+        return projectRepository.getAll();
     }
 }

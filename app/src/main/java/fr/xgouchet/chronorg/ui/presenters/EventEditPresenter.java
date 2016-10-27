@@ -4,6 +4,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 
@@ -17,6 +19,7 @@ import rx.schedulers.Schedulers;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class EventEditPresenter implements EventEditContract.Presenter {
 
     @Nullable private Event event;
@@ -25,8 +28,7 @@ public class EventEditPresenter implements EventEditContract.Presenter {
 
     @NonNull private final EventRepository eventRepository;
 
-    @NonNull private String name;
-    @Nullable private String description;
+    @NonNull private String name = "";
     @NonNull private ReadableInstant instant = new DateTime("1970-01-01T00:00:00Z");
     @ColorInt private int color;
 
@@ -64,10 +66,6 @@ public class EventEditPresenter implements EventEditContract.Presenter {
         this.name = name;
     }
 
-    @Override public void setDescription(@Nullable String description) {
-        this.description = description;
-    }
-
     @Override public void setInstant(@NonNull String dateTimeIso8601) {
         instant = new DateTime(dateTimeIso8601);
     }
@@ -84,7 +82,7 @@ public class EventEditPresenter implements EventEditContract.Presenter {
         event.setName(inputNameText);
         event.setInstant(instant);
         event.setColor(color);
-        eventRepository.saveEvent(event)
+        eventRepository.save(event)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

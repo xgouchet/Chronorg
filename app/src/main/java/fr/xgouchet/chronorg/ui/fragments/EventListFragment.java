@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
-
 import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.ui.activities.EventEditActivity;
 import fr.xgouchet.chronorg.ui.adapters.EventsAdapter;
@@ -30,7 +28,7 @@ public class EventListFragment extends BaseListFragment<Event, EventsAdapter> {
     }
 
     @Override protected EventsAdapter getAdapter() {
-        return new EventsAdapter(new ArrayList<Event>(), this);
+        return new EventsAdapter(this);
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +40,6 @@ public class EventListFragment extends BaseListFragment<Event, EventsAdapter> {
     }
 
     @Override public void showCreateItemUi() {
-        // TODO handle tablet
         Intent intent = EventEditActivity.intentNewEvent(getActivity(), projectId);
         getActivity().startActivity(intent);
     }

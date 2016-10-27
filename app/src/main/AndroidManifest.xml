@@ -17,24 +17,24 @@
         </activity>
 
         <activity
+            android:name=".ui.activities.ProjectDetailsActivity"/>
+        <activity
+            android:name=".ui.activities.EntityDetailsActivity"/>
+
+        <activity
             android:name=".ui.activities.ProjectEditActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".ui.activities.ProjectDetailsActivity"/>
-
         <activity
             android:name=".ui.activities.EntityEditActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".ui.activities.EntityDetailsActivity"/>
-
-
-        <activity
             android:name=".ui.activities.JumpEditActivity"
             android:windowSoftInputMode="adjustResize"/>
-
         <activity
             android:name=".ui.activities.EventEditActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.activities.PortalEditActivity"
             android:windowSoftInputMode="adjustResize"/>
 
 

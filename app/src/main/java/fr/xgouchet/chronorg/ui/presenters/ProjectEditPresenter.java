@@ -66,7 +66,7 @@ public class ProjectEditPresenter implements ProjectEditContract.Presenter {
         }
 
         project.setName(inputNameText);
-        projectRepository.saveProject(project)
+        projectRepository.save(project)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

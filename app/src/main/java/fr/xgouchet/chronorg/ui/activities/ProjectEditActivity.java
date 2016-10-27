@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.ui.fragments.ProjectEditFragment;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
@@ -14,7 +13,7 @@ import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 /**
  * @author Xavier Gouchet
  */
-public class ProjectEditActivity extends BaseActivity {
+public class ProjectEditActivity extends BaseFragmentActivity<Project, ProjectEditFragment> {
 
     private static final String EXTRA_PROJECT = "project";
 
@@ -32,19 +31,24 @@ public class ProjectEditActivity extends BaseActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_project);
-        ProjectEditFragment fragment = (ProjectEditFragment) getSupportFragmentManager().findFragmentById(R.id.edit_project_fragment);
-
-
-        // Get project from intent
-        Project project = getIntent().getParcelableExtra(EXTRA_PROJECT);
-        if (project == null) {
-            project = new Project();
-        }
 
         // Setup Presenter
         ProjectEditPresenter presenter = getActivityComponent().getProjectEditPresenter();
-        presenter.setProject(project);
+        presenter.setProject(item);
         presenter.setView(fragment);
+    }
+
+    @NonNull @Override protected Project readItem(@Nullable Intent intent) {
+        Project project;
+        if ((intent != null) && intent.hasExtra(EXTRA_PROJECT)) {
+            project = getIntent().getParcelableExtra(EXTRA_PROJECT);
+        } else {
+            project = new Project();
+        }
+        return project;
+    }
+
+    @NonNull @Override protected ProjectEditFragment createFragment() {
+        return new ProjectEditFragment();
     }
 }

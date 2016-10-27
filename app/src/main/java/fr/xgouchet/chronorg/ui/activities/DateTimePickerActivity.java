@@ -39,6 +39,11 @@ public class DateTimePickerActivity extends BaseActivity
         TimePickerDialog.OnTimeSetListener,
         DialogInterface.OnCancelListener {
 
+    public static final String EXTRA_DEFAULT_VALUE = "default_value";
+
+    public static final String EXTRA_RESULT = "result";
+
+
     public static Intent createDateTimePicker(@NonNull Context context,
                                               @NonNull ReadableInstant defaultValue) {
         Intent intent = new Intent(context, DateTimePickerActivity.class);
@@ -46,9 +51,6 @@ public class DateTimePickerActivity extends BaseActivity
         return intent;
     }
 
-    public static final String EXTRA_DEFAULT_VALUE = "default_value";
-
-    public static final String EXTRA_RESULT = "result";
 
     private DateTimePickerContract.Presenter presenter;
 

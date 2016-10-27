@@ -166,18 +166,17 @@ public class EntityEditFragment extends Fragment
     public void setContent(@NonNull String name,
                            @Nullable String description,
                            @NonNull ReadableInstant birth,
-                           @Nullable ReadableInstant death,
+                           @NonNull ReadableInstant death,
                            @ColorInt int color) {
         inputName.setText(name);
         this.birth = birth;
         inputBirth.setText(dtf.print(birth));
         this.death = death;
-        inputDeath.setText(death == null ? "" : dtf.print(death));
+        inputDeath.setText(dtf.print(death));
         inputColor.setBackgroundColor(color);
     }
 
     @Override public void entitySaved() {
-        // TODO handle tablet
         getActivity().finish();
     }
 

@@ -11,6 +11,8 @@ import fr.xgouchet.chronorg.ui.presenters.EventEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.JumpListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.PortalEditPresenter;
+import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
@@ -45,5 +47,10 @@ public interface ActivityComponent {
 
     EventEditPresenter getEventEditPresenter();
 
+    PortalListPresenter getPortalListPresenter();
+
+    PortalEditPresenter getPortalEditPresenter();
+
     DateTimePickerPresenter getDateTimePickerPresenter();
+
 }

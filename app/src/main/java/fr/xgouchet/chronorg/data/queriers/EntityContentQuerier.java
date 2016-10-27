@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.models.Jump;
@@ -16,6 +18,7 @@ import rx.functions.Action1;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public class EntityContentQuerier extends BaseContentQuerier<Entity> {
 
 

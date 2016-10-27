@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.deezer.android.counsel.annotations.Trace;
+
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
@@ -15,6 +17,7 @@ import rx.functions.Action1;
 /**
  * @author Xavier Gouchet
  */
+@Trace
 public abstract class BaseContentQuerier<T> implements ContentQuerier<T> {
 
     @NonNull protected final IOProvider<T> ioProvider;

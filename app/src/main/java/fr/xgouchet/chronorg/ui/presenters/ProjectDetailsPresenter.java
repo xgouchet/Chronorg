@@ -50,13 +50,16 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
     }
 
     @Override public void load(boolean force) {
+        if (view == null) return;
+        if (project == null) return;
+
         if (!force) {
             view.setContent(project);
             return;
         }
 
         Subscription subscription = projectRepository
-                .getProject(project.getId())
+                .get(project.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Project>() {
@@ -77,6 +80,7 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
     }
 
     /*package*/ void onProjectLoaded(Project project) {
+        if (view == null) return;
         if (project != null) {
             this.project = project;
             view.setContent(project);
@@ -84,12 +88,17 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
     }
 
     @Override public void editProject() {
+        if (view == null) return;
+        if (project == null) return;
         view.showEditProjectUi(project);
     }
 
     @Override public void deleteProject() {
+        if (view == null) return;
+        if (project == null) return;
+        
         Subscription subscription = projectRepository
-                .deleteProject(project)
+                .delete(project)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {

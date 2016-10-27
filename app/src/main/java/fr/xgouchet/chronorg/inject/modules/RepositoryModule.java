@@ -7,11 +7,13 @@ import dagger.Provides;
 import fr.xgouchet.chronorg.data.ioproviders.EntityIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.EventIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
+import fr.xgouchet.chronorg.data.ioproviders.PortalIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
+import fr.xgouchet.chronorg.data.repositories.PortalRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationContext;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
@@ -37,7 +39,7 @@ public class RepositoryModule {
 
     @Provides
     @ApplicationScope
-    public EntityIOProvider provideEntityIOProvider( JumpIOProvider jumpIOProvider) {
+    public EntityIOProvider provideEntityIOProvider(JumpIOProvider jumpIOProvider) {
         return new EntityIOProvider((JumpContentQuerier) jumpIOProvider.provideQuerier());
     }
 
@@ -70,7 +72,20 @@ public class RepositoryModule {
     @Provides
     @ApplicationScope
     public EventRepository provideEventRepository(@ApplicationContext Context context,
-                                                 EventIOProvider provider) {
+                                                  EventIOProvider provider) {
         return new EventRepository(context, provider);
+    }
+
+    @Provides
+    @ApplicationScope
+    public PortalIOProvider providePortalIOProvider() {
+        return new PortalIOProvider();
+    }
+
+    @Provides
+    @ApplicationScope
+    public PortalRepository providePortalRepository(@ApplicationContext Context context,
+                                                    PortalIOProvider provider) {
+        return new PortalRepository(context, provider);
     }
 }

@@ -11,59 +11,17 @@ import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.data.queriers.EventContentQuerier;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Action1;
 
 /**
  * @author Xavier Gouchet
  */
 @Trace
-public class EventRepository {
+public class EventRepository extends BaseRepository<Event> {
 
-    @NonNull /*package*/ final Context context;
-
-    @NonNull /*package*/ final EventIOProvider provider;
 
     public EventRepository(@NonNull Context context,
                            @NonNull EventIOProvider provider) {
-        this.context = context;
-        this.provider = provider;
-    }
-
-    public Observable<Event> getEvents() {
-
-        return Observable.create(new Observable.OnSubscribe<Event>() {
-            @Override public void call(final Subscriber<? super Event> subscriber) {
-                try {
-                    ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().queryAll(contentResolver, new Action1<Event>() {
-                        @Override public void call(Event event) {
-                            subscriber.onNext(event);
-                        }
-                    });
-                    subscriber.onCompleted();
-                } catch (Exception err) {
-                    subscriber.onError(err);
-                }
-            }
-        });
-    }
-
-    public Observable<Event> getEvent(final int eventId) {
-        return Observable.create(new Observable.OnSubscribe<Event>() {
-            @Override public void call(final Subscriber<? super Event> subscriber) {
-                try {
-                    ContentResolver contentResolver = context.getContentResolver();
-                    provider.provideQuerier().query(contentResolver, new Action1<Event>() {
-                        @Override public void call(Event event) {
-                            subscriber.onNext(event);
-                        }
-                    }, eventId);
-                    subscriber.onCompleted();
-                } catch (Exception err) {
-                    subscriber.onError(err);
-                }
-            }
-        });
+        super(context, provider);
     }
 
 
@@ -74,11 +32,7 @@ public class EventRepository {
                     ContentResolver contentResolver = context.getContentResolver();
                     EventContentQuerier eventContentQuerier = (EventContentQuerier) provider.provideQuerier();
 
-                    eventContentQuerier.queryInProject(contentResolver, new Action1<Event>() {
-                        @Override public void call(Event event) {
-                            subscriber.onNext(event);
-                        }
-                    }, projectId);
+                    eventContentQuerier.queryInProject(contentResolver, new SubscriberWrapperAction<>(subscriber), projectId);
                     subscriber.onCompleted();
                 } catch (Exception err) {
                     subscriber.onError(err);
@@ -88,42 +42,4 @@ public class EventRepository {
     }
 
 
-    public Observable<Void> saveEvent(@NonNull final Event event) {
-
-        return Observable.create(new Observable.OnSubscribe<Void>() {
-            @Override public void call(Subscriber<? super Void> subscriber) {
-                try {
-                    ContentResolver contentResolver = context.getContentResolver();
-                    boolean success = provider.provideQuerier().save(contentResolver, event);
-                    if (success) {
-                        subscriber.onCompleted();
-                    } else {
-                        subscriber.onError(new RuntimeException("Unable to save event !"));
-                    }
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-
-            }
-        });
-    }
-
-    public Observable<Void> deleteEvent(final @NonNull Event event) {
-        return Observable.create(new Observable.OnSubscribe<Void>() {
-            @Override public void call(Subscriber<? super Void> subscriber) {
-                try {
-                    ContentResolver contentResolver = context.getContentResolver();
-                    boolean success = provider.provideQuerier().delete(contentResolver, event);
-                    if (success) {
-                        subscriber.onCompleted();
-                    } else {
-                        subscriber.onError(new RuntimeException("Unable to delete event !"));
-                    }
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-
-            }
-        });
-    }
 }

@@ -8,7 +8,7 @@ import rx.functions.Action1;
 /**
  * @author Xavier Gouchet
  */
-public interface ContentQuerier<T> {
+public interface  ContentQuerier<T> {
 
     void queryAll(@NonNull ContentResolver contentResolver, @NonNull Action1<T> action);
 
