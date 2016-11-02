@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import fr.xgouchet.chronorg.provider.dao.BaseDao;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
@@ -39,17 +40,20 @@ public class ChronorgContentProvider extends ContentProvider {
         uriMatcher = chronorgSchema.buildUriMatcher();
     }
 
+    @VisibleForTesting
     /*package*/ ChronorgContentProvider(@NonNull ChronorgSchema chronorgSchema,
                                         @NonNull BaseDao projectDao,
                                         @NonNull BaseDao entityDao,
                                         @NonNull BaseDao jumpDao,
-                                        @NonNull BaseDao eventDao) {
+                                        @NonNull BaseDao eventDao,
+                                        @NonNull BaseDao portalDao) {
         this.chronorgSchema = chronorgSchema;
         uriMatcher = chronorgSchema.buildUriMatcher();
         this.projectDao = projectDao;
         this.entityDao = entityDao;
         this.jumpDao = jumpDao;
         this.eventDao = eventDao;
+        this.portalDao = portalDao;
     }
 
     @Override public boolean onCreate() {

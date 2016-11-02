@@ -14,11 +14,10 @@ import org.robolectric.annotation.Config;
 
 import fr.xgouchet.chronorg.BuildConfig;
 import fr.xgouchet.chronorg.ChronorgTestApplication;
-import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
-import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.data.models.Jump;
-import fr.xgouchet.chronorg.data.readers.JumpCursorReader;
-import fr.xgouchet.chronorg.data.writers.JumpContentValuesWriter;
+import fr.xgouchet.chronorg.data.ioproviders.PortalIOProvider;
+import fr.xgouchet.chronorg.data.models.Portal;
+import fr.xgouchet.chronorg.data.readers.PortalCursorReader;
+import fr.xgouchet.chronorg.data.writers.PortalContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
@@ -38,20 +37,19 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * @author Xavier Gouchet
- */
-@RunWith(RobolectricTestRunner.class)
+ */@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, application = ChronorgTestApplication.class)
-public class JumpContentQuerierTest {
+public class PortalContentQuerierTest {
 
     @Mock ContentResolver contentResolver;
-    @Mock JumpIOProvider provider;
-    @Mock Action1<Jump> action;
-    @Mock JumpCursorReader reader;
-    @Mock JumpContentValuesWriter writer;
+    @Mock PortalIOProvider provider;
+    @Mock Action1<Portal> action;
+    @Mock PortalCursorReader reader;
+    @Mock PortalContentValuesWriter writer;
     @Mock Cursor cursor;
     @Mock ContentValues contentValues;
 
-    private JumpContentQuerier querier;
+    private PortalContentQuerier querier;
 
     @Before
     public void setUp() {
@@ -61,27 +59,27 @@ public class JumpContentQuerierTest {
 
         when(provider.provideWriter())
                 .thenReturn(writer);
-        querier = new JumpContentQuerier(provider);
+        querier = new PortalContentQuerier(provider);
     }
 
 
     @Test
-    public void shouldQueryInEntity() {
+    public void shouldQueryInProject() {
         // Given
-        int entityId = 42;
-        Jump mock1 = mock(Jump.class);
+        int projectId = 42;
+        Portal mock1 = mock(Portal.class);
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
                 .thenReturn(cursor);
-        when(reader.instantiateAndFill()).thenReturn(mock1, (Jump) null);
+        when(reader.instantiateAndFill()).thenReturn(mock1, (Portal) null);
 
 
         // When
-        querier.queryInEntity(contentResolver, action, entityId);
+        querier.queryInProject(contentResolver, action, projectId);
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
+        verify(contentResolver).query(eq(ChronorgSchema.PORTALS_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("delay ASC"));
         verify(provider).provideReader(same(cursor));
         verify(action).call(mock1);
         verify(cursor).close();
@@ -91,7 +89,7 @@ public class JumpContentQuerierTest {
     @Test
     public void shouldQueryInEntityWithException() {
         // Given
-        int entityId = 42;
+        int projectId = 42;
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToNext()).thenReturn(true, false);
         when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
@@ -101,49 +99,28 @@ public class JumpContentQuerierTest {
 
         // When
         try {
-            querier.queryInEntity(contentResolver, action, entityId);
+            querier.queryInProject(contentResolver, action, projectId);
             fail("Should leak exception");
         } catch (RuntimeException ignore) {
         }
 
         // Then
-        verify(contentResolver).query(eq(ChronorgSchema.JUMPS_URI), isNull(String[].class), eq("entity_id=?"), eq(new String[]{"42"}), eq("jump_order ASC"));
+        verify(contentResolver).query(eq(ChronorgSchema.PORTALS_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("delay ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
         verifyZeroInteractions(action);
     }
 
     @Test
-    public void shouldGetJumpId(){
+    public void shouldGetPortalId(){
         // Given
-        Jump jump = mock(Jump.class);
-        when(jump.getId()).thenReturn(42);
+        Portal portal = mock(Portal.class);
+        when(portal.getId()).thenReturn(42);
 
         // When
-        int id = querier.getId(jump);
+        int id = querier.getId(portal);
 
         // Then
         assertThat(id).isEqualTo(42);
-    }
-
-    @Test
-    public void shouldFillEntityJumps(){
-        // Given
-        int entityId = 42;
-        Entity entity = mock(Entity.class);
-        when(entity.getId()).thenReturn(entityId);
-        Jump jump = mock(Jump.class);
-        when(cursor.getCount()).thenReturn(1);
-        when(cursor.moveToNext()).thenReturn(true, false);
-        when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
-                .thenReturn(cursor);
-        when(reader.instantiateAndFill()).thenReturn(jump, (Jump) null);
-
-        // When
-        querier.fillEntity(contentResolver, entity);
-
-        // Then
-        verify(entity).jump(same(jump));
-
     }
 }

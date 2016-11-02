@@ -21,12 +21,14 @@ import fr.xgouchet.chronorg.data.writers.EntityContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -85,6 +87,8 @@ public class EntityContentQuerierTest {
         verify(action).call(mock1);
         verify(cursor).close();
         verifyNoMoreInteractions(action);
+        verifyZeroInteractions(jumpContentQuerier);
+
     }
 
     @Test
@@ -109,8 +113,71 @@ public class EntityContentQuerierTest {
         verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("name ASC"));
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
-        verifyZeroInteractions(action);
+        verifyZeroInteractions(action, jumpContentQuerier);
     }
 
+
+    @Test
+    public void shouldQueryFullInProject() {
+        // Given
+        int projectId = 42;
+        Entity mock1 = mock(Entity.class);
+        when(cursor.getCount()).thenReturn(1);
+        when(cursor.moveToNext()).thenReturn(true, false);
+        when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
+                .thenReturn(cursor);
+        when(reader.instantiateAndFill()).thenReturn(mock1, (Entity) null);
+        doNothing().when(jumpContentQuerier).fillEntity(any(ContentResolver.class), any(Entity.class));
+
+        // When
+        querier.queryFullInProject(contentResolver, action, projectId);
+
+        // Then
+        verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("name ASC"));
+        verify(provider).provideReader(same(cursor));
+        verify(action).call(mock1);
+        verify(cursor).close();
+        verify(jumpContentQuerier).fillEntity(same(contentResolver), same(mock1));
+        verifyNoMoreInteractions(action);
+    }
+
+    @Test
+    public void shouldQueryFullInProjectWithException() {
+        // Given
+        int projectId = 42;
+        when(cursor.getCount()).thenReturn(1);
+        when(cursor.moveToNext()).thenReturn(true, false);
+        when(contentResolver.query(any(Uri.class), any(String[].class), anyString(), any(String[].class), anyString()))
+                .thenReturn(cursor);
+        when(reader.instantiateAndFill()).thenThrow(new RuntimeException());
+
+
+        // When
+        try {
+            querier.queryFullInProject(contentResolver, action, projectId);
+            fail("Should leak exception");
+        } catch (RuntimeException ignore) {
+        }
+
+        // Then
+        verify(contentResolver).query(eq(ChronorgSchema.ENTITIES_URI), isNull(String[].class), eq("project_id=?"), eq(new String[]{"42"}), eq("name ASC"));
+        verify(provider).provideReader(same(cursor));
+        verify(cursor).close();
+        verifyZeroInteractions(action, jumpContentQuerier);
+    }
+
+
+    @Test
+    public void shouldGetEntityId() {
+        // Given
+        Entity entity = mock(Entity.class);
+        when(entity.getId()).thenReturn(42);
+
+        // When
+        int id = querier.getId(entity);
+
+        // Then
+        assertThat(id).isEqualTo(42);
+    }
 
 }

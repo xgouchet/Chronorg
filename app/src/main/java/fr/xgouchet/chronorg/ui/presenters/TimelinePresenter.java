@@ -7,7 +7,7 @@ import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.models.Segment;
-import fr.xgouchet.chronorg.data.models.TimelineShard;
+import fr.xgouchet.chronorg.data.models.Shard;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.transformers.EntityToSegmentFlatMap;
@@ -19,7 +19,7 @@ import rx.Observable;
  * @author Xavier Gouchet
  */
 @Trace
-public class TimelinePresenter extends BaseListPresenter<TimelineShard> {
+public class TimelinePresenter extends BaseListPresenter<Shard> {
 
     @NonNull private final EntityRepository entityRepository;
     @NonNull private final EventRepository eventRepository;
@@ -35,7 +35,7 @@ public class TimelinePresenter extends BaseListPresenter<TimelineShard> {
         this.project = project;
     }
 
-    @Override protected Observable<TimelineShard> getItemsObservable() {
+    @Override protected Observable<Shard> getItemsObservable() {
         final Observable<Segment> entitySegments = entityRepository
                 .getFullEntitiesInProject(project.getId())
                 .flatMap(new EntityToSegmentFlatMap());

@@ -21,6 +21,7 @@ import fr.xgouchet.chronorg.data.writers.EventContentValuesWriter;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -111,6 +112,19 @@ public class EventContentQuerierTest {
         verify(provider).provideReader(same(cursor));
         verify(cursor).close();
         verifyZeroInteractions(action);
+    }
+
+    @Test
+    public void shouldGetEventId(){
+        // Given
+        Event event = mock(Event.class);
+        when(event.getId()).thenReturn(42);
+
+        // When
+        int id = querier.getId(event);
+
+        // Then
+        assertThat(id).isEqualTo(42);
     }
 
 }

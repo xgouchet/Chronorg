@@ -28,12 +28,7 @@ public class ProjectContentQuerier extends BaseContentQuerier<Project> {
         return project.getId();
     }
 
-    @Override
-    protected String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
-    }
-
-    @Override protected String defaultOrder() {
+    @Override protected String order() {
         return ChronorgSchema.COL_NAME + " ASC";
     }
 }

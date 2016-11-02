@@ -93,15 +93,7 @@
             android:prompt="@string/hint_portal_direction"
             android:spinnerMode="dropdown"/>
 
-        <android.support.v7.widget.SwitchCompat
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/hint_portal_timeline"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/textColorPrimary"/>
-
         <include layout="@layout/atom_input_color"/>
-
 
     </LinearLayout>
 </ScrollView>

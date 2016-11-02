@@ -69,8 +69,8 @@ public class ChronorgSchemaTest {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "project_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
-                "delay INTEGER NOT NULL," +
-                "two_way INTEGER," +
+                "delay TEXT NOT NULL," +
+                "direction INTEGER," +
                 "timeline INTEGER," +
                 "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS events (" +
@@ -131,18 +131,20 @@ public class ChronorgSchemaTest {
     @Test
     public void shouldBuildUris() {
         // Given
-        int id = 45;
+        int id = 42;
 
         // When
         Uri entity = schema.entityUri(id);
         Uri project = schema.projectUri(id);
         Uri jump = schema.jumpUri(id);
         Uri event = schema.eventUri(id);
+        Uri portal = schema.portalUri(id);
 
         // Then
-        assertThat(entity.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/entities/45");
-        assertThat(project.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/projects/45");
-        assertThat(jump.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/jumps/45");
-        assertThat(event.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/events/45");
+        assertThat(entity.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/entities/42");
+        assertThat(project.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/projects/42");
+        assertThat(jump.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/jumps/42");
+        assertThat(event.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/events/42");
+        assertThat(portal.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/portals/42");
     }
 }

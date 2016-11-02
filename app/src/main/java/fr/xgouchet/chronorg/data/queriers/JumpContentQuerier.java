@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
+import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
@@ -23,6 +24,17 @@ public class JumpContentQuerier extends BaseContentQuerier<Jump> {
         super(provider);
     }
 
+    public void fillEntity(@NonNull ContentResolver contentResolver,
+                           @NonNull final Entity entity) {
+        queryInEntity(contentResolver,
+                new Action1<Jump>() {
+                    @Override public void call(Jump jump) {
+                        entity.jump(jump);
+                    }
+                },
+                entity.getId());
+    }
+
 
     public void queryInEntity(@NonNull ContentResolver contentResolver,
                               @NonNull Action1<Jump> action,
@@ -33,7 +45,7 @@ public class JumpContentQuerier extends BaseContentQuerier<Jump> {
                     null,
                     selectByEntityId(),
                     new String[]{Integer.toString(entityId)},
-                    defaultOrder());
+                    order());
 
             readRows(action, cursor);
         } finally {
@@ -50,15 +62,11 @@ public class JumpContentQuerier extends BaseContentQuerier<Jump> {
         return jump.getId();
     }
 
-    @Override protected String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
-    }
-
     private String selectByEntityId() {
         return ChronorgSchema.COL_ENTITY_ID + "=?";
     }
 
-    @Override protected String defaultOrder() {
+    @Override protected String order() {
         return ChronorgSchema.COL_ORDER + " ASC";
     }
 }

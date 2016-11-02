@@ -10,7 +10,6 @@ import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.data.models.Jump;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
@@ -36,11 +35,11 @@ public class EntityContentQuerier extends BaseContentQuerier<Entity> {
                                int projectId) {
         Cursor cursor = null;
         try {
-            cursor = contentResolver.query(ChronorgSchema.ENTITIES_URI,
+            cursor = contentResolver.query(getUri(),
                     null,
                     selectByProjectId(),
                     new String[]{Integer.toString(projectId)},
-                    defaultOrder());
+                    order());
 
             readEntities(contentResolver, action, cursor, false);
         } finally {
@@ -53,11 +52,11 @@ public class EntityContentQuerier extends BaseContentQuerier<Entity> {
                                    int projectId) {
         Cursor cursor = null;
         try {
-            cursor = contentResolver.query(ChronorgSchema.ENTITIES_URI,
+            cursor = contentResolver.query(getUri(),
                     null,
                     selectByProjectId(),
                     new String[]{Integer.toString(projectId)},
-                    defaultOrder());
+                    order());
 
             readEntities(contentResolver, action, cursor, true);
         } finally {
@@ -74,39 +73,22 @@ public class EntityContentQuerier extends BaseContentQuerier<Entity> {
             while (cursor.moveToNext()) {
                 final Entity entity = reader.instantiateAndFill();
                 if (full) {
-                    readEntityJumps(contentResolver, entity);
+                    jumpContentQuerier.fillEntity(contentResolver, entity);
                 }
                 subscriber.call(entity);
             }
         }
     }
 
-    private void readEntityJumps(@NonNull ContentResolver contentResolver,
-                                 @NonNull final Entity entity) {
-        jumpContentQuerier.queryInEntity(contentResolver,
-                new Action1<Jump>() {
-                    @Override public void call(Jump jump) {
-                        entity.jump(jump);
-                    }
-                },
-                entity.getId());
-
-    }
-
     @NonNull @Override protected Uri getUri() {
         return ChronorgSchema.ENTITIES_URI;
-    }
-
-    @Override
-    protected String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
     }
 
     private String selectByProjectId() {
         return ChronorgSchema.COL_PROJECT_ID + "=?";
     }
 
-    @Nullable @Override protected String defaultOrder() {
+    @Nullable @Override protected String order() {
         return ChronorgSchema.COL_NAME + " ASC";
     }
 

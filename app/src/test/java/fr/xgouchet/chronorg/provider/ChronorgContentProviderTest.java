@@ -41,6 +41,7 @@ public class ChronorgContentProviderTest {
     @Mock BaseDao entityDao;
     @Mock BaseDao jumpDao;
     @Mock BaseDao eventDao;
+    @Mock BaseDao portalDao;
 
     @Mock UriMatcher uriMatcher;
     @Mock Cursor cursor;
@@ -53,7 +54,7 @@ public class ChronorgContentProviderTest {
         initMocks(this);
         when(schema.buildUriMatcher()).thenReturn(uriMatcher);
 
-        provider = new ChronorgContentProvider(schema, projectDao, entityDao, jumpDao, eventDao);
+        provider = new ChronorgContentProvider(schema, projectDao, entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isSameAs(cursor);
         verify(uriMatcher).match(uri);
         verify(projectDao).query(same(projection), same(selection), same(selectionArgs), same(order));
-        verifyZeroInteractions(entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(entityDao, jumpDao, eventDao, portalDao);
 
     }
 
@@ -99,7 +100,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isSameAs(cursor);
         verify(uriMatcher).match(uri);
         verify(entityDao).query(same(projection), same(selection), same(selectionArgs), same(order));
-        verifyZeroInteractions(projectDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -121,7 +122,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isSameAs(cursor);
         verify(uriMatcher).match(uri);
         verify(jumpDao).query(same(projection), same(selection), same(selectionArgs), same(order));
-        verifyZeroInteractions(projectDao, entityDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, eventDao, portalDao);
     }
 
     @Test
@@ -143,7 +144,29 @@ public class ChronorgContentProviderTest {
         assertThat(result).isSameAs(cursor);
         verify(uriMatcher).match(uri);
         verify(eventDao).query(same(projection), same(selection), same(selectionArgs), same(order));
-        verifyZeroInteractions(projectDao, entityDao, jumpDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, portalDao);
+    }
+
+    @Test
+    public void shouldQueryPortals() {
+        // Given
+        Uri uri = mock(Uri.class);
+        String[] projection = new String[]{};
+        String selection = "Foo";
+        String[] selectionArgs = new String[]{};
+        String order = "bar";
+        when(uriMatcher.match(any(Uri.class))).thenReturn(ChronorgSchema.MATCH_PORTALS);
+        when(portalDao.query(any(String[].class), anyString(), any(String[].class), anyString()))
+                .thenReturn(cursor);
+
+        // When
+        Cursor result = provider.query(uri, projection, selection, selectionArgs, order);
+
+        // Then
+        assertThat(result).isSameAs(cursor);
+        verify(uriMatcher).match(uri);
+        verify(portalDao).query(same(projection), same(selection), same(selectionArgs), same(order));
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
     }
 
     @Test
@@ -162,7 +185,7 @@ public class ChronorgContentProviderTest {
         // Then
         assertThat(result).isNull();
         verify(uriMatcher).match(uri);
-        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -184,7 +207,7 @@ public class ChronorgContentProviderTest {
         verify(uriMatcher).match(uri);
         verify(projectDao).insert(same(values));
         verify(schema).projectUri(insertedId);
-        verifyZeroInteractions(entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -206,7 +229,7 @@ public class ChronorgContentProviderTest {
         verify(uriMatcher).match(uri);
         verify(entityDao).insert(same(values));
         verify(schema).entityUri(insertedId);
-        verifyZeroInteractions(projectDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -228,7 +251,7 @@ public class ChronorgContentProviderTest {
         verify(uriMatcher).match(uri);
         verify(jumpDao).insert(same(values));
         verify(schema).jumpUri(insertedId);
-        verifyZeroInteractions(projectDao, entityDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, eventDao, portalDao);
     }
 
     @Test
@@ -250,7 +273,29 @@ public class ChronorgContentProviderTest {
         verify(uriMatcher).match(uri);
         verify(eventDao).insert(same(values));
         verify(schema).eventUri(insertedId);
-        verifyZeroInteractions(projectDao, entityDao, jumpDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, portalDao);
+    }
+
+    @Test
+    public void shouldInsertPortal() {
+        // Given
+        long insertedId = 42L;
+        Uri uri = mock(Uri.class);
+        Uri resultUri = mock(Uri.class);
+        when(uriMatcher.match(any(Uri.class))).thenReturn(ChronorgSchema.MATCH_PORTALS);
+        when(portalDao.insert(any(ContentValues.class)))
+                .thenReturn(insertedId);
+        when(schema.portalUri(anyLong())).thenReturn(resultUri);
+
+        // When
+        Uri result = provider.insert(uri, values);
+
+        // Then
+        assertThat(result).isSameAs(resultUri);
+        verify(uriMatcher).match(uri);
+        verify(portalDao).insert(same(values));
+        verify(schema).portalUri(insertedId);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
     }
 
     @Test
@@ -265,7 +310,7 @@ public class ChronorgContentProviderTest {
         // Then
         assertThat(result).isNull();
         verify(uriMatcher).match(uri);
-        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -286,7 +331,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(updated);
         verify(uriMatcher).match(uri);
         verify(projectDao).update(same(values), same(selection), same(selectionArgs));
-        verifyZeroInteractions(entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(entityDao, jumpDao, eventDao, portalDao);
     }
 
 
@@ -308,7 +353,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(updated);
         verify(uriMatcher).match(uri);
         verify(entityDao).update(same(values), same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -329,7 +374,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(updated);
         verify(uriMatcher).match(uri);
         verify(jumpDao).update(same(values), same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, entityDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, eventDao, portalDao);
     }
 
     @Test
@@ -350,7 +395,28 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(updated);
         verify(uriMatcher).match(uri);
         verify(eventDao).update(same(values), same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, entityDao, jumpDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, portalDao);
+    }
+
+    @Test
+    public void shouldUpdatePortal() {
+        // Given
+        int updated = 42;
+        Uri uri = mock(Uri.class);
+        String selection = "Foo";
+        String[] selectionArgs = new String[]{};
+        when(uriMatcher.match(any(Uri.class))).thenReturn(ChronorgSchema.MATCH_PORTALS);
+        when(portalDao.update(any(ContentValues.class), anyString(), any(String[].class)))
+                .thenReturn(updated);
+
+        // When
+        int result = provider.update(uri, values, selection, selectionArgs);
+
+        // Then
+        assertThat(result).isEqualTo(updated);
+        verify(uriMatcher).match(uri);
+        verify(portalDao).update(same(values), same(selection), same(selectionArgs));
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
     }
 
     @Test
@@ -370,7 +436,7 @@ public class ChronorgContentProviderTest {
         // Then
         assertThat(result).isEqualTo(0);
         verify(uriMatcher).match(uri);
-        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -390,7 +456,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(1);
         verify(uriMatcher).match(uri);
         verify(projectDao).delete(same(selection), same(selectionArgs));
-        verifyZeroInteractions(entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(entityDao, jumpDao, eventDao, portalDao);
     }
 
     @Test
@@ -410,7 +476,7 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(1);
         verify(uriMatcher).match(uri);
         verify(entityDao).delete(same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, jumpDao, eventDao, portalDao);
     }
 
 
@@ -431,9 +497,8 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(1);
         verify(uriMatcher).match(uri);
         verify(jumpDao).delete(same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, entityDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, eventDao, portalDao);
     }
-
 
     @Test
     public void shouldDeleteEvent() {
@@ -452,11 +517,28 @@ public class ChronorgContentProviderTest {
         assertThat(result).isEqualTo(1);
         verify(uriMatcher).match(uri);
         verify(eventDao).delete(same(selection), same(selectionArgs));
-        verifyZeroInteractions(projectDao, entityDao, jumpDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, portalDao);
     }
 
+    @Test
+    public void shouldDeletePortal() {
+        // Given
+        Uri uri = mock(Uri.class);
+        String selection = "Foo";
+        String[] selectionArgs = new String[]{};
+        when(uriMatcher.match(any(Uri.class))).thenReturn(ChronorgSchema.MATCH_PORTALS);
+        when(portalDao.delete(anyString(), any(String[].class)))
+                .thenReturn(1);
 
+        // When
+        int result = provider.delete(uri, selection, selectionArgs);
 
+        // Then
+        assertThat(result).isEqualTo(1);
+        verify(uriMatcher).match(uri);
+        verify(portalDao).delete(same(selection), same(selectionArgs));
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
+    }
 
     @Test
     public void shouldDeleteUnknown() {
@@ -474,7 +556,7 @@ public class ChronorgContentProviderTest {
         // Then
         assertThat(result).isEqualTo(0);
         verify(uriMatcher).match(uri);
-        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao);
+        verifyZeroInteractions(projectDao, entityDao, jumpDao, eventDao, portalDao);
     }
 
 

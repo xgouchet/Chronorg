@@ -33,7 +33,6 @@ public class Portal implements Parcelable {
             new DateTime(1955, 11, 12, 6, 0, 0, 0, DateTimeZone.UTC),
             new DateTime(1985, 10, 27, 2, 42, 0, 0, DateTimeZone.UTC));
     @Direction private int direction = Direction.BOTH;
-    private boolean timeline;
     private int color = Color.RED;
 
     public void setId(int id) {
@@ -80,13 +79,6 @@ public class Portal implements Parcelable {
         return direction;
     }
 
-    public void setTimeline(boolean timeline) {
-        this.timeline = timeline;
-    }
-
-    public boolean isTimeline() {
-        return timeline;
-    }
 
     public void setColor(int color) {
         this.color = color;
@@ -106,7 +98,6 @@ public class Portal implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.delay.toString());
         dest.writeInt(this.direction);
-        dest.writeByte(this.timeline ? (byte) 1 : (byte) 0);
         dest.writeInt(this.color);
     }
 
@@ -120,7 +111,6 @@ public class Portal implements Parcelable {
         this.delay = new Interval(in.readString());
         //noinspection WrongConstant
         this.direction = in.readInt();
-        this.timeline = in.readByte() != 0;
         this.color = in.readInt();
     }
 

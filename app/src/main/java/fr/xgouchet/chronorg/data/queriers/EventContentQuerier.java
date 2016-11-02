@@ -33,7 +33,7 @@ public class EventContentQuerier extends BaseContentQuerier<Event> {
                     null,
                     selectByProjectId(),
                     new String[]{Integer.toString(projectId)},
-                    defaultOrder());
+                    order());
 
             readRows(action, cursor);
         } finally {
@@ -45,15 +45,12 @@ public class EventContentQuerier extends BaseContentQuerier<Event> {
         return ChronorgSchema.EVENTS_URI;
     }
 
-    @Override protected String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
-    }
 
     private String selectByProjectId() {
         return ChronorgSchema.COL_PROJECT_ID + "=?";
     }
 
-    @Override protected String defaultOrder() {
+    @Override protected String order() {
         return ChronorgSchema.COL_INSTANT + " ASC";
     }
 

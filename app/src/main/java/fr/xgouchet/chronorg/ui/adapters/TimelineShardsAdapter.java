@@ -3,13 +3,13 @@ package fr.xgouchet.chronorg.ui.adapters;
 import android.view.View;
 
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.TimelineShard;
+import fr.xgouchet.chronorg.data.models.Shard;
 import fr.xgouchet.chronorg.ui.viewholders.TimelineShardViewHolder;
 
 /**
  * @author Xavier Gouchet
  */
-public class TimelineShardsAdapter extends BaseSimpleAdapter<TimelineShard, TimelineShardViewHolder> {
+public class TimelineShardsAdapter extends BaseSimpleAdapter<Shard, TimelineShardViewHolder> {
 
 
     public TimelineShardsAdapter() {

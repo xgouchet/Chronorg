@@ -17,7 +17,6 @@ public class PortalCursorReader extends BaseCursorReader<Portal> {
     private int idxName;
     private int idxDelay;
     private int idxDirection;
-    private int idxTimeline;
     private int idxColor;
 
     public PortalCursorReader(@NonNull Cursor cursor) {
@@ -30,7 +29,6 @@ public class PortalCursorReader extends BaseCursorReader<Portal> {
         idxName = getIndex(ChronorgSchema.COL_NAME);
         idxDelay = getIndex(ChronorgSchema.COL_DELAY);
         idxDirection = getIndex(ChronorgSchema.COL_DIRECTION);
-        idxTimeline = getIndex(ChronorgSchema.COL_TIMELINE);
         idxColor = getIndex(ChronorgSchema.COL_COLOR);
     }
 
@@ -46,7 +44,6 @@ public class PortalCursorReader extends BaseCursorReader<Portal> {
         portal.setDelay(readString(idxDelay));
         //noinspection WrongConstant
         portal.setDirection(readInt(idxDirection));
-        portal.setTimeline(readInt(idxTimeline) != 0);
         portal.setColor(readInt(idxColor));
     }
 }

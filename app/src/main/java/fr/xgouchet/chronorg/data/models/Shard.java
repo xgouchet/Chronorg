@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Xavier Gouchet
  */
-public class TimelineShard {
+public class Shard {
 
     public static final int TYPE_START = 1;
     public static final int TYPE_END = 2;
@@ -33,12 +33,12 @@ public class TimelineShard {
     @NonNull private final String legend;
     private final int position;
 
-    /*package*/ TimelineShard(@Type int type,
-                              @ColorInt int color,
-                              @NonNull ReadableInstant instant,
-                              @NonNull String legend,
-                              @NonNull int[] ongoingSegments,
-                              int position) {
+    /*package*/ Shard(@Type int type,
+                      @ColorInt int color,
+                      @NonNull ReadableInstant instant,
+                      @NonNull String legend,
+                      @NonNull int[] ongoingSegments,
+                      int position) {
         this.instant = instant;
         this.ongoingSegments = ongoingSegments;
         this.type = type;
@@ -109,12 +109,12 @@ public class TimelineShard {
             return this;
         }
 
-        public TimelineShard build() {
+        public Shard build() {
             int[] ongoing = new int[ongoingSegments.size()];
             for (int i = 0; i < ongoing.length; i++) {
                 ongoing[i] = ongoingSegments.get(i);
             }
-            return new TimelineShard(type, color, instant, legend, ongoing, position);
+            return new Shard(type, color, instant, legend, ongoing, position);
         }
     }
 

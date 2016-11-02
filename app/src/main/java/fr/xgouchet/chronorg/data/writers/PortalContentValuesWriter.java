@@ -17,7 +17,6 @@ public class PortalContentValuesWriter extends BaseContentValuesWriter<Portal> {
         cv.put(ChronorgSchema.COL_NAME, portal.getName());
         cv.put(ChronorgSchema.COL_DELAY, portal.getDelay().toString());
         cv.put(ChronorgSchema.COL_DIRECTION, portal.getDirection());
-        cv.put(ChronorgSchema.COL_TIMELINE, portal.isTimeline() ? 1 : 0);
         cv.put(ChronorgSchema.COL_COLOR, portal.getColor());
     }
 }

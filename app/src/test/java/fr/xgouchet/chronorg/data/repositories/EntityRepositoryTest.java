@@ -129,4 +129,69 @@ public class EntityRepositoryTest {
         verify(querier).queryInProject(same(contentResolver), any(Action1.class), eq(42));
     }
 
+    @Test
+    public void shouldGetFullEntitiesInProject() throws Exception {
+        // Given
+        int projectId = 42;
+        final Entity[] entities = new Entity[]{mock(Entity.class), mock(Entity.class)};
+        doAnswer(new Answer() {
+            @Override public Void answer(InvocationOnMock invocation) throws Throwable {
+                Action1 s = (Action1) invocation.getArguments()[1];
+                s.call(entities[0]);
+                s.call(entities[1]);
+                return null;
+            }
+        }).when(querier)
+                .queryFullInProject(any(ContentResolver.class), any(Action1.class), anyInt());
+
+        // When
+        Observable<Entity> observable = repository.getFullEntitiesInProject(projectId);
+        observable.subscribe(subscriber);
+
+        // Then
+        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
+        List result = subscriber.getOnNextEvents();
+        assertThat(result).containsExactly((Object[]) entities);
+        verify(querier).queryFullInProject(same(contentResolver), any(Action1.class), eq(42));
+    }
+
+    @Test
+    public void shouldGetFullEntitiesInProjectEmpty() throws Exception {
+        // Given
+        int projectId = 42;
+        doNothing()
+                .when(querier)
+                .queryFullInProject(any(ContentResolver.class), any(Action1.class), anyInt());
+
+        // When
+        Observable<Entity> observable = repository.getFullEntitiesInProject(projectId);
+        observable.subscribe(subscriber);
+
+        // Then
+        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
+        List result = subscriber.getOnNextEvents();
+        assertThat(result).isEmpty();
+        verify(querier).queryFullInProject(same(contentResolver), any(Action1.class), eq(42));
+    }
+
+    @Test
+    public void shouldGetFullEntitiesInProjectWithError() throws Exception {
+        // Given
+        int projectId = 42;
+        doThrow(new RuntimeException())
+                .when(querier)
+                .queryFullInProject(any(ContentResolver.class), any(Action1.class), anyInt());
+
+        // When
+        Observable<Entity> observable = repository.getFullEntitiesInProject(projectId);
+        observable.subscribe(subscriber);
+
+        // Then
+        subscriber.assertError(RuntimeException.class);
+        subscriber.assertNotCompleted();
+        verify(querier).queryFullInProject(same(contentResolver), any(Action1.class), eq(42));
+    }
+
 }

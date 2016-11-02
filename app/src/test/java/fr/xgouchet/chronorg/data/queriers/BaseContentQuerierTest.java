@@ -71,7 +71,7 @@ public class BaseContentQuerierTest {
                 .thenReturn(writer);
 
         when(contentQuerier.getUri()).thenReturn(FAKE_URI);
-        when(contentQuerier.defaultOrder()).thenReturn(DEFAULT_ORDER);
+        when(contentQuerier.order()).thenReturn(DEFAULT_ORDER);
         when(contentQuerier.getId(any())).thenReturn(FAKE_ID);
         when(contentQuerier.selectById()).thenReturn(SELECT_BY_ID);
 
@@ -278,6 +278,20 @@ public class BaseContentQuerierTest {
         verify(contentResolver).delete(eq(FAKE_URI), eq(SELECT_BY_ID), eq(new String[]{FAKE_ID_STR}));
     }
 
+    @Test
+    public void shouldHaveDefaultImplementations() {
+        // Given
+        BaseContentQuerier querier = new ProxyContentQuerierNoOverrides(provider);
+
+        // When
+        String order = querier.order();
+        String selectById = querier.selectById();
+
+        // Then
+        assertThat(order).isNull();
+        assertThat(selectById).isEqualTo("id=?");
+    }
+
 
     static class ProxyContentQuerier extends BaseContentQuerier<Object> {
 
@@ -300,8 +314,23 @@ public class BaseContentQuerierTest {
             return delegate.getId(item);
         }
 
-        @Override protected String defaultOrder() {
-            return delegate.defaultOrder();
+        @Override protected String order() {
+            return delegate.order();
+        }
+    }
+
+    static class ProxyContentQuerierNoOverrides extends BaseContentQuerier<Object> {
+
+        protected ProxyContentQuerierNoOverrides(@NonNull IOProvider<Object> ioProvider) {
+            super(ioProvider);
+        }
+
+        @NonNull @Override protected Uri getUri() {
+            return null;
+        }
+
+        @Override protected int getId(@NonNull Object item) {
+            return 0;
         }
     }
 }

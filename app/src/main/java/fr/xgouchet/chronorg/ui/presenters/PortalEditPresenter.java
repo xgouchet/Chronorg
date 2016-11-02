@@ -34,7 +34,6 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
     @NonNull private Interval delay = new Interval(new DateTime(), new DateTime());
     @ColorInt private int color;
     @Portal.Direction private int direction;
-    private boolean timeline;
     @NonNull private final Formatter<ReadableInstant> formatter;
 
     public PortalEditPresenter(@NonNull PortalRepository portalRepository,
@@ -53,7 +52,6 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
         color = portal.getColor();
         delay = portal.getDelay();
         direction = portal.getDirection();
-        timeline = portal.isTimeline();
     }
 
     @Override public void setView(@NonNull PortalEditContract.View view) {
@@ -64,7 +62,7 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
     @Override public void subscribe() {
         if (view == null) return;
 
-        view.setContent(name, delay, direction, timeline, color);
+        view.setContent(name, delay, direction, color);
     }
 
     @Override public void unsubscribe() {
@@ -97,10 +95,6 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
         this.direction = direction;
     }
 
-    @Override public void setTimeline(boolean timeline) {
-        this.timeline = timeline;
-    }
-
     @Override public void savePortal(@NonNull String inputNameText) {
         if (view == null) return;
         if (portal == null) return;
@@ -108,7 +102,6 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
         portal.setName(inputNameText);
         portal.setDelay(delay);
         portal.setDirection(direction);
-        portal.setTimeline(timeline);
         portal.setColor(color);
         portalRepository.save(portal)
                 .subscribeOn(Schedulers.io())

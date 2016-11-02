@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import fr.xgouchet.chronorg.data.models.Segment;
-import fr.xgouchet.chronorg.data.models.TimelineShard;
+import fr.xgouchet.chronorg.data.models.Shard;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -13,12 +13,12 @@ import rx.functions.Func1;
  * @author Xavier Gouchet
  */
 public class SegmentToShardFlatMap
-        implements Func1<List<Segment>, Observable<TimelineShard>> {
+        implements Func1<List<Segment>, Observable<Shard>> {
 
 
-    @Override public Observable<TimelineShard> call(List<Segment> segments) {
+    @Override public Observable<Shard> call(List<Segment> segments) {
         List<Segment> openSegments = new ArrayList<>();
-        List<TimelineShard> shards = new LinkedList<>();
+        List<Shard> shards = new LinkedList<>();
 
         int index = 0;
 
@@ -34,9 +34,9 @@ public class SegmentToShardFlatMap
             if ((nextToClose != null)
                     && ((nextToStart == null)
                     || (nextToClose.getTo().isBefore(nextToStart.getFrom())))) {
-                TimelineShard.Builder shardBuilder =
-                        new TimelineShard.Builder(
-                                TimelineShard.TYPE_END,
+                Shard.Builder shardBuilder =
+                        new Shard.Builder(
+                                Shard.TYPE_END,
                                 nextToClose.getColor(),
                                 nextToClose.getTo())
                                 .withLegend(nextToClose.getLegendTo());
@@ -64,9 +64,9 @@ public class SegmentToShardFlatMap
             } else if (nextToStart != null) {
                 boolean isEvent = nextToStart.getFrom() == nextToStart.getTo();
 
-                TimelineShard.Builder shardBuilder =
-                        new TimelineShard.Builder(
-                                isEvent ? TimelineShard.TYPE_EVENT : TimelineShard.TYPE_START,
+                Shard.Builder shardBuilder =
+                        new Shard.Builder(
+                                isEvent ? Shard.TYPE_EVENT : Shard.TYPE_START,
                                 nextToStart.getColor(),
                                 nextToStart.getFrom())
                                 .withLegend(nextToStart.getLegendFrom());

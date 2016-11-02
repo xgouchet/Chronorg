@@ -12,7 +12,7 @@ import android.view.View;
 import org.joda.time.DateTime;
 
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.TimelineShard;
+import fr.xgouchet.chronorg.data.models.Shard;
 
 /**
  * @author Xavier Gouchet
@@ -26,7 +26,7 @@ public class TimelineShardView extends View {
     private int lineCapDistanceFromTop;
     private Paint paint;
 
-    @NonNull private TimelineShard timelineShard;
+    @NonNull private Shard shard;
 
     public TimelineShardView(Context context) {
         super(context);
@@ -63,7 +63,7 @@ public class TimelineShardView extends View {
 
         if (isInEditMode()) {
             final DateTime instant = new DateTime("1970-01-01T00:00Z");
-            timelineShard = new TimelineShard.Builder(TimelineShard.TYPE_EVENT, Color.GREEN, instant)
+            shard = new Shard.Builder(Shard.TYPE_EVENT, Color.GREEN, instant)
                     .withOngoingSegmentColor(Color.RED)
                     .withOngoingSegmentColor(Color.GREEN)
                     .withOngoingSegmentColor(Color.BLUE)
@@ -73,12 +73,12 @@ public class TimelineShardView extends View {
     }
 
 
-    public void setTimelineShard(@NonNull TimelineShard timelineShard) {
-        this.timelineShard = timelineShard;
+    public void setShard(@NonNull Shard shard) {
+        this.shard = shard;
     }
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int minWidth = timelineShard.getOngoingSegments().length * lineWidth;
+        int minWidth = shard.getOngoingSegments().length * lineWidth;
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -104,23 +104,23 @@ public class TimelineShardView extends View {
 
         int height = getMeasuredHeight();
         int lineStartX = 0;
-        int[] ongoingSegments = timelineShard.getOngoingSegments();
+        int[] ongoingSegments = shard.getOngoingSegments();
         for (int i = 0; i < ongoingSegments.length; i++) {
             int color = ongoingSegments[i];
             paint.setColor(color);
 
-            if (timelineShard.getPosition() == i) {
+            if (shard.getPosition() == i) {
                 canvas.drawCircle(lineStartX + (lineWidth / 2),
                         lineCapDistanceFromTop,
                         lineCapWidth / 2,
                         paint);
-                if (timelineShard.getType() == TimelineShard.TYPE_START) {
+                if (shard.getType() == Shard.TYPE_START) {
                     canvas.drawRect(lineStartX + lineMargin,
                             lineCapDistanceFromTop,
                             lineStartX + lineWidth - lineMargin,
                             height,
                             paint);
-                } else if (timelineShard.getType() == TimelineShard.TYPE_END){
+                } else if (shard.getType() == Shard.TYPE_END){
                     canvas.drawRect(lineStartX + lineMargin,
                             0,
                             lineStartX + lineWidth - lineMargin,

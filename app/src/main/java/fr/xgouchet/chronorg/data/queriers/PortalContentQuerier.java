@@ -33,7 +33,7 @@ public class PortalContentQuerier extends BaseContentQuerier<Portal> {
                     null,
                     selectByProjectId(),
                     new String[]{Integer.toString(projectId)},
-                    defaultOrder());
+                    order());
 
             readRows(action, cursor);
         } finally {
@@ -45,15 +45,11 @@ public class PortalContentQuerier extends BaseContentQuerier<Portal> {
         return ChronorgSchema.PORTALS_URI;
     }
 
-    @Override protected String selectById() {
-        return ChronorgSchema.COL_ID + "=?";
-    }
-
     private String selectByProjectId() {
         return ChronorgSchema.COL_PROJECT_ID + "=?";
     }
 
-    @Override protected String defaultOrder() {
+    @Override protected String order() {
         return ChronorgSchema.COL_DELAY + " ASC";
     }
 

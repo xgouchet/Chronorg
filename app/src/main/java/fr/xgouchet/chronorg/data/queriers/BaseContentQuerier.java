@@ -12,6 +12,7 @@ import com.deezer.android.counsel.annotations.Trace;
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.readers.BaseCursorReader;
 import fr.xgouchet.chronorg.data.writers.BaseContentValuesWriter;
+import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
 /**
@@ -27,15 +28,15 @@ public abstract class BaseContentQuerier<T> implements ContentQuerier<T> {
     }
 
     @Override
-    public  void queryAll(@NonNull ContentResolver contentResolver,
-                               @NonNull Action1<T> action) {
+    public void queryAll(@NonNull ContentResolver contentResolver,
+                         @NonNull Action1<T> action) {
         Cursor cursor = null;
         try {
             cursor = contentResolver.query(getUri(),
                     null,
                     null,
                     null,
-                    defaultOrder());
+                    order());
 
             readRows(action, cursor);
         } finally {
@@ -51,7 +52,7 @@ public abstract class BaseContentQuerier<T> implements ContentQuerier<T> {
                     null,
                     selectById(),
                     new String[]{Integer.toString(id)},
-                    defaultOrder());
+                    order());
 
             readRows(action, cursor);
         } finally {
@@ -87,7 +88,7 @@ public abstract class BaseContentQuerier<T> implements ContentQuerier<T> {
     }
 
     protected void readRows(@NonNull Action1<T> action,
-                                  @Nullable Cursor cursor) {
+                            @Nullable Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             BaseCursorReader<T> reader = ioProvider.provideReader(cursor);
             while (cursor.moveToNext()) {
@@ -98,11 +99,13 @@ public abstract class BaseContentQuerier<T> implements ContentQuerier<T> {
 
     @NonNull protected abstract Uri getUri();
 
-    @Nullable protected abstract String selectById();
+    @Nullable protected String selectById() {
+        return ChronorgSchema.COL_ID + "=?";
+    }
 
     protected abstract int getId(@NonNull T item);
 
-    @Nullable protected String defaultOrder() {
+    @Nullable protected String order() {
         return null;
     }
 }

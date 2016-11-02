@@ -6,10 +6,8 @@
     <string name="title_events">Events</string>
 
 
-    <string name="empty_projects_list">No project yet…</string>
-    <string name="empty_entities_list">No entities in this project yet</string>
-    <string name="empty_jumps_list">No jumps in this entity yet</string>
-    <string name="empty_events_list">No events in this project yet</string>
+    <string name="empty_list">Nothing there yet…\nTry using the + button.</string>
+    <string name="empty_timeline">Timeline is empty…\nTry adding content in the project.</string>
 
 
     <string name="hint_name">Name</string>
@@ -29,15 +27,13 @@
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
 
-
+    <string name="error_generic">An unexpected error occurred :\n</string>
     <string name="error_empty_name">Name can\'t be empty</string>
-    <string name="error_projects_list">Error reading projects list</string>
-    <string name="error_entities_list">Error reading the entities in this list</string>
-    <string name="error_jumps_list">Error reading the jumps in this list</string>
     <string name="error_project_details_empty">No project to display</string>
     <string name="error_entity_details_empty">No entity to display</string>
     <string name="error_jump_details_empty">No jump to display</string>
     <string name="error_events_list">Error reading events</string>
+
     <string name="hint_years">Years</string>
     <string name="hint_months">Months</string>
     <string name="hint_days">Days</string>
@@ -46,6 +42,9 @@
     <string name="hint_minutes">Minutes</string>
     <string name="hint_weeks">Weeks</string>
     <string name="hint_portal_direction">Direction</string>
+    <string name="title_portals">Portals</string>
+    <string name="action_timeline">View Timeline</string>
+
 
 
     <string-array name="directions">

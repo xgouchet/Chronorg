@@ -30,7 +30,6 @@ public interface PortalEditContract {
         void setContent(@NonNull String name,
                         @NonNull Interval delay,
                         @Portal.Direction int direction,
-                        boolean timeline,
                         @ColorInt int color);
     }
 
@@ -43,8 +42,6 @@ public interface PortalEditContract {
         void setName(@NonNull String name);
 
         void setDirection(@Portal.Direction int direction);
-
-        void setTimeline(boolean timeline);
 
         void setColor(@ColorInt int color);
 

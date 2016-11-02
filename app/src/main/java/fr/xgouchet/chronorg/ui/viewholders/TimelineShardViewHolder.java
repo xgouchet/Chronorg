@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import fr.xgouchet.chronorg.R;
-import fr.xgouchet.chronorg.data.models.TimelineShard;
+import fr.xgouchet.chronorg.data.models.Shard;
 import fr.xgouchet.chronorg.ui.TimelineShardView;
 
 import static butterknife.ButterKnife.bind;
@@ -19,7 +19,7 @@ import static butterknife.ButterKnife.bind;
 /**
  * @author Xavier Gouchet
  */
-public class TimelineShardViewHolder extends BaseViewHolder<TimelineShard> {
+public class TimelineShardViewHolder extends BaseViewHolder<Shard> {
 
 
     final DateTimeFormatter dtf = DateTimeFormat.forStyle("MM").withZoneUTC();
@@ -30,17 +30,17 @@ public class TimelineShardViewHolder extends BaseViewHolder<TimelineShard> {
     @BindView(R.id.timeline) TimelineShardView timelineShard;
 
 
-    public TimelineShardViewHolder(@Nullable Listener<TimelineShard> listener,
+    public TimelineShardViewHolder(@Nullable Listener<Shard> listener,
                                    @NonNull View itemView) {
         super(listener, itemView);
         bind(this, itemView);
     }
 
-    @Override public void onBindItem(@NonNull TimelineShard shard) {
+    @Override public void onBindItem(@NonNull Shard shard) {
 
         legend.setText(shard.getLegend());
         instant.setText(dtf.print(shard.getInstant()));
-        timelineShard.setTimelineShard(shard);
+        timelineShard.setShard(shard);
 
         timelineShard.requestLayout();
     }

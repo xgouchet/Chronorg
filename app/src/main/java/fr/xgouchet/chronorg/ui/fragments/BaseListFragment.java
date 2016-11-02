@@ -80,13 +80,13 @@ public abstract class BaseListFragment<T, A extends BaseSimpleAdapter<T, ? exten
     }
 
     @Override public void setEmpty() {
-        message.setText(R.string.empty_entities_list);
+        message.setText(R.string.empty_list);
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
-        message.setText(R.string.error_entities_list);
+        message.setText(getString(R.string.error_generic, throwable.getMessage()));
         message.setVisibility(View.VISIBLE);
         list.setVisibility(View.GONE);
     }

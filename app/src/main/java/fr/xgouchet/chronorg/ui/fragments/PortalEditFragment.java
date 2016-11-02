@@ -176,7 +176,6 @@ public class PortalEditFragment extends Fragment
     public void setContent(@NonNull String name,
                            @NonNull Interval delay,
                            @Portal.Direction int direction,
-                           boolean timeline,
                            @ColorInt int color) {
         inputName.setText(name);
         this.delay = delay;

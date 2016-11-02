@@ -14,23 +14,20 @@ import fr.xgouchet.chronorg.ui.activities.BaseActivity;
 import fr.xgouchet.chronorg.ui.fragments.EntityListFragment;
 import fr.xgouchet.chronorg.ui.fragments.EventListFragment;
 import fr.xgouchet.chronorg.ui.fragments.PortalListFragment;
-import fr.xgouchet.chronorg.ui.fragments.TimelineFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
-import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
 
 /**
  * @author Xavier Gouchet
  */
 public class PageFragmentAdapter extends FragmentStatePagerAdapter {
 
-    public static final int PAGE_TIMELINE = 0;
-    public static final int PAGE_ENTITIES = 1;
-    public static final int PAGE_EVENTS = 2;
-    public static final int PAGE_PORTALS = 3;
+    public static final int PAGE_ENTITIES = 0;
+    public static final int PAGE_EVENTS = 1;
+    public static final int PAGE_PORTALS = 2;
 
-    public static final int PAGE_COUNT = 4;
+    public static final int PAGE_COUNT = 3;
 
     private final WeakReference<BaseActivity> activityRef;
     @NonNull private final Project project;
@@ -57,13 +54,6 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
         }
 
         switch (position) {
-            case PAGE_TIMELINE: {
-                final TimelineFragment fragment = TimelineFragment.createFragment();
-                TimelinePresenter presenter = activity.getActivityComponent().getTimelinePresenter();
-                presenter.setProject(project);
-                presenter.setView(fragment);
-                return fragment;
-            }
             case PAGE_ENTITIES: {
                 final EntityListFragment fragment = EntityListFragment.createFragment(project.getId());
                 EntityListPresenter presenter = activity.getActivityComponent().getEntityListPresenter();
@@ -96,14 +86,12 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
             return null;
         }
         switch (position) {
-            case PAGE_TIMELINE:
-                return context.getString(R.string.title_timeline);
             case PAGE_ENTITIES:
                 return context.getString(R.string.title_entities);
             case PAGE_EVENTS:
                 return context.getString(R.string.title_events);
             case PAGE_PORTALS:
-                return "Portals";
+                return context.getString(R.string.title_portals);
         }
 
 

@@ -18,7 +18,6 @@ import rx.Subscriber;
 @Trace
 public class EntityRepository extends BaseRepository<Entity> {
 
-
     public EntityRepository(@NonNull Context context, @NonNull EntityIOProvider provider) {
         super(context, provider);
     }
