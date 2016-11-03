@@ -16,7 +16,8 @@ public class BaseDao {
     @NonNull private final SQLiteOpenHelper openHelper;
     @NonNull private final String tableName;
 
-    public BaseDao(@NonNull SQLiteOpenHelper openHelper, @NonNull String tableName) {
+    public BaseDao(@NonNull SQLiteOpenHelper openHelper,
+                   @NonNull String tableName) {
         this.openHelper = openHelper;
         this.tableName = tableName;
     }

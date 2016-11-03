@@ -5,11 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.Period;
 import org.joda.time.ReadableInstant;
 
 import java.util.LinkedList;
@@ -39,13 +36,14 @@ public class Entity implements Parcelable {
     public Entity(int projectId,
                   @NonNull String name,
                   @NonNull ReadableInstant birth,
-                  @NonNull ReadableInstant death) {
+                  @NonNull ReadableInstant death,
+                  @ColorInt int color) {
         id = -1;
         this.projectId = projectId;
         this.name = name;
         this.birth = birth;
         this.death = death;
-        this.color = Color.RED;
+        this.color = color;
     }
 
 
@@ -71,8 +69,8 @@ public class Entity implements Parcelable {
         jumps.add(jump);
     }
 
-    public void jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
-        jump(new Jump(from, to));
+    public void jump(@NonNull String name, @NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+        jump(new Jump(name, from, to));
     }
 
     public Segment[] timelineAsSegments() {
@@ -97,42 +95,6 @@ public class Entity implements Parcelable {
         segments[index] = new Segment(lastInstant, lastLegend, death, name + " †", color);
 
         return segments;
-    }
-
-    @NonNull
-    public List<Period> getAgesAtInstant(@NonNull ReadableInstant instant) {
-
-        List<Period> ages = new LinkedList<>();
-        Period cumulativeAge = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-
-        for (Segment segment : timelineAsSegments()) {
-            if (segment.contains(instant)) {
-                Period sincePeriodStart = new Period(segment.getFrom(), instant);
-                ages.add(cumulativeAge.plus(sincePeriodStart).normalizedStandard());
-            }
-
-            cumulativeAge = cumulativeAge.plus(segment.period());
-        }
-
-        return ages;
-    }
-
-    @Nullable
-    public ReadableInstant getInstantAtAge(@NonNull Duration duration) {
-
-        Duration durationLeft = duration;
-        Duration segmentDuration;
-
-        for (Segment segment : timelineAsSegments()) {
-            segmentDuration = segment.duration();
-            if (durationLeft.isShorterThan(segmentDuration)) {
-                return segment.getFrom().toInstant().plus(durationLeft);
-            }
-
-            durationLeft = durationLeft.minus(segmentDuration);
-        }
-
-        return null;
     }
 
     public int getId() {

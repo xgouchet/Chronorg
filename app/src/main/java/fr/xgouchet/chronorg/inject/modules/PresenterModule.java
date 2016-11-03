@@ -10,6 +10,7 @@ import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.PortalRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
+import fr.xgouchet.chronorg.data.repositories.TimelineRepository;
 import fr.xgouchet.chronorg.inject.annotations.ActivityScope;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
 import fr.xgouchet.chronorg.ui.presenters.DateTimePickerPresenter;
@@ -25,7 +26,8 @@ import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
-import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
+import fr.xgouchet.chronorg.ui.presenters.ShardListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelineListPresenter;
 import fr.xgouchet.chronorg.ui.validators.DateTimeInputValidator;
 
 /**
@@ -85,9 +87,9 @@ public class PresenterModule {
 
     @Provides
     @ActivityScope
-    public TimelinePresenter provideTimelinePresenter(EntityRepository entityRepository,
-                                                      EventRepository eventRepository) {
-        return new TimelinePresenter(entityRepository, eventRepository);
+    public ShardListPresenter provideShardListPresenter(EntityRepository entityRepository,
+                                                       EventRepository eventRepository) {
+        return new ShardListPresenter(entityRepository, eventRepository);
     }
 
     @Provides
@@ -110,9 +112,17 @@ public class PresenterModule {
 
     @Provides
     @ActivityScope
-    public PortalEditPresenter providePortalEditPresenter(PortalRepository portalRepository, Formatter<ReadableInstant> formatter) {
+    public PortalEditPresenter providePortalEditPresenter(PortalRepository portalRepository,
+                                                          Formatter<ReadableInstant> formatter) {
         return new PortalEditPresenter(portalRepository, formatter);
     }
+
+    @Provides
+    @ActivityScope
+    public TimelineListPresenter provideTimelineListPresenter(TimelineRepository timelineRepository) {
+        return new TimelineListPresenter(timelineRepository);
+    }
+
 
     @Provides
     @ActivityScope

@@ -60,7 +60,6 @@ public class PortalContentValuesWriterTest {
         verify(mockContentValues).put(ChronorgSchema.COL_NAME, FAKE_NAME);
         verify(mockContentValues).put(ChronorgSchema.COL_DELAY, FAKE_DELAY.toString());
         verify(mockContentValues).put(ChronorgSchema.COL_DIRECTION, FAKE_DIRECTION);
-        verify(mockContentValues).put(ChronorgSchema.COL_TIMELINE, 1); 
         verify(mockContentValues).put(ChronorgSchema.COL_COLOR, FAKE_COLOUR);
     }
 

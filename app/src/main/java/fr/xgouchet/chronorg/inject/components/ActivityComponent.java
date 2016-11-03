@@ -16,7 +16,8 @@ import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
-import fr.xgouchet.chronorg.ui.presenters.TimelinePresenter;
+import fr.xgouchet.chronorg.ui.presenters.ShardListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelineListPresenter;
 
 /**
  * @author Xavier Gouchet
@@ -41,7 +42,7 @@ public interface ActivityComponent {
 
     JumpEditPresenter getJumpEditPresenter();
 
-    TimelinePresenter getTimelinePresenter();
+    ShardListPresenter getTimelinePresenter();
 
     EventListPresenter getEventListPresenter();
 
@@ -50,6 +51,8 @@ public interface ActivityComponent {
     PortalListPresenter getPortalListPresenter();
 
     PortalEditPresenter getPortalEditPresenter();
+
+    TimelineListPresenter getTimelineListPresenter();
 
     DateTimePickerPresenter getDateTimePickerPresenter();
 

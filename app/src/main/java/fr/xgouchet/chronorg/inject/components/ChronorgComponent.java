@@ -12,6 +12,7 @@ import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.PortalRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
+import fr.xgouchet.chronorg.data.repositories.TimelineRepository;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationContext;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
 import fr.xgouchet.chronorg.inject.modules.FormatterModule;
@@ -34,6 +35,8 @@ public interface ChronorgComponent {
     @ApplicationContext
     Context getApplicationContext();
 
+    ///
+
     ProjectRepository getProjectRepository();
 
     EntityRepository getEntityRepository();
@@ -44,8 +47,13 @@ public interface ChronorgComponent {
 
     PortalRepository getPortalRepository();
 
+    TimelineRepository getTimelineRepository();
+
+    ///
+
     DateTimeInputValidator getDateTimeInputValidator();
 
+    ///
 
     Formatter<Duration> getDurationFormatter();
 

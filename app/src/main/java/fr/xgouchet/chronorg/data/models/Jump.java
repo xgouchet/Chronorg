@@ -22,7 +22,8 @@ public class Jump implements Parcelable {
     public Jump() {
     }
 
-    public Jump(@NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+    public Jump(@NonNull String name, @NonNull ReadableInstant from, @NonNull ReadableInstant to) {
+        this.name = name;
         this.from = from;
         this.to = to;
     }

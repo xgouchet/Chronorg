@@ -9,12 +9,15 @@ import fr.xgouchet.chronorg.data.ioproviders.EventIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.JumpIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.PortalIOProvider;
 import fr.xgouchet.chronorg.data.ioproviders.ProjectIOProvider;
+import fr.xgouchet.chronorg.data.ioproviders.TimelineIOProvider;
 import fr.xgouchet.chronorg.data.queriers.JumpContentQuerier;
+import fr.xgouchet.chronorg.data.queriers.PortalContentQuerier;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.repositories.JumpRepository;
 import fr.xgouchet.chronorg.data.repositories.PortalRepository;
 import fr.xgouchet.chronorg.data.repositories.ProjectRepository;
+import fr.xgouchet.chronorg.data.repositories.TimelineRepository;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationContext;
 import fr.xgouchet.chronorg.inject.annotations.ApplicationScope;
 
@@ -87,5 +90,19 @@ public class RepositoryModule {
     public PortalRepository providePortalRepository(@ApplicationContext Context context,
                                                     PortalIOProvider provider) {
         return new PortalRepository(context, provider);
+    }
+
+
+    @Provides
+    @ApplicationScope
+    public TimelineIOProvider provideTimelineIOProvider(PortalIOProvider portalIOProvider) {
+        return new TimelineIOProvider((PortalContentQuerier) portalIOProvider.provideQuerier());
+    }
+
+    @Provides
+    @ApplicationScope
+    public TimelineRepository provideTimelineRepository(@ApplicationContext Context context,
+                                                        TimelineIOProvider provider) {
+        return new TimelineRepository(context, provider);
     }
 }

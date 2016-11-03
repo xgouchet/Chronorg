@@ -67,7 +67,8 @@ public class EntityContentQuerier extends BaseContentQuerier<Entity> {
 
     private void readEntities(@NonNull ContentResolver contentResolver,
                               @NonNull Action1<Entity> subscriber,
-                              @Nullable Cursor cursor, boolean full) {
+                              @Nullable Cursor cursor,
+                              boolean full) {
         if (cursor != null && cursor.getCount() > 0) {
             BaseCursorReader<Entity> reader = ioProvider.provideReader(cursor);
             while (cursor.moveToNext()) {

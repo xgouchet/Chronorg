@@ -42,14 +42,14 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     public static final String COL_DEATH_INSTANT = "death";
     public static final String COL_INSTANT = "instant";
     public static final String COL_DIRECTION = "direction";
-    public static final String COL_TIMELINE = "timeline";
     public static final String COL_COLOR = "color";
     public static final String COL_DELAY = "delay";
     public static final String COL_ORDER = "jump_order";
 
+    public static final String COL_PARENT_ID = "parent_id";
     public static final String COL_PROJECT_ID = "project_id";
     public static final String COL_ENTITY_ID = "entity_id";
-
+    public static final String COL_PORTAL_ID = "portal_id";
 
     @NonNull
     public SQLiteDescription getDescription() {
@@ -60,6 +60,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         description.addTable(buildPortalsTable());
         description.addTable(buildEventsTable());
         description.addTable(buildJumpsTable());
+        description.addTable(buildTimelinesTable());
 
         return description;
     }
@@ -94,7 +95,6 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DELAY, TYPE_TEXT, NOT_NULL));
         tableDescription.addColumn(new ColumnDescription(COL_DIRECTION, TYPE_INTEGER));
-        tableDescription.addColumn(new ColumnDescription(COL_TIMELINE, TYPE_INTEGER));
         tableDescription.addColumn(new ColumnDescription(COL_COLOR, TYPE_INTEGER));
 
         return tableDescription;
@@ -125,21 +125,36 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         return tableDescription;
     }
 
+    private TableDescription buildTimelinesTable() {
+        TableDescription tableDescription = new TableDescription(TABLE_TIMELINES);
+
+        tableDescription.addColumn(new ColumnDescription(COL_ID, TYPE_INTEGER, PRIMARY_KEY, AUTOINCREMENT));
+        tableDescription.addColumn(new ColumnDescription(COL_PROJECT_ID, TYPE_INTEGER, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_NAME, TYPE_TEXT, NOT_NULL));
+        tableDescription.addColumn(new ColumnDescription(COL_PARENT_ID, TYPE_INTEGER));
+        tableDescription.addColumn(new ColumnDescription(COL_PORTAL_ID, TYPE_INTEGER));
+        tableDescription.addColumn(new ColumnDescription(COL_DIRECTION, TYPE_INTEGER));
+
+        return tableDescription;
+    }
 
     // URI Matcher
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
+
 
     private static final String PATH_PROJECTS = "projects";
     private static final String PATH_ENTITIES = "entities";
     private static final String PATH_JUMPS = "jumps";
     private static final String PATH_EVENTS = "events";
     private static final String PATH_PORTALS = "portals";
+    private static final String PATH_TIMELINES = "timelines";
 
-    public static final int MATCH_PROJECTS = 100;
-    public static final int MATCH_ENTITIES = 200;
-    public static final int MATCH_JUMPS = 300;
-    public static final int MATCH_EVENTS = 400;
-    public static final int MATCH_PORTALS = 500;
+    public static final int MATCH_PROJECTS = 10;
+    public static final int MATCH_ENTITIES = 20;
+    public static final int MATCH_JUMPS = 30;
+    public static final int MATCH_EVENTS = 40;
+    public static final int MATCH_PORTALS = 50;
+    public static final int MATCH_TIMELINES = 60;
 
     public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     public static final Uri PROJECTS_URI = BASE_URI.buildUpon().appendPath(PATH_PROJECTS).build();
@@ -147,6 +162,7 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
     public static final Uri JUMPS_URI = BASE_URI.buildUpon().appendPath(PATH_JUMPS).build();
     public static final Uri EVENTS_URI = BASE_URI.buildUpon().appendPath(PATH_EVENTS).build();
     public static final Uri PORTALS_URI = BASE_URI.buildUpon().appendPath(PATH_PORTALS).build();
+    public static final Uri TIMELINES_URI = BASE_URI.buildUpon().appendPath(PATH_TIMELINES).build();
 
     public UriMatcher buildUriMatcher() {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -156,29 +172,38 @@ public class ChronorgSchema implements SQLiteDescriptionProvider {
         uriMatcher.addURI(AUTHORITY, PATH_JUMPS, MATCH_JUMPS);
         uriMatcher.addURI(AUTHORITY, PATH_EVENTS, MATCH_EVENTS);
         uriMatcher.addURI(AUTHORITY, PATH_PORTALS, MATCH_PORTALS);
+        uriMatcher.addURI(AUTHORITY, PATH_TIMELINES, MATCH_TIMELINES);
 
         return uriMatcher;
     }
 
     public Uri projectUri(long projectId) {
-        return PROJECTS_URI.buildUpon().appendEncodedPath(Long.toString(projectId)).build();
+        return buildUriWithId(PROJECTS_URI, projectId);
     }
-
 
     public Uri entityUri(long entityId) {
-        return ENTITIES_URI.buildUpon().appendEncodedPath(Long.toString(entityId)).build();
+        return buildUriWithId(ENTITIES_URI, entityId);
     }
-
 
     public Uri jumpUri(long jumpId) {
-        return JUMPS_URI.buildUpon().appendEncodedPath(Long.toString(jumpId)).build();
+        return buildUriWithId(JUMPS_URI, jumpId);
     }
+
 
     public Uri eventUri(long eventId) {
-        return EVENTS_URI.buildUpon().appendEncodedPath(Long.toString(eventId)).build();
+        return buildUriWithId(EVENTS_URI, eventId);
     }
 
+
     public Uri portalUri(long portalId) {
-        return PORTALS_URI.buildUpon().appendEncodedPath(Long.toString(portalId)).build();
+        return buildUriWithId(PORTALS_URI, portalId);
+    }
+
+    public Uri timelineUri(long timelineId) {
+        return buildUriWithId(TIMELINES_URI, timelineId);
+    }
+
+    private Uri buildUriWithId(@NonNull Uri baseUri, long projectId) {
+        return baseUri.buildUpon().appendEncodedPath(Long.toString(projectId)).build();
     }
 }

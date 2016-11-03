@@ -2,30 +2,18 @@
     <string name="app_name">Chronorg</string>
 
     <string name="title_entities">Entities</string>
-    <string name="title_timeline">Timeline</string>
+    <string name="title_timelines">Timelines</string>
     <string name="title_events">Events</string>
-
+    <string name="title_portals">Portals</string>
 
     <string name="empty_list">Nothing there yet…\nTry using the + button.</string>
     <string name="empty_timeline">Timeline is empty…\nTry adding content in the project.</string>
 
 
-    <string name="hint_name">Name</string>
-    <string name="hint_color">Color</string>
-    <string name="hint_portal_name">Portal name</string>
-    <string name="hint_portal_delay">Delay reference points</string>
-    <string name="hint_portal_two_way">Two-way portal</string>
-    <string name="hint_portal_timeline">Timeline</string>
-    <string name="hint_entity_birth">Birth date and time</string>
-    <string name="hint_entity_death">Death date and time</string>
-    <string name="hint_event_instant">Event date and time</string>
-    <string name="hint_jump_to">Jump destination</string>
-    <string name="hint_jump_from">Jump origin</string>
-
-
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="action_timeline">View Timeline</string>
 
     <string name="error_generic">An unexpected error occurred :\n</string>
     <string name="error_empty_name">Name can\'t be empty</string>
@@ -42,9 +30,18 @@
     <string name="hint_minutes">Minutes</string>
     <string name="hint_weeks">Weeks</string>
     <string name="hint_portal_direction">Direction</string>
-    <string name="title_portals">Portals</string>
-    <string name="action_timeline">View Timeline</string>
-
+    <string name="hint_name">Name</string>
+    <string name="hint_color">Color</string>
+    <string name="hint_portal_name">Portal name</string>
+    <string name="hint_portal_delay">Delay reference points</string>
+    <string name="hint_portal_two_way">Two-way portal</string>
+    <string name="hint_portal_timeline">Timeline</string>
+    <string name="hint_entity_birth">Birth date and time</string>
+    <string name="hint_entity_death">Death date and time</string>
+    <string name="hint_event_instant">Event date and time</string>
+    <string name="hint_jump_to">Jump destination</string>
+    <string name="hint_jump_from">Jump origin</string>
+    <string name="default_timeline_name">Main Timeline</string>
 
 
     <string-array name="directions">

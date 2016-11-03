@@ -71,7 +71,6 @@ public class ChronorgSchemaTest {
                 "name TEXT NOT NULL," +
                 "delay TEXT NOT NULL," +
                 "direction INTEGER," +
-                "timeline INTEGER," +
                 "color INTEGER)");
         verify(database).execSQL("CREATE TABLE IF NOT EXISTS events (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -86,33 +85,19 @@ public class ChronorgSchemaTest {
                 "from_instant TEXT NOT NULL," +
                 "to_instant TEXT NOT NULL," +
                 "jump_order INTEGER)");
+        verify(database).execSQL("CREATE TABLE IF NOT EXISTS timelines (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "project_id INTEGER NOT NULL," +
+                "name TEXT NOT NULL," +
+                "parent_id INTEGER," +
+                "portal_id INTEGER," +
+                "direction INTEGER)");
+
         verify(database).setTransactionSuccessful();
         verify(database).endTransaction();
         verifyNoMoreInteractions(database);
     }
 
-
-    //  TODO   @Test
-    public void shouldUpgradeDatabase() {
-
-        // When
-        SQLiteDescription description = schema.getDescription();
-        description.upgradeDatabase(database, 1, 2);
-
-        // Then
-        verifyNoMoreInteractions(database);
-    }
-
-    //  TODO   @Test
-    public void shouldDowngradeDatabase() {
-
-        // When
-        SQLiteDescription description = schema.getDescription();
-        description.downgradeDatabase(database, 2, 1);
-
-        // Then
-        verifyNoMoreInteractions(database);
-    }
 
     @Test
     public void shouldBuildUriMatcher() {
@@ -126,6 +111,8 @@ public class ChronorgSchemaTest {
         assertThat(uriMatcher.match(ChronorgSchema.ENTITIES_URI)).isEqualTo(ChronorgSchema.MATCH_ENTITIES);
         assertThat(uriMatcher.match(ChronorgSchema.JUMPS_URI)).isEqualTo(ChronorgSchema.MATCH_JUMPS);
         assertThat(uriMatcher.match(ChronorgSchema.EVENTS_URI)).isEqualTo(ChronorgSchema.MATCH_EVENTS);
+        assertThat(uriMatcher.match(ChronorgSchema.PORTALS_URI)).isEqualTo(ChronorgSchema.MATCH_PORTALS);
+        assertThat(uriMatcher.match(ChronorgSchema.TIMELINES_URI)).isEqualTo(ChronorgSchema.MATCH_TIMELINES);
     }
 
     @Test
@@ -139,6 +126,7 @@ public class ChronorgSchemaTest {
         Uri jump = schema.jumpUri(id);
         Uri event = schema.eventUri(id);
         Uri portal = schema.portalUri(id);
+        Uri timeline = schema.timelineUri(id);
 
         // Then
         assertThat(entity.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/entities/42");
@@ -146,5 +134,6 @@ public class ChronorgSchemaTest {
         assertThat(jump.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/jumps/42");
         assertThat(event.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/events/42");
         assertThat(portal.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/portals/42");
+        assertThat(timeline.toString()).isEqualTo("content://fr.xgouchet.chronorg.debug.provider/timelines/42");
     }
 }

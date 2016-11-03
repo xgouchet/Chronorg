@@ -10,6 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import fr.xgouchet.chronorg.R;
+import fr.xgouchet.chronorg.data.models.Timeline;
+import fr.xgouchet.chronorg.data.writers.TimelineContentValuesWriter;
 import fr.xgouchet.chronorg.provider.dao.BaseDao;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import fr.xgouchet.chronorg.provider.db.SQLiteDescriptionHelper;
@@ -19,6 +22,8 @@ import fr.xgouchet.chronorg.provider.db.SQLiteDescriptionHelper;
  */
 public class ChronorgContentProvider extends ContentProvider {
 
+    public static final String SELECT_BY_PROJECT_ID = ChronorgSchema.COL_PROJECT_ID + "=?";
+    public static final String SELECT_BY_ENTITY_ID = ChronorgSchema.COL_ENTITY_ID + "=?";
 
     @NonNull private final ChronorgSchema chronorgSchema;
     @NonNull private final UriMatcher uriMatcher;
@@ -28,11 +33,16 @@ public class ChronorgContentProvider extends ContentProvider {
     private BaseDao jumpDao;
     private BaseDao eventDao;
     private BaseDao portalDao;
+    private BaseDao timelineDao;
+
+    private TimelineContentValuesWriter timelineContentValuesWriter;
 
 
     @SuppressWarnings("unused")
     public ChronorgContentProvider() {
         this(new ChronorgSchema());
+        // TODO inject in onCreate
+        timelineContentValuesWriter = new TimelineContentValuesWriter();
     }
 
     public ChronorgContentProvider(@NonNull ChronorgSchema chronorgSchema) {
@@ -68,6 +78,7 @@ public class ChronorgContentProvider extends ContentProvider {
         jumpDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_JUMPS);
         eventDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_EVENTS);
         portalDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_PORTALS);
+        timelineDao = new BaseDao(databaseHelper, ChronorgSchema.TABLE_TIMELINES);
         return true;
     }
 
@@ -104,6 +115,7 @@ public class ChronorgContentProvider extends ContentProvider {
         switch (match) {
             case ChronorgSchema.MATCH_PROJECTS:
                 long projectId = projectDao.insert(values);
+                createFirstTimeline(projectId);
                 result = chronorgSchema.projectUri(projectId);
                 break;
             case ChronorgSchema.MATCH_ENTITIES:
@@ -127,22 +139,70 @@ public class ChronorgContentProvider extends ContentProvider {
         return result;
     }
 
+    private void createFirstTimeline(long projectId) {
+        Timeline timeline = new Timeline();
+        timeline.setProjectId(projectId);
+        timeline.setParentId(0);
+        timeline.setPortalId(0);
+        //noinspection ConstantConditions
+        timeline.setName(getContext().getString(R.string.default_timeline_name));
+
+        timelineDao.insert(timelineContentValuesWriter.toContentValues(timeline));
+    }
+
     @Override
     public int delete(@NonNull Uri uri,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
         int deleted = 0;
-        BaseDao dao = getDao(uri);
+        int match = uriMatcher.match(uri);
 
-        if (dao != null) {
-            deleted = dao.delete(selection, selectionArgs);
-            // TODO special delete on jumps to keep coherent order
-            // TODO special delete on entities to keep coherent order
-            // TODO special delete on projects to also delete content...
+
+        switch (match) {
+            case ChronorgSchema.MATCH_PROJECTS:
+                deleted = deleteProtectsRecursive(selection, selectionArgs);
+                break;
+            case ChronorgSchema.MATCH_ENTITIES:
+                deleted = deleteEntitiesRecursive(selection, selectionArgs);
+                break;
+            default:
+                BaseDao dao = getDao(uri);
+                if (dao != null) {
+                    deleted = dao.delete(selection, selectionArgs);
+                }
+                break;
         }
 
         return deleted;
+    }
+
+    private int deleteProtectsRecursive(@Nullable String selection, @Nullable String[] selectionArgs) {
+        final String[] selectProjectArgs = new String[1];
+        Cursor cursor = projectDao.query(new String[]{ChronorgSchema.COL_ID}, selection, selectionArgs, null);
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            selectProjectArgs[0] = Integer.toString(id);
+            deleteEntitiesRecursive(SELECT_BY_PROJECT_ID, selectProjectArgs);
+            eventDao.delete(SELECT_BY_PROJECT_ID, selectProjectArgs);
+            portalDao.delete(SELECT_BY_PROJECT_ID, selectProjectArgs);
+            timelineDao.delete(SELECT_BY_PROJECT_ID, selectProjectArgs);
+        }
+        cursor.close();
+
+        return projectDao.delete(selection, selectionArgs);
+    }
+
+
+    private int deleteEntitiesRecursive(@Nullable String selection, @Nullable String[] selectionArgs) {
+        Cursor cursor = entityDao.query(new String[]{ChronorgSchema.COL_ID}, selection, selectionArgs, null);
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            jumpDao.delete(SELECT_BY_ENTITY_ID, new String[]{Integer.toString(id)});
+        }
+        cursor.close();
+
+        return entityDao.delete(selection, selectionArgs);
     }
 
     @Override
@@ -176,6 +236,8 @@ public class ChronorgContentProvider extends ContentProvider {
                 return eventDao;
             case ChronorgSchema.MATCH_PORTALS:
                 return portalDao;
+            case ChronorgSchema.MATCH_TIMELINES:
+                return timelineDao;
             default:
                 return null;
         }

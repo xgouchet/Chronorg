@@ -9,6 +9,7 @@ import com.deezer.android.counsel.annotations.Trace;
 
 import fr.xgouchet.chronorg.data.ioproviders.IOProvider;
 import fr.xgouchet.chronorg.data.models.Portal;
+import fr.xgouchet.chronorg.data.models.Timeline;
 import fr.xgouchet.chronorg.provider.db.ChronorgSchema;
 import rx.functions.Action1;
 
@@ -39,6 +40,17 @@ public class PortalContentQuerier extends BaseContentQuerier<Portal> {
         } finally {
             if (cursor != null) cursor.close();
         }
+    }
+
+    public void fillTimelinePortal(@NonNull ContentResolver contentResolver,
+                                   @NonNull final Timeline timeline) {
+        query(contentResolver,
+                new Action1<Portal>() {
+                    @Override public void call(Portal portal) {
+                        timeline.setPortal(portal);
+                    }
+                },
+                timeline.getPortalId());
     }
 
     @NonNull @Override protected Uri getUri() {

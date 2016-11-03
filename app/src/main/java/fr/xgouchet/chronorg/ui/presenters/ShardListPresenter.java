@@ -19,14 +19,14 @@ import rx.Observable;
  * @author Xavier Gouchet
  */
 @Trace
-public class TimelinePresenter extends BaseListPresenter<Shard> {
+public class ShardListPresenter extends BaseListPresenter<Shard> {
 
     @NonNull private final EntityRepository entityRepository;
     @NonNull private final EventRepository eventRepository;
     @Nullable private Project project;
 
-    public TimelinePresenter(@NonNull EntityRepository entityRepository,
-                             @NonNull EventRepository eventRepository) {
+    public ShardListPresenter(@NonNull EntityRepository entityRepository,
+                              @NonNull EventRepository eventRepository) {
         this.entityRepository = entityRepository;
         this.eventRepository = eventRepository;
     }

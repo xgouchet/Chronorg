@@ -14,9 +14,11 @@ import fr.xgouchet.chronorg.ui.activities.BaseActivity;
 import fr.xgouchet.chronorg.ui.fragments.EntityListFragment;
 import fr.xgouchet.chronorg.ui.fragments.EventListFragment;
 import fr.xgouchet.chronorg.ui.fragments.PortalListFragment;
+import fr.xgouchet.chronorg.ui.fragments.TimelineListFragment;
 import fr.xgouchet.chronorg.ui.presenters.EntityListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.EventListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.PortalListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelineListPresenter;
 
 /**
  * @author Xavier Gouchet
@@ -26,8 +28,9 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
     public static final int PAGE_ENTITIES = 0;
     public static final int PAGE_EVENTS = 1;
     public static final int PAGE_PORTALS = 2;
+    public static final int PAGE_TIMELINES = 3;
 
-    public static final int PAGE_COUNT = 3;
+    public static final int PAGE_COUNT = 4;
 
     private final WeakReference<BaseActivity> activityRef;
     @NonNull private final Project project;
@@ -61,20 +64,28 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
                 presenter.setView(fragment);
                 return fragment;
             }
-            case PAGE_EVENTS:{
+            case PAGE_EVENTS: {
                 final EventListFragment fragment = EventListFragment.createFragment(project.getId());
                 EventListPresenter presenter = activity.getActivityComponent().getEventListPresenter();
                 presenter.setProject(project);
                 presenter.setView(fragment);
                 return fragment;
             }
-            case PAGE_PORTALS:{
+            case PAGE_PORTALS: {
                 final PortalListFragment fragment = PortalListFragment.createFragment(project.getId());
                 PortalListPresenter presenter = activity.getActivityComponent().getPortalListPresenter();
                 presenter.setProject(project);
                 presenter.setView(fragment);
                 return fragment;
             }
+            case PAGE_TIMELINES: {
+                final TimelineListFragment fragment = TimelineListFragment.createFragment(project.getId());
+                TimelineListPresenter presenter = activity.getActivityComponent().getTimelineListPresenter();
+                presenter.setProject(project);
+                presenter.setView(fragment);
+                return fragment;
+            }
+
             default:
                 return null;
         }
@@ -92,6 +103,8 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
                 return context.getString(R.string.title_events);
             case PAGE_PORTALS:
                 return context.getString(R.string.title_portals);
+            case PAGE_TIMELINES:
+                return context.getString(R.string.title_timelines);
         }
 
 
