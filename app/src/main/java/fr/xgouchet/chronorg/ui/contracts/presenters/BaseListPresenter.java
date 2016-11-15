@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.ui.presenters;
+package fr.xgouchet.chronorg.ui.contracts.presenters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +8,7 @@ import com.deezer.android.counsel.annotations.Trace;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.xgouchet.chronorg.ui.fragments.BaseListView;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseListView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -20,7 +20,7 @@ import rx.subscriptions.CompositeSubscription;
  * @author Xavier Gouchet
  */
 @Trace
-public abstract class BaseListPresenter<T> implements ListPresenter<T> {
+public abstract class BaseListPresenter<T> implements BasePresenter<BaseListView<T>, T> {
 
     @NonNull private final List<T> items;
     @NonNull private final CompositeSubscription subscriptions;
@@ -32,7 +32,7 @@ public abstract class BaseListPresenter<T> implements ListPresenter<T> {
         subscriptions = new CompositeSubscription();
     }
 
-    public void setView(@NonNull BaseListView<T> view) {
+    @Override public void setView(@NonNull BaseListView<T> view) {
         this.view = view;
         view.setPresenter(this);
     }
@@ -84,12 +84,12 @@ public abstract class BaseListPresenter<T> implements ListPresenter<T> {
         }
     }
 
-    @Override public void itemSelected(@NonNull T item) {
+    public void itemSelected(@NonNull T item) {
         if (view == null) return;
         view.showItem(item);
     }
 
-    @Override public void createNewItem() {
+    public void createNewItem() {
         if (view == null) return;
         view.showCreateItemUi();
     }
@@ -100,5 +100,6 @@ public abstract class BaseListPresenter<T> implements ListPresenter<T> {
 
     @Override public void unsubscribe() {
         items.clear();
+        subscriptions.unsubscribe();
     }
 }

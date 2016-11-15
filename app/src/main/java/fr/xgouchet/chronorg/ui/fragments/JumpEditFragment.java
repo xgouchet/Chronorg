@@ -158,11 +158,4 @@ public class JumpEditFragment extends Fragment
         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    @Override public void invalidFrom(int reason) {
-
-    }
-
-    @Override public void invalidTo(int reason) {
-
-    }
 }

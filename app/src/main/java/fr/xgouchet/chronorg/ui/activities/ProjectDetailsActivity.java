@@ -74,6 +74,8 @@ public class ProjectDetailsActivity
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view, menu);
+
+        menu.findItem(R.id.timeline).setVisible(true);
         return true;
     }
 

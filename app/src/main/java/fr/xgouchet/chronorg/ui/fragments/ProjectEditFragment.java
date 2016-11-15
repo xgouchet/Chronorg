@@ -3,7 +3,6 @@ package fr.xgouchet.chronorg.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -80,19 +79,6 @@ public class ProjectEditFragment extends Fragment
 
     @Override public void projectSaveError(Throwable e) {
         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-    }
-
-    @Override public void invalidName(int reason) {
-        @StringRes int message;
-        switch (reason) {
-            case ProjectEditContract.EMPTY:
-                message = R.string.error_empty_name;
-                break;
-            default:
-                return;
-        }
-        inputNameLayout.setErrorEnabled(true);
-        inputNameLayout.setError(getString(message));
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

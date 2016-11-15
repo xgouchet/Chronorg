@@ -8,6 +8,7 @@ import com.deezer.android.counsel.annotations.Trace;
 import fr.xgouchet.chronorg.data.models.Event;
 import fr.xgouchet.chronorg.data.models.Project;
 import fr.xgouchet.chronorg.data.repositories.EventRepository;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseListPresenter;
 import rx.Observable;
 
 /**

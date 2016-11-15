@@ -36,7 +36,7 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
         this.project = project;
     }
 
-    public void setView(@NonNull ProjectDetailsContract.View view) {
+    @Override public void setView(@NonNull ProjectDetailsContract.View view) {
         this.view = view;
         view.setPresenter(this);
     }
@@ -96,7 +96,7 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
     @Override public void deleteProject() {
         if (view == null) return;
         if (project == null) return;
-        
+
         Subscription subscription = projectRepository
                 .delete(project)
                 .subscribeOn(Schedulers.io())

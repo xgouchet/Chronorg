@@ -7,24 +7,19 @@ import android.support.annotation.Nullable;
 import org.joda.time.ReadableInstant;
 
 import fr.xgouchet.chronorg.data.models.Entity;
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseView;
 
 /**
  * @author Xavier Gouchet
  */
 public interface EntityEditContract {
 
-    public static final int EMPTY = 1;
-
     interface View extends BaseView<Presenter, Entity> {
 
         void entitySaved();
 
         void entitySaveError(Throwable e);
-
-        void invalidName(int reason);
-
-        void invalidBirth(int reason);
 
 
         void setContent(@NonNull String name,
@@ -34,7 +29,7 @@ public interface EntityEditContract {
                         @ColorInt int color);
     }
 
-    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
+    interface Presenter extends BasePresenter<View, Entity> {
 
         void setView(View view);
 

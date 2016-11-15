@@ -34,7 +34,7 @@ public class PortalEditActivity extends BaseFragmentActivity<Portal, PortalEditF
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Setup Presenter
+        // Setup BasePresenter
         PortalEditPresenter presenter = getActivityComponent().getPortalEditPresenter();
         presenter.setPortal(item);
         presenter.setView(fragment);

@@ -3,15 +3,14 @@ package fr.xgouchet.chronorg.ui.contracts;
 import android.support.annotation.NonNull;
 
 import fr.xgouchet.chronorg.data.models.Project;
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseView;
 
 /**
  * @author Xavier Gouchet
  */
 public interface ProjectDetailsContract {
-    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
-        void setView(View view);
-
+    interface Presenter extends BasePresenter<View, Project> {
         void deleteProject();
 
         void editProject();

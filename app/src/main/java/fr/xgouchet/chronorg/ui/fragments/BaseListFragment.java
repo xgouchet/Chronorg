@@ -19,7 +19,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.ui.adapters.BaseSimpleAdapter;
-import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseListView;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseListPresenter;
 import fr.xgouchet.chronorg.ui.viewholders.BaseViewHolder;
 
 import static butterknife.ButterKnife.bind;

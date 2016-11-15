@@ -3,7 +3,6 @@ package fr.xgouchet.chronorg.ui.presenters;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.deezer.android.counsel.annotations.Trace;
 
@@ -13,7 +12,6 @@ import org.joda.time.ReadableInstant;
 import fr.xgouchet.chronorg.data.models.Entity;
 import fr.xgouchet.chronorg.data.repositories.EntityRepository;
 import fr.xgouchet.chronorg.ui.contracts.EntityEditContract;
-import fr.xgouchet.chronorg.ui.contracts.ProjectEditContract;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -91,12 +89,6 @@ public class EntityEditPresenter implements EntityEditContract.Presenter {
     public void saveEntity(@NonNull String inputNameText) {
         if (view == null) return;
         if (entity == null) return;
-
-        // check input
-        if (TextUtils.isEmpty(inputNameText)) {
-            view.invalidName(ProjectEditContract.EMPTY);
-            return;
-        }
 
         entity.setName(inputNameText);
         entity.setBirth(birth);

@@ -6,14 +6,14 @@ import android.support.annotation.Nullable;
 import org.joda.time.ReadableInstant;
 
 import fr.xgouchet.chronorg.data.models.Jump;
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseView;
 
 /**
  * @author Xavier Gouchet
  */
 public interface JumpEditContract {
 
-    public static final int EMPTY = 1;
 
     interface View extends BaseView<Presenter, Jump> {
 
@@ -21,18 +21,12 @@ public interface JumpEditContract {
 
         void jumpSaveError(Throwable e);
 
-        void invalidFrom(int reason);
-
-        void invalidTo(int reason);
-
         void setContent(@Nullable String name,
                         @NonNull ReadableInstant from,
                         @NonNull ReadableInstant to);
     }
 
-    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
-
-        void setView(View view);
+    interface Presenter extends BasePresenter<View, Jump> {
 
         void saveJump(@NonNull String inputNameText);
 

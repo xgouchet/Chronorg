@@ -32,7 +32,7 @@ public class ProjectEditActivity extends BaseFragmentActivity<Project, ProjectEd
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Setup Presenter
+        // Setup BasePresenter
         ProjectEditPresenter presenter = getActivityComponent().getProjectEditPresenter();
         presenter.setProject(item);
         presenter.setView(fragment);

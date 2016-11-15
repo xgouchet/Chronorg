@@ -114,7 +114,7 @@ public class PresenterModule {
     @ActivityScope
     public PortalEditPresenter providePortalEditPresenter(PortalRepository portalRepository,
                                                           Formatter<ReadableInstant> formatter) {
-        return new PortalEditPresenter(portalRepository, formatter);
+        return new PortalEditPresenter(portalRepository);
     }
 
     @Provides

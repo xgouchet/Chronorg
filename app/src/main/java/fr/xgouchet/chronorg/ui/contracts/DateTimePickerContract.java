@@ -4,16 +4,15 @@ import android.support.annotation.NonNull;
 
 import org.joda.time.DateTime;
 
-import fr.xgouchet.chronorg.ui.fragments.BaseView;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BasePresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseView;
 
 /**
  * @author Xavier Gouchet
  */
 public interface DateTimePickerContract {
 
-    interface Presenter extends fr.xgouchet.chronorg.ui.presenters.Presenter {
-        void setView(View view);
-
+    interface Presenter extends BasePresenter<View, DateTime> {
         void onDateSelected(@NonNull String date);
 
         void onTimeSelected(@NonNull String time);
@@ -24,7 +23,6 @@ public interface DateTimePickerContract {
     }
 
     interface View extends BaseView<Presenter, DateTime> {
-
         void showDatePicker();
 
         void showTimePicker();

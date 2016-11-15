@@ -2,7 +2,6 @@ package fr.xgouchet.chronorg.ui.presenters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.deezer.android.counsel.annotations.Trace;
 
@@ -58,12 +57,6 @@ public class ProjectEditPresenter implements ProjectEditContract.Presenter {
     public void saveProject(@NonNull String inputNameText) {
         if (view == null) return;
         if (project == null) return;
-
-        // check input
-        if (TextUtils.isEmpty(inputNameText)) {
-            view.invalidName(ProjectEditContract.EMPTY);
-            return;
-        }
 
         project.setName(inputNameText);
         projectRepository.save(project)

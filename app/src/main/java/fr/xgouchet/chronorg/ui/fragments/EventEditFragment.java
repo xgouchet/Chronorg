@@ -168,11 +168,4 @@ public class EventEditFragment extends Fragment
         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    @Override public void invalidName(int reason) {
-
-    }
-
-    @Override public void invalidInstant(int reason) {
-
-    }
 }

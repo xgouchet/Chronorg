@@ -1,10 +1,10 @@
-package fr.xgouchet.chronorg.ui.fragments;
+package fr.xgouchet.chronorg.ui.contracts.views;
 
 import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import fr.xgouchet.chronorg.ui.presenters.BaseListPresenter;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseListPresenter;
 
 /**
  * @author Xavier Gouchet

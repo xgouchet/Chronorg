@@ -20,7 +20,7 @@ import fr.xgouchet.chronorg.provider.db.SQLiteDescriptionHelper;
 /**
  * @author Xavier Gouchet
  */
-public class ChronorgContentProvider extends ContentProvider {
+public class  ChronorgContentProvider extends ContentProvider {
 
     public static final String SELECT_BY_PROJECT_ID = ChronorgSchema.COL_PROJECT_ID + "=?";
     public static final String SELECT_BY_ENTITY_ID = ChronorgSchema.COL_ENTITY_ID + "=?";

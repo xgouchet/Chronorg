@@ -1,20 +1,14 @@
 package fr.xgouchet.chronorg.ui.presenters;
 
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.deezer.android.counsel.annotations.Trace;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.ReadableInstant;
-
-import fr.xgouchet.chronorg.data.formatters.Formatter;
 import fr.xgouchet.chronorg.data.models.Portal;
 import fr.xgouchet.chronorg.data.repositories.PortalRepository;
-import fr.xgouchet.chronorg.ui.contracts.PortalEditContract;
-import rx.Subscriber;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseEditPresenter;
+import fr.xgouchet.chronorg.ui.contracts.views.BaseEditView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -22,47 +16,40 @@ import rx.schedulers.Schedulers;
  * @author Xavier Gouchet
  */
 @Trace
-public class PortalEditPresenter implements PortalEditContract.Presenter {
+public class PortalEditPresenter implements BaseEditPresenter<Portal> {
 
     @Nullable private Portal portal;
 
-    @Nullable /*package*/ PortalEditContract.View view;
+    @Nullable /*package*/ BaseEditView<Portal> view;
 
     @NonNull private final PortalRepository portalRepository;
 
-    @NonNull private String name = "";
-    @NonNull private Interval delay = new Interval(new DateTime(), new DateTime());
-    @ColorInt private int color;
-    @Portal.Direction private int direction;
-    @NonNull private final Formatter<ReadableInstant> formatter;
-
-    public PortalEditPresenter(@NonNull PortalRepository portalRepository,
-                               @NonNull Formatter<ReadableInstant> formatter) {
+    public PortalEditPresenter(@NonNull PortalRepository portalRepository) {
         this.portalRepository = portalRepository;
-        this.formatter = formatter;
-    }
-
-    @Override public Formatter<ReadableInstant> getReadableInstantFormatter() {
-        return formatter;
     }
 
     public void setPortal(@NonNull Portal portal) {
         this.portal = portal;
-        name = portal.getName();
-        color = portal.getColor();
-        delay = portal.getDelay();
-        direction = portal.getDirection();
     }
 
-    @Override public void setView(@NonNull PortalEditContract.View view) {
+    @Override public void setView(@NonNull BaseEditView<Portal> view) {
         this.view = view;
         view.setPresenter(this);
     }
 
     @Override public void subscribe() {
         if (view == null) return;
+        if (portal == null) return;
 
-        view.setContent(name, delay, direction, color);
+        Portal viewPortal = new Portal();
+        viewPortal.setId(portal.getId());
+        viewPortal.setProjectId(portal.getProjectId());
+        viewPortal.setName(portal.getName());
+        viewPortal.setDelay(portal.getDelay().toString());
+        viewPortal.setColor(portal.getColor());
+        viewPortal.setDirection(portal.getDirection());
+
+        view.setContent(viewPortal);
     }
 
     @Override public void unsubscribe() {
@@ -73,51 +60,32 @@ public class PortalEditPresenter implements PortalEditContract.Presenter {
         // empty
     }
 
-    @Override public void setName(@NonNull String name) {
-        this.name = name;
+    @Override public void setItemValue(@NonNull Portal viewPortal) {
+        if (portal == null) return;
+
+        portal.setName(viewPortal.getName());
+        portal.setDelay(viewPortal.getDelay().toString());
+        portal.setDirection(viewPortal.getDirection());
+        portal.setColor(viewPortal.getColor());
     }
 
-    @Override public void setDelayStart(@NonNull String delayStart) {
-        ReadableInstant start = new DateTime(delayStart);
-        this.delay = new Interval(start, delay.getEnd());
-    }
-
-    @Override public void setDelayEnd(@NonNull String delayEnd) {
-        ReadableInstant end = new DateTime(delayEnd);
-        this.delay = new Interval(delay.getStart(), end);
-    }
-
-    @Override public void setColor(int color) {
-        this.color = color;
-    }
-
-    @Override  public void setDirection(@Portal.Direction int direction) {
-        this.direction = direction;
-    }
-
-    @Override public void savePortal(@NonNull String inputNameText) {
+    @Override public void saveItem() {
         if (view == null) return;
         if (portal == null) return;
 
-        portal.setName(inputNameText);
-        portal.setDelay(delay);
-        portal.setDirection(direction);
-        portal.setColor(color);
         portalRepository.save(portal)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override public void onCompleted() {
-                        view.portalSaved();
-                    }
+                .subscribe(new EditActionSubscriber(view));
+    }
 
-                    @Override public void onError(Throwable e) {
-                        view.portalSaveError(e);
-                    }
+    @Override public void deleteItem() {
+        if (view == null) return;
+        if (portal == null) return;
 
-                    @Override public void onNext(Void nothing) {
-                        // Ignore
-                    }
-                });
+        portalRepository.delete(portal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new EditActionSubscriber(view));
     }
 }

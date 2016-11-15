@@ -13,6 +13,7 @@ import fr.xgouchet.chronorg.data.repositories.EventRepository;
 import fr.xgouchet.chronorg.data.transformers.EntityToSegmentFlatMap;
 import fr.xgouchet.chronorg.data.transformers.EventToSegmentMap;
 import fr.xgouchet.chronorg.data.transformers.SegmentToShardFlatMap;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseListPresenter;
 import rx.Observable;
 
 /**

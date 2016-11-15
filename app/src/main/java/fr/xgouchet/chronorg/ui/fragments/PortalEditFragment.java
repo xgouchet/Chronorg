@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.annotation.UiThread;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,10 +15,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.colorpicker.ColorPickerDialog;
-import com.android.colorpicker.ColorPickerSwatch;
 import com.deezer.android.counsel.annotations.Trace;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.ReadableInstant;
 
@@ -29,11 +25,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import butterknife.OnItemSelected;
+import fr.xgouchet.chronorg.ChronorgApplication;
 import fr.xgouchet.chronorg.R;
 import fr.xgouchet.chronorg.data.formatters.Formatter;
 import fr.xgouchet.chronorg.data.models.Portal;
 import fr.xgouchet.chronorg.ui.activities.DateTimePickerActivity;
-import fr.xgouchet.chronorg.ui.contracts.PortalEditContract;
+import fr.xgouchet.chronorg.ui.contracts.presenters.BaseEditPresenter;
 
 import static butterknife.ButterKnife.bind;
 
@@ -41,15 +38,13 @@ import static butterknife.ButterKnife.bind;
  * @author Xavier Gouchet
  */
 @Trace
-public class PortalEditFragment extends Fragment
-        implements PortalEditContract.View,
-        ColorPickerSwatch.OnColorSelectedListener {
+public class PortalEditFragment extends BaseEditFragment<Portal> {
 
     private static final int REQUEST_PORTAL_DELAY_FROM = 42;
     private static final int REQUEST_PORTAL_DELAY_TO = 666;
 
     private Formatter<ReadableInstant> formatter;
-    private PortalEditContract.Presenter presenter;
+    private BaseEditPresenter<Portal> presenter;
 
     @BindView(R.id.input_name) EditText inputName;
     @BindView(R.id.input_color) View inputColor;
@@ -57,13 +52,9 @@ public class PortalEditFragment extends Fragment
     @BindView(R.id.input_portal_to) TextView inputDelayTo;
     @BindView(R.id.input_direction) Spinner inputDirection;
 
-    private int[] colors;
-    private Interval delay;
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+    private Interval delay;
+    private Portal portal;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater,
@@ -77,7 +68,8 @@ public class PortalEditFragment extends Fragment
 
     @Override public void onResume() {
         super.onResume();
-        colors = getResources().getIntArray(R.array.pickable_colors);
+        formatter = ((ChronorgApplication) getActivity().getApplicationContext())
+                .getChronorgComponent().getReadableInstantFormatter();
         presenter.subscribe();
     }
 
@@ -86,42 +78,35 @@ public class PortalEditFragment extends Fragment
         presenter.unsubscribe();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.edit, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        boolean result = true;
-
-        switch (item.getItemId()) {
-            case R.id.save:
-                savePortal();
-                break;
-            default:
-                result = super.onOptionsItemSelected(item);
-                break;
-        }
-        return result;
-    }
-
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_PORTAL_DELAY_FROM) {
                 String start = data.getStringExtra(DateTimePickerActivity.EXTRA_RESULT);
-                presenter.setDelayStart(start);
+                portal.setDelay(safeInterval(new DateTime(start), portal.getDelay().getEnd()));
+                presenter.setItemValue(portal);
             } else if (requestCode == REQUEST_PORTAL_DELAY_TO) {
                 String end = data.getStringExtra(DateTimePickerActivity.EXTRA_RESULT);
-                presenter.setDelayEnd(end);
+                portal.setDelay(safeInterval(portal.getDelay().getStart(), new DateTime(end)));
+                presenter.setItemValue(portal);
             }
+        }
+    }
+
+    @NonNull
+    private Interval safeInterval(@NonNull DateTime start, @NonNull DateTime end) {
+        if (start.isAfter(end)) {
+            return new Interval(end, start);
+        } else if (start.isEqual(end)) {
+            return new Interval(start, end.plusSeconds(1));
+        } else {
+            return new Interval(start, end);
         }
     }
 
     @OnFocusChange(R.id.input_name) void onNameFocusChanged(boolean hasFocus) {
         if (!hasFocus) {
-            presenter.setName(inputName.getText().toString());
+            portal.setName(inputName.getText().toString());
+            presenter.setItemValue(portal);
         }
     }
 
@@ -139,50 +124,55 @@ public class PortalEditFragment extends Fragment
 
     @OnClick(R.id.input_color) void onColorClicked() {
         onNameFocusChanged(false);
-        // TODO find nearest selected color
-        ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-                colors, 0, 4, ColorPickerDialog.SIZE_SMALL);
-        dialog.setOnColorSelectedListener(this);
-        dialog.show(getActivity().getFragmentManager(), "foo");
+        pickColor();
     }
 
     @OnItemSelected(R.id.input_direction) void onItemSelected(int position) {
-        presenter.setDirection(getDirectionAt(position));
+        portal.setDirection(getDirectionAt(position));
+        presenter.setItemValue(portal);
     }
 
     @Override public void onColorSelected(@ColorInt int color) {
-        presenter.setColor(color);
-        inputColor.setBackgroundColor(color);
+        portal.setColor(color);
+        presenter.setItemValue(portal);
     }
 
-    private void savePortal() {
-        String inputNameText = inputName.getText().toString().trim();
+    @Override protected void onSaveItemClicked() {
+        onNameFocusChanged(false);
+        presenter.setItemValue(portal);
 
-        presenter.savePortal(inputNameText);
+        presenter.saveItem();
     }
 
-    @Override public void setPresenter(@NonNull PortalEditContract.Presenter presenter) {
+    @Override protected void onDeleteItemClicked() {
+        presenter.deleteItem();
+    }
+
+    @Override public void setPresenter(@NonNull BaseEditPresenter<Portal> presenter) {
         this.presenter = presenter;
-        formatter = presenter.getReadableInstantFormatter();
     }
 
     @Override public void setError(@Nullable Throwable throwable) {
     }
 
     @Override public void setContent(@NonNull Portal portal) {
+        this.portal = portal;
+        refreshContent();
     }
 
-    @Override
-    public void setContent(@NonNull String name,
-                           @NonNull Interval delay,
-                           @Portal.Direction int direction,
-                           @ColorInt int color) {
-        inputName.setText(name);
-        this.delay = delay;
+    @Override protected boolean isDeletable() {
+        return this.portal.getId() > 0;
+    }
+
+    @UiThread
+    private void refreshContent() {
+
+        inputName.setText(portal.getName());
+        this.delay = portal.getDelay();
         inputDelayFrom.setText(formatter.format(delay.getStart()));
         inputDelayTo.setText(formatter.format(delay.getEnd()));
-        inputColor.setBackgroundColor(color);
-        inputDirection.setSelection(getDirectionOrdinal(direction));
+        inputColor.setBackgroundColor(portal.getColor());
+        inputDirection.setSelection(getDirectionOrdinal(portal.getDirection()));
     }
 
     private int getDirectionOrdinal(@Portal.Direction int direction) {
@@ -210,19 +200,12 @@ public class PortalEditFragment extends Fragment
     }
 
 
-    @Override public void portalSaved() {
+    @Override public void dismiss() {
         getActivity().finish();
     }
 
-    @Override public void portalSaveError(Throwable e) {
-        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+    @Override public void onError(@Nullable Throwable t) {
+        Toast.makeText(getActivity(), t != null ? t.getMessage() : "Oups", Toast.LENGTH_LONG).show();
     }
 
-    @Override public void invalidName(int reason) {
-
-    }
-
-    @Override public void invalidDelay(int reason) {
-
-    }
 }
