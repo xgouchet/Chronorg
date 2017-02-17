@@ -5,15 +5,13 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.ui.Cutelry.knife
 import fr.xgouchet.khronorg.ui.adapters.EditorAdapter
-import fr.xgouchet.khronorg.ui.editor.EditorInterface
+import fr.xgouchet.khronorg.ui.editor.EditorItem
 import fr.xgouchet.khronorg.ui.presenters.EditorPresenter
 import fr.xgouchet.khronorg.ui.views.EditorView
 import kotlin.properties.Delegates.notNull
@@ -21,17 +19,21 @@ import kotlin.properties.Delegates.notNull
 /**
  * @author Xavier F. Gouchet
  */
-abstract class EditorFragment<T>
-    : Fragment(), EditorView<T> {
+class EditorFragment<T>
+    : Fragment(), EditorView {
 
     internal val list: RecyclerView by knife(android.R.id.list)
     internal val loading: ProgressBar by knife(R.id.loading)
     internal val fab: FloatingActionButton by knife(R.id.fab)
     internal val message: TextView by knife(R.id.message)
 
-    abstract val editorInterface: EditorInterface<T>
     var presenter: EditorPresenter<T> by notNull()
     val adapter = EditorAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): android.view.View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
@@ -54,6 +56,21 @@ abstract class EditorFragment<T>
         presenter.unsubscribe()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.editor, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item == null) return false
+        when (item.itemId) {
+            R.id.editor_validate -> {
+                presenter.applyEdition()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun setEmpty() {
         message.setText(R.string.empty_list)
@@ -64,7 +81,7 @@ abstract class EditorFragment<T>
 
     override fun setLoading(isLoading: Boolean) {
         loading.visibility = if (isLoading) View.VISIBLE else View.GONE
-        fab.visibility = if (isLoading) View.GONE else View.VISIBLE
+        fab.visibility = View.GONE
     }
 
     override fun setError(throwable: Throwable) {
@@ -73,8 +90,10 @@ abstract class EditorFragment<T>
         list.visibility = View.GONE
     }
 
-    override fun setContent(content: T) {
-        adapter.update(editorInterface.generateItems(content))
+    override fun setContent(content: List<EditorItem>) {
+        adapter.update(content)
+        message.visibility = View.GONE
+        list.visibility = View.VISIBLE
     }
 }
 

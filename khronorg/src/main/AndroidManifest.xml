@@ -19,6 +19,13 @@
         <activity
             android:name=".ui.activities.ProjectEditorActivity"
             android:exported="false" />
+
+
+        <!-- Content Provider  -->
+        <provider
+            android:name=".provider.KhronorgContentProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false" />
     </application>
 
 </manifest>

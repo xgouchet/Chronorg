@@ -34,6 +34,7 @@ abstract class BaseListPresenter<T>(val navigator: Navigator<T>) : ListPresenter
         view?.let {
 
             if (!force) {
+                it.setLoading(false)
                 it.setContent(items)
                 return@let
             }

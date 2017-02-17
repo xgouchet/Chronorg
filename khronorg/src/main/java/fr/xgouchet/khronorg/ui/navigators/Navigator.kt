@@ -10,4 +10,6 @@ interface Navigator<in T> {
     fun goToItemEdition(item : T)
 
     fun goToItemCreation()
+
+    fun goBack()
 }

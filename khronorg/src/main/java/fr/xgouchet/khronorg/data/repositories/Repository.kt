@@ -10,4 +10,6 @@ interface Repository<I, T> {
 
     fun get(input : I) : Observable<T>
 
+    fun save(item: T) : Observable<Any>
+
 }

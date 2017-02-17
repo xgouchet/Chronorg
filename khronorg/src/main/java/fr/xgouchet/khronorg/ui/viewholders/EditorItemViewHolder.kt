@@ -1,5 +1,7 @@
 package fr.xgouchet.khronorg.ui.viewholders
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -26,11 +28,32 @@ class EditorEmptyViewHolder(itemView: View) : EditorItemViewHolder<EditorItem>(i
     }
 }
 
-class EditorTextViewHolder(view: View) : EditorItemViewHolder<EditorTextItem>(view) {
+class EditorTextViewHolder(view: View) : EditorItemViewHolder<EditorTextItem>(view), TextWatcher {
 
+    var item: EditorTextItem? = null
+
+    val label: TextView by knife(R.id.item_label)
     val edit: EditText by knife(R.id.item_text)
 
+    init {
+        edit.addTextChangedListener(this)
+    }
+
     override fun preformBind(typedItem: EditorTextItem) {
+        item = typedItem
         edit.setText(typedItem.text, TextView.BufferType.EDITABLE)
+        label.setText(typedItem.hintRes)
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        item?.let {
+            it.text = s.toString()
+        }
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 }

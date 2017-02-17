@@ -19,8 +19,8 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val repository = ProjectRepository(this, ProjectProvider())
             val fragment = ProjectListFragment()
+            val repository = ProjectRepository(this, ProjectProvider())
             val navigator = ProjectNavigator(this)
             val presenter = ProjectListPresenter(repository, navigator)
 

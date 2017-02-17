@@ -1,5 +1,5 @@
 package fr.xgouchet.khronorg.ui.views
 
-interface EditorView<T> : View<T> {
+import fr.xgouchet.khronorg.ui.editor.EditorItem
 
-}
+interface EditorView : View<List<EditorItem>>

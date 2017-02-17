@@ -21,7 +21,7 @@ abstract class BaseEditorActivity<T> : BaseActivity() {
             val item: T? = readItem(intent)
 
 
-            val fragment = instantiateFragment()
+            val fragment = EditorFragment<T>()
             val presenter = instantiatePresenter(item)
 
             presenter.view = fragment
@@ -33,9 +33,9 @@ abstract class BaseEditorActivity<T> : BaseActivity() {
         }
     }
 
+
     abstract fun instantiatePresenter(item: T?): BaseEditorPresenter<T>
 
     abstract fun readItem(intent: Intent?): T?
 
-    abstract fun instantiateFragment(): EditorFragment<T>
 }

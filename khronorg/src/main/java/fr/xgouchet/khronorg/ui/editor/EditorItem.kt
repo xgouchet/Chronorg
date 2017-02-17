@@ -8,6 +8,7 @@ import fr.xgouchet.khronorg.ui.editor.EditorItem.Companion.ITEM_TEXT
 interface EditorItem {
 
     val itemType: Int
+    val itemName: String
 
     companion object {
         val ITEM_TEXT = 1
@@ -15,10 +16,12 @@ interface EditorItem {
     }
 }
 
-data class EditorTextItem(val name: String, var text: String) : EditorItem {
+data class EditorTextItem(private val name: String, val hintRes: Int, var text: String) : EditorItem {
     override val itemType: Int = ITEM_TEXT
+    override val itemName: String = name
 }
 
-data class EditorColorItem(val name: String, var color: Int) : EditorItem {
+data class EditorColorItem(private val name: String, var color: Int) : EditorItem {
     override val itemType: Int = ITEM_TEXT
+    override val itemName: String = name
 }
