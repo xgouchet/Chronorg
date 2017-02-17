@@ -87,6 +87,13 @@ public class ProjectDetailsPresenter implements ProjectDetailsContract.Presenter
         }
     }
 
+    @Override
+    public void showTimeline() {
+        if (view == null) return;
+        if (project == null) return;
+        view.showTimelineUi(project);
+    }
+
     @Override public void editProject() {
         if (view == null) return;
         if (project == null) return;

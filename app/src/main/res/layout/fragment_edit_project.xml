@@ -7,4 +7,5 @@
 
     <include layout="@layout/atom_input_name"/>
 
+    <!-- TODO add project min and max date ? -->
 </LinearLayout>

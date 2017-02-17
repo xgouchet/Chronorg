@@ -46,7 +46,7 @@ public class EntityDetailsPresenter implements EntityDetailsContract.Presenter {
     }
 
     @Override public void unsubscribe() {
-
+        subscriptions.unsubscribe();
     }
 
     @Override public void load(boolean force) {

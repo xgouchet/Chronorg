@@ -83,6 +83,8 @@ public class ProjectDetailsActivity
         boolean result = true;
 
         switch (item.getItemId()) {
+            case R.id.timeline:
+                showTimeline();
             case R.id.edit:
                 editProject();
                 break;
@@ -94,6 +96,10 @@ public class ProjectDetailsActivity
                 break;
         }
         return result;
+    }
+
+    private void showTimeline() {
+        presenter.showTimeline();
     }
 
     private void editProject() {
@@ -110,6 +116,12 @@ public class ProjectDetailsActivity
 
     @Override public void showEditProjectUi(@NonNull Project project) {
         Intent intent = ProjectEditActivity.intentEditProject(this, project);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showTimelineUi(@NonNull Project project) {
+        Intent intent = TimelineActivity.intentProjectTimeline(this, project);
         startActivity(intent);
     }
 

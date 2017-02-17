@@ -14,7 +14,6 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * @author Xavier Gouchet
@@ -22,23 +21,26 @@ import rx.subscriptions.CompositeSubscription;
 @Trace
 public abstract class BaseListPresenter<T> implements BasePresenter<BaseListView<T>, T> {
 
-    @NonNull private final List<T> items;
-    @NonNull private final CompositeSubscription subscriptions;
+    @NonNull
+    private final List<T> items;
+    @Nullable
+    private Subscription subscription;
 
     @Nullable /*package*/ BaseListView<T> view;
 
     public BaseListPresenter() {
         items = new ArrayList<>();
-        subscriptions = new CompositeSubscription();
     }
 
-    @Override public void setView(@NonNull BaseListView<T> view) {
+    @Override
+    public void setView(@NonNull BaseListView<T> view) {
         this.view = view;
         view.setPresenter(this);
     }
 
 
-    @Override public void load(boolean force) {
+    @Override
+    public void load(boolean force) {
         if (view == null) return;
 
         if (!force) {
@@ -49,26 +51,29 @@ public abstract class BaseListPresenter<T> implements BasePresenter<BaseListView
 
         items.clear();
 
-        Subscription subscription = getItemsObservable()
+        if (subscription != null) subscription.unsubscribe();
+        subscription = getItemsObservable()
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<T>>() {
-                    @Override public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
                         view.setLoading(false);
                     }
 
-                    @Override public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
                         view.setLoading(false);
                         view.setError(e);
                     }
 
-                    @Override public void onNext(List<T> items) {
+                    @Override
+                    public void onNext(List<T> items) {
                         onItemsLoaded(items);
                     }
                 });
 
-        subscriptions.add(subscription);
     }
 
     protected abstract Observable<T> getItemsObservable();
@@ -94,12 +99,14 @@ public abstract class BaseListPresenter<T> implements BasePresenter<BaseListView
         view.showCreateItemUi();
     }
 
-    @Override public void subscribe() {
+    @Override
+    public void subscribe() {
         load(true);
     }
 
-    @Override public void unsubscribe() {
+    @Override
+    public void unsubscribe() {
         items.clear();
-        subscriptions.unsubscribe();
+        if (subscription != null) subscription.unsubscribe();
     }
 }

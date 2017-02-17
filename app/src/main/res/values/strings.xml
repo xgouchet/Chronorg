@@ -17,9 +17,9 @@
 
     <string name="error_generic">An unexpected error occurred :\n</string>
     <string name="error_empty_name">Name can\'t be empty</string>
-    <string name="error_project_details_empty">No project to display</string>
-    <string name="error_entity_details_empty">No entity to display</string>
-    <string name="error_jump_details_empty">No jump to display</string>
+    <string name="error_project_details_empty">No project delay display</string>
+    <string name="error_entity_details_empty">No data delay display</string>
+    <string name="error_jump_details_empty">No jump delay display</string>
     <string name="error_events_list">Error reading events</string>
 
     <string name="hint_years">Years</string>
@@ -41,8 +41,11 @@
     <string name="hint_event_instant">Event date and time</string>
     <string name="hint_jump_to">Jump destination</string>
     <string name="hint_jump_from">Jump origin</string>
+    <string name="hint_timeline_name">Timeline name</string>
     <string name="default_timeline_name">Main Timeline</string>
-    <string name="confirm_delete">Are you sure you want to delete this element ?</string>
+    <string name="confirm_delete">Are you sure you want delay delete this element ?</string>
+    <string name="hint_timeline_parent">Parent timeline</string>
+    <string name="hint_timeline_delay">Delay</string>
 
 
     <string-array name="directions">

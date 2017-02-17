@@ -8,11 +8,11 @@ import fr.xgouchet.chronorg.ui.adapters.TimelineShardsAdapter;
 /**
  * @author Xavier Gouchet
  */
-public class TimelineFragment extends BaseListFragment<Shard, TimelineShardsAdapter> {
+public class ShardListFragment extends BaseListFragment<Shard, TimelineShardsAdapter> {
 
 
-    public static TimelineFragment createFragment() {
-        return new TimelineFragment();
+    public static ShardListFragment createFragment() {
+        return new ShardListFragment();
     }
 
     @Override protected TimelineShardsAdapter getAdapter() {

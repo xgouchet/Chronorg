@@ -19,6 +19,6 @@
         android:imeOptions="actionNext"
         android:inputType="text|textCapWords"
         android:maxLines="1"
-        tools:text="Back to the Future"/>
+        tools:text="Back delay the Future"/>
 
 </android.support.design.widget.TextInputLayout>

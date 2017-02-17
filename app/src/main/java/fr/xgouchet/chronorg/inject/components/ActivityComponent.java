@@ -17,6 +17,7 @@ import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ShardListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelineEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.TimelineListPresenter;
 
 /**
@@ -53,6 +54,8 @@ public interface ActivityComponent {
     PortalEditPresenter getPortalEditPresenter();
 
     TimelineListPresenter getTimelineListPresenter();
+
+    TimelineEditPresenter getTimelineEditPresenter();
 
     DateTimePickerPresenter getDateTimePickerPresenter();
 

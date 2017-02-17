@@ -14,6 +14,8 @@ public interface ProjectDetailsContract {
         void deleteProject();
 
         void editProject();
+
+        void showTimeline();
     }
 
     interface View extends BaseView<Presenter, Project> {
@@ -23,5 +25,7 @@ public interface ProjectDetailsContract {
         void projectDeleted();
 
         void showEditProjectUi(@NonNull Project project);
+
+        void showTimelineUi(@NonNull Project project);
     }
 }

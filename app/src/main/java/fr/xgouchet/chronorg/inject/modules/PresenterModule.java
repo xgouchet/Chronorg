@@ -27,6 +27,7 @@ import fr.xgouchet.chronorg.ui.presenters.ProjectDetailsPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ProjectListPresenter;
 import fr.xgouchet.chronorg.ui.presenters.ShardListPresenter;
+import fr.xgouchet.chronorg.ui.presenters.TimelineEditPresenter;
 import fr.xgouchet.chronorg.ui.presenters.TimelineListPresenter;
 import fr.xgouchet.chronorg.ui.validators.DateTimeInputValidator;
 
@@ -123,6 +124,11 @@ public class PresenterModule {
         return new TimelineListPresenter(timelineRepository);
     }
 
+    @Provides
+    @ActivityScope
+    public TimelineEditPresenter provideTimelineEditPresenter(TimelineRepository timelineRepository) {
+        return new TimelineEditPresenter(timelineRepository);
+    }
 
     @Provides
     @ActivityScope

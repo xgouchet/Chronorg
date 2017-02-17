@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
 /**
- * @author Xavier Gouchet
+ * @author Xavier F. Gouchet
  */
 public abstract class BaseContentValuesWriter<T> {
 

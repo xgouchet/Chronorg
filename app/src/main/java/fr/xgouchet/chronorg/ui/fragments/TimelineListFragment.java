@@ -1,11 +1,13 @@
 package fr.xgouchet.chronorg.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import fr.xgouchet.chronorg.data.formatters.ReadablePeriodFormatter;
 import fr.xgouchet.chronorg.data.models.Timeline;
+import fr.xgouchet.chronorg.ui.activities.TimelineEditActivity;
 import fr.xgouchet.chronorg.ui.adapters.TimelinesAdapter;
 
 /**
@@ -40,8 +42,8 @@ public class TimelineListFragment extends BaseListFragment<Timeline, TimelinesAd
     }
 
     @Override public void showCreateItemUi() {
-//        Intent intent = TimelineEditActivity.intentNewTimeline(getActivity(), projectId);
-//        getActivity().startActivity(intent);
+        Intent intent = TimelineEditActivity.intentNewTimeline(getActivity(), projectId);
+        getActivity().startActivity(intent);
     }
 
     @Override public void showItem(@NonNull Timeline item) {

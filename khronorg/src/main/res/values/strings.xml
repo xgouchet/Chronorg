@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Khronorg</string>
+
+    <string name="title_entities">Entities</string>
+    <string name="title_timelines">Timelines</string>
+    <string name="title_events">Events</string>
+    <string name="title_portals">Portals</string>
+
+    <string name="empty_list">Nothing there yet…\nTry using the + button.</string>
+    <string name="empty_timeline">Timeline is empty…\nTry adding content in the project.</string>
+
+
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_timeline">View Timeline</string>
+
+    <string name="error_generic">An unexpected error occurred :\n%1$s</string>
+    <string name="error_empty_name">Name can\'t be empty</string>
+    <string name="error_project_details_empty">No project delay display</string>
+    <string name="error_entity_details_empty">No data delay display</string>
+    <string name="error_jump_details_empty">No jump delay display</string>
+    <string name="error_events_list">Error reading events</string>
+
+    <string name="hint_years">Years</string>
+    <string name="hint_months">Months</string>
+    <string name="hint_days">Days</string>
+    <string name="hint_hours">Hours</string>
+    <string name="hint_seconds">Seconds</string>
+    <string name="hint_minutes">Minutes</string>
+    <string name="hint_weeks">Weeks</string>
+    <string name="hint_portal_direction">Direction</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_color">Color</string>
+    <string name="hint_portal_name">Portal name</string>
+    <string name="hint_portal_delay">Delay reference points</string>
+    <string name="hint_portal_two_way">Two-way portal</string>
+    <string name="hint_portal_timeline">Timeline</string>
+    <string name="hint_entity_birth">Birth date and time</string>
+    <string name="hint_entity_death">Death date and time</string>
+    <string name="hint_event_instant">Event date and time</string>
+    <string name="hint_jump_to">Jump destination</string>
+    <string name="hint_jump_from">Jump origin</string>
+    <string name="hint_timeline_name">Timeline name</string>
+    <string name="default_timeline_name">Main Timeline</string>
+    <string name="confirm_delete">Are you sure you want delay delete this element ?</string>
+    <string name="hint_timeline_parent">Parent timeline</string>
+    <string name="hint_timeline_delay">Delay</string>
+
+
+    <string-array name="directions">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="direction_names">
+        <item>Future</item>
+        <item>Past</item>
+        <item>Both</item>
+    </string-array>
+
+</resources>
