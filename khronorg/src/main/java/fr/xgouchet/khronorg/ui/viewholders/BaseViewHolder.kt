@@ -7,8 +7,9 @@ import io.reactivex.functions.Consumer
 /**
  * @author Xavier Gouchet
  */
-abstract class BaseViewHolder<T> (val listener: Consumer<T>?, itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private var item: T? = null
+abstract class BaseViewHolder<T>(val listener: Consumer<T>?, itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    var item: T? = null
 
 
     fun bindItem(item: T) {
@@ -17,7 +18,7 @@ abstract class BaseViewHolder<T> (val listener: Consumer<T>?, itemView: View) : 
     }
 
     protected fun fireSelected() {
-        item?.let{
+        item?.let {
             listener?.accept(it)
         }
     }

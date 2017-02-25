@@ -1,15 +1,24 @@
 package fr.xgouchet.khronorg.data.repositories
 
+import fr.xgouchet.khronorg.data.query.QueryAlteration
 import io.reactivex.Observable
-import io.reactivex.internal.operators.observable.ObservableAll
 
 /**
  * @author Xavier F. Gouchet
  */
-interface Repository<I, T> {
+interface Repository<T> {
 
-    fun get(input : I) : Observable<T>
+    fun getAll(): Observable<T>
 
-    fun save(item: T) : Observable<Any>
+    fun getWhere(alter: QueryAlteration): Observable<T>
+
+    fun save(item: T): Observable<Any>
+
+    fun current(): Observable<T>
+
+    fun setCurrent(item: T)
+
+    fun getCurrent(): T
 
 }
+

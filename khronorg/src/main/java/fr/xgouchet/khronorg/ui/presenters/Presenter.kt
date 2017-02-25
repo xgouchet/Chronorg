@@ -3,7 +3,7 @@ package fr.xgouchet.khronorg.ui.presenters
 /**
  * @author Xavier F. Gouchet
  */
-interface Presenter<T>{
+interface Presenter<T> {
 
     fun subscribe()
 

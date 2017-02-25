@@ -9,7 +9,7 @@ import fr.xgouchet.khronorg.BaseApplication
  */
 open class BaseActivity : AppCompatActivity() {
 
-    protected val kodein: Kodein
+    val kodein: Kodein
         get() = BaseApplication.from(this).kodein
 
 }

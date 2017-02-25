@@ -57,6 +57,7 @@ dependencies {
 //    compile 'io.reactivex:rxkotlin:0.60.0'
 
     // UI
+    compile project(':colorpicker')
 
     // COUNSEL
     compile 'com.github.deezer.Counsel:counsel:master-SNAPSHOT'

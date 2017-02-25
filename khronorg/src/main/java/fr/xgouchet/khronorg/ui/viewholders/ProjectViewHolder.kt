@@ -15,7 +15,14 @@ class ProjectViewHolder(listener: Consumer<Project>?, itemView: View)
 
     internal val name: TextView by knife(R.id.name, itemView)
 
+    init {
+        if (listener != null) {
+            itemView.setOnClickListener({ v -> listener.accept(item) })
+        }
+    }
+
     override fun onBindItem(item: Project) {
+
         name.text = item.name
     }
 }

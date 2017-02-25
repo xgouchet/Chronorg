@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Khronorg</string>
 
-    <string name="title_entities">Entities</string>
+    <string name="title_travellers">Travellers</string>
     <string name="title_timelines">Timelines</string>
     <string name="title_events">Events</string>
     <string name="title_portals">Portals</string>

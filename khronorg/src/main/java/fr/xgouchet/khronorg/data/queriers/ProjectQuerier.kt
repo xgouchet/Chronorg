@@ -13,8 +13,4 @@ class ProjectQuerier(ioProvider: IOProvider<Project>) : BaseContentQuerier<Proje
     override val uri: Uri = KhronorgSchema.PROJECTS_URI
 
     override fun getId(item: Project): Int = item.id
-
-    override fun order(): String? {
-        return KhronorgSchema.COL_NAME + " ASC"
-    }
 }

@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.net.Uri
 import com.deezer.android.counsel.annotations.Trace
 import fr.xgouchet.khronorg.data.ioproviders.IOProvider
+import fr.xgouchet.khronorg.data.query.QueryAlteration
 import fr.xgouchet.khronorg.provider.KhronorgSchema
 import io.reactivex.functions.Consumer
 
@@ -24,7 +25,7 @@ abstract class BaseContentQuerier<T> protected constructor(protected val ioProvi
                     null,
                     null,
                     null,
-                    order())
+                    null)
 
             readRows(action, cursor)
         } finally {
@@ -32,14 +33,29 @@ abstract class BaseContentQuerier<T> protected constructor(protected val ioProvi
         }
     }
 
-    override fun query(contentResolver: ContentResolver, action: Consumer<T>, id: Int) {
+    override fun queryWhere(contentResolver: ContentResolver, alter: QueryAlteration, action: Consumer<T>) {
+        var cursor: Cursor? = null
+        try {
+            cursor = contentResolver.query(uri,
+                    null,
+                    alter.select(),
+                    alter.args(),
+                    alter.order())
+
+            readRows(action, cursor)
+        } finally {
+            if (cursor != null) cursor.close()
+        }
+    }
+
+    fun query(contentResolver: ContentResolver, action: Consumer<T>, id: Int) {
         var cursor: Cursor? = null
         try {
             cursor = contentResolver.query(uri,
                     null,
                     selectById(),
                     arrayOf(Integer.toString(id)),
-                    order())
+                    null)
 
             readRows(action, cursor)
         } finally {
@@ -85,9 +101,6 @@ abstract class BaseContentQuerier<T> protected constructor(protected val ioProvi
         return KhronorgSchema.COL_ID + "=?"
     }
 
-    open fun order(): String? {
-        return null
-    }
 
     abstract fun getId(item: T): Int
 }

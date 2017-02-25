@@ -1,8 +1,9 @@
 package fr.xgouchet.khronorg.ui.presenters
 
 import fr.xgouchet.khronorg.R
-import fr.xgouchet.khronorg.data.models.Project
+import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
+import fr.xgouchet.khronorg.ui.editor.EditorColorItem
 import fr.xgouchet.khronorg.ui.editor.EditorItem
 import fr.xgouchet.khronorg.ui.editor.EditorTextItem
 import fr.xgouchet.khronorg.ui.navigators.Navigator
@@ -12,19 +13,15 @@ import io.reactivex.ObservableOnSubscribe
 /**
  * @author Xavier F. Gouchet
  */
-class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Project>, navigator: Navigator<Project>)
-    : BaseEditorPresenter<Project>(item, navigator) {
+class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<Traveller>, navigator: Navigator<Traveller>)
+    : BaseEditorPresenter<Traveller>(item, navigator) {
 
-    override fun subscribe() {
-        super.subscribe()
-        repository.setCurrent(item)
-    }
-
-    override fun getEditorItemsObservable(item: Project): Observable<EditorItem> {
+    override fun getEditorItemsObservable(item: Traveller): Observable<EditorItem> {
         val source = ObservableOnSubscribe<EditorItem> {
             emitter ->
             try {
                 emitter.onNext(EditorTextItem(NAME, R.string.hint_name, item.name))
+                emitter.onNext(EditorColorItem(COLOR, R.string.hint_color, item.color))
                 emitter.onComplete()
             } catch (e: Exception) {
                 emitter.onError(e)
@@ -41,6 +38,9 @@ class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Proje
                 NAME -> {
                     item.name = (editorItem as EditorTextItem).text
                 }
+                COLOR -> {
+                    item.color = (editorItem as EditorColorItem).color
+                }
             }
         }
 
@@ -49,5 +49,8 @@ class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Proje
 
     companion object {
         val NAME = "name"
+        val BIRTH = "birth"
+        val DEATH = "death"
+        val COLOR = "color"
     }
 }

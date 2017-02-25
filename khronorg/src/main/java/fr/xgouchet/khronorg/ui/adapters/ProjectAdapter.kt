@@ -10,7 +10,7 @@ import io.reactivex.functions.Consumer
 /**
  * @author Xavier F. Gouchet
  */
-class ProjectAdapter (val listener: Consumer<Project>): BaseAdapter<Project>() {
+class ProjectAdapter(val listener: Consumer<Project>) : BaseAdapter<Project>() {
 
     override val layoutId: Int = R.layout.item_project
 
