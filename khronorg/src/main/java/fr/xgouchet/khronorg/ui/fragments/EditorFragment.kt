@@ -10,13 +10,18 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.android.colorpicker.ColorPickerDialog
 import fr.xgouchet.khronorg.R
+import fr.xgouchet.khronorg.data.formatters.InstantFormatter
 import fr.xgouchet.khronorg.ui.Cutelry.knife
 import fr.xgouchet.khronorg.ui.adapters.EditorAdapter
 import fr.xgouchet.khronorg.ui.adapters.EditorAdapterListener
+import fr.xgouchet.khronorg.ui.dialog.InstantPickerDialog
 import fr.xgouchet.khronorg.ui.editor.EditorColorItem
+import fr.xgouchet.khronorg.ui.editor.EditorInstantItem
 import fr.xgouchet.khronorg.ui.editor.EditorItem
 import fr.xgouchet.khronorg.ui.presenters.EditorPresenter
+import fr.xgouchet.khronorg.ui.presenters.InstantPickerPresenter
 import fr.xgouchet.khronorg.ui.views.EditorView
+import io.reactivex.functions.Consumer
 import kotlin.properties.Delegates.notNull
 
 /**
@@ -32,7 +37,7 @@ class EditorFragment<T>
     internal val message: TextView by knife(R.id.message)
 
     var presenter: EditorPresenter<T> by notNull()
-    val adapter = EditorAdapter(this)
+    val adapter = EditorAdapter(InstantFormatter, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +121,21 @@ class EditorFragment<T>
         })
 
         dialog.show(activity.fragmentManager, "foo")
+    }
+
+    override fun pickInstant(instantItem: EditorInstantItem?) {
+        if (instantItem == null) return
+
+        val dialog = InstantPickerDialog(activity, instantItem.instant)
+        val presenter = InstantPickerPresenter(Consumer { i ->
+            instantItem.instant = i
+            adapter.notifyDataSetChanged()
+        })
+
+        dialog.presenter = presenter
+        presenter.view = dialog
+
+        presenter.onReady()
     }
 }
 

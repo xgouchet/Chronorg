@@ -4,6 +4,7 @@ import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
 import fr.xgouchet.khronorg.ui.editor.EditorColorItem
+import fr.xgouchet.khronorg.ui.editor.EditorInstantItem
 import fr.xgouchet.khronorg.ui.editor.EditorItem
 import fr.xgouchet.khronorg.ui.editor.EditorTextItem
 import fr.xgouchet.khronorg.ui.navigators.Navigator
@@ -22,6 +23,8 @@ class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<T
             try {
                 emitter.onNext(EditorTextItem(NAME, R.string.hint_name, item.name))
                 emitter.onNext(EditorColorItem(COLOR, R.string.hint_color, item.color))
+                emitter.onNext(EditorInstantItem(BIRTH, R.string.hint_entity_birth, item.birth))
+                emitter.onNext(EditorInstantItem(DEATH, R.string.hint_entity_death, item.death))
                 emitter.onComplete()
             } catch (e: Exception) {
                 emitter.onError(e)
@@ -40,6 +43,12 @@ class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<T
                 }
                 COLOR -> {
                     item.color = (editorItem as EditorColorItem).color
+                }
+                BIRTH -> {
+                    item.birth = (editorItem as EditorInstantItem).instant
+                }
+                DEATH -> {
+                    item.death = (editorItem as EditorInstantItem).instant
                 }
             }
         }

@@ -16,6 +16,7 @@ class EditorTextViewHolder(view: View)
     : EditorItemViewHolder<EditorTextItem>(null, view), TextWatcher {
 
     val edit: EditText by Cutelry.knife(R.id.input_text)
+    val label: TextView by Cutelry.knife(R.id.input_text_label)
 
     init {
         edit.addTextChangedListener(this)
@@ -23,7 +24,7 @@ class EditorTextViewHolder(view: View)
 
     override fun onBindItem(item: EditorTextItem) {
         edit.setText(item.text, TextView.BufferType.EDITABLE)
-        edit.setHint(item.hintRes)
+        label.setText(item.hintRes)
     }
 
     override fun afterTextChanged(s: Editable?) {

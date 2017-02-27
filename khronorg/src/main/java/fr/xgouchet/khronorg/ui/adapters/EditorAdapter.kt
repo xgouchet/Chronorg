@@ -4,20 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.xgouchet.khronorg.R
+import fr.xgouchet.khronorg.data.formatters.Formatter
 import fr.xgouchet.khronorg.ui.editor.EditorColorItem
+import fr.xgouchet.khronorg.ui.editor.EditorInstantItem
 import fr.xgouchet.khronorg.ui.editor.EditorItem
 import fr.xgouchet.khronorg.ui.editor.EditorItem.Companion.ITEM_COLOR
+import fr.xgouchet.khronorg.ui.editor.EditorItem.Companion.ITEM_INSTANT
 import fr.xgouchet.khronorg.ui.editor.EditorItem.Companion.ITEM_TEXT
-import fr.xgouchet.khronorg.ui.viewholders.BaseViewHolder
-import fr.xgouchet.khronorg.ui.viewholders.EditorColorViewHolder
-import fr.xgouchet.khronorg.ui.viewholders.EditorEmptyViewHolder
-import fr.xgouchet.khronorg.ui.viewholders.EditorTextViewHolder
+import fr.xgouchet.khronorg.ui.viewholders.*
 import io.reactivex.functions.Consumer
+import org.joda.time.ReadableInstant
 
 /**
  * @author Xavier F. Gouchet
  */
-class EditorAdapter(val listener: EditorAdapterListener) : BaseAdapter<EditorItem>() {
+class EditorAdapter(val formatter: Formatter<ReadableInstant>, val listener: EditorAdapterListener) : BaseAdapter<EditorItem>() {
 
     override val layoutId: Int = R.layout.item_project
 
@@ -37,6 +38,7 @@ class EditorAdapter(val listener: EditorAdapterListener) : BaseAdapter<EditorIte
         when (viewType) {
             ITEM_TEXT -> return R.layout.item_edit_text
             ITEM_COLOR -> return R.layout.item_edit_color
+            ITEM_INSTANT -> return R.layout.item_edit_instant
             else -> return R.layout.item_edit_empty
         }
     }
@@ -49,6 +51,10 @@ class EditorAdapter(val listener: EditorAdapterListener) : BaseAdapter<EditorIte
             ITEM_COLOR -> {
                 val consumer = Consumer<EditorColorItem> { colorItem -> listener.pickColor(colorItem) }
                 viewHolder = EditorColorViewHolder(consumer, view)
+            }
+            ITEM_INSTANT -> {
+                val consumer = Consumer<EditorInstantItem> { instantItem -> listener.pickInstant(instantItem) }
+                viewHolder = EditorInstantViewHolder(formatter, consumer, view)
             }
             else -> viewHolder = EditorEmptyViewHolder(view)
         }
