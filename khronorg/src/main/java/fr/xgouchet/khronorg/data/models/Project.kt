@@ -7,7 +7,8 @@ import android.os.Parcelable
  * @author Xavier F. Gouchet
  */
 data class Project(var id: Int = -1,
-                   var name: String = "") : Parcelable {
+                   var name: String = "")
+    : Parcelable {
 
 
     override fun describeContents(): Int {
@@ -15,8 +16,10 @@ data class Project(var id: Int = -1,
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.writeInt(id)
-        dest?.writeString(name)
+        dest?.let {
+            it.writeInt(id)
+            it.writeString(name)
+        }
     }
 
     constructor(input: Parcel) : this() {

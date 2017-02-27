@@ -14,8 +14,8 @@ import io.reactivex.ObservableOnSubscribe
 /**
  * @author Xavier F. Gouchet
  */
-class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<Traveller>, navigator: Navigator<Traveller>)
-    : BaseEditorPresenter<Traveller>(item, navigator) {
+class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<Traveller>, navigator: Navigator<Traveller>, deletable : Boolean)
+    : BaseEditorPresenter<Traveller>(item, navigator, deletable) {
 
     override fun getEditorItemsObservable(item: Traveller): Observable<EditorItem> {
         val source = ObservableOnSubscribe<EditorItem> {

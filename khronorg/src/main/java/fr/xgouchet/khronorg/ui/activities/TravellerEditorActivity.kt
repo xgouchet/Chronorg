@@ -6,6 +6,7 @@ import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
 import fr.xgouchet.khronorg.ui.navigators.TravellerNavigator
+import fr.xgouchet.khronorg.ui.navigators.TravellerNavigator.Companion.EXTRA_TRAVELLER
 import fr.xgouchet.khronorg.ui.presenters.BaseEditorPresenter
 import fr.xgouchet.khronorg.ui.presenters.TravellerEditorPresenter
 
@@ -16,7 +17,11 @@ class TravellerEditorActivity : BaseEditorActivity<Traveller>() {
 
 
     override fun readItem(intent: Intent?): Traveller? {
-        // TODO extract project from intent
+        intent?.let {
+            if (it.hasExtra(EXTRA_TRAVELLER)) {
+                return it.getParcelableExtra(EXTRA_TRAVELLER)
+            }
+        }
         return null
     }
 
@@ -24,7 +29,7 @@ class TravellerEditorActivity : BaseEditorActivity<Traveller>() {
         val traveller = item ?: travellerInCurrentProject()
         val repository = kodein.instance<BaseRepository<Traveller>>()
         val navigator = TravellerNavigator(this)
-        return TravellerEditorPresenter(traveller, repository, navigator)
+        return TravellerEditorPresenter(traveller, repository, navigator, item != null)
     }
 
     private fun travellerInCurrentProject(): Traveller {

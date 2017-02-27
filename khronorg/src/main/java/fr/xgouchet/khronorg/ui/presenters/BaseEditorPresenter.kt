@@ -12,8 +12,9 @@ import java.util.*
 /**
  * @author Xavier F. Gouchet
  */
-abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>) : EditorPresenter<T> {
+abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>, deletable: Boolean) : EditorPresenter<T> {
 
+    override val isDeletable: Boolean = deletable
     var view: EditorView? = null
 
     var readDisposable: Disposable? = null

@@ -4,4 +4,6 @@ interface EditorPresenter<T> : Presenter<T> {
 
     fun applyEdition()
 
+    val isDeletable: Boolean
+
 }

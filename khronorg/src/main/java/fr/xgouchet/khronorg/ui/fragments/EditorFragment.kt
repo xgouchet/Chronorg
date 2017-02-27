@@ -68,6 +68,8 @@ class EditorFragment<T>
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.editor, menu)
+
+        menu?.findItem(R.id.editor_delete)?.isVisible = presenter.isDeletable
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

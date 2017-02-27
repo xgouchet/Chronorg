@@ -12,8 +12,8 @@ import io.reactivex.ObservableOnSubscribe
 /**
  * @author Xavier F. Gouchet
  */
-class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Project>, navigator: Navigator<Project>)
-    : BaseEditorPresenter<Project>(item, navigator) {
+class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Project>, navigator: Navigator<Project>, deletable : Boolean)
+    : BaseEditorPresenter<Project>(item, navigator, deletable) {
 
     override fun subscribe() {
         super.subscribe()
