@@ -188,7 +188,7 @@ class KhronorgContentProvider(val khronorgSchema: KhronorgSchema = KhronorgSchem
     companion object {
 
         val SELECT_BY_PROJECT_ID = KhronorgSchema.COL_PROJECT_ID + "=?"
-        val SELECT_BY_ENTITY_ID = KhronorgSchema.COL_ENTITY_ID + "=?"
+        val SELECT_BY_ENTITY_ID = KhronorgSchema.COL_TRAVELLER_ID + "=?"
     }
 
 

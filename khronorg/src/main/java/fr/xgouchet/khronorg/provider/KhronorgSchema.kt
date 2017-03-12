@@ -75,8 +75,7 @@ class KhronorgSchema : SQLiteDescriptionProvider {
         val tableDescription = TableDescription(TABLE_JUMPS)
 
         tableDescription.addColumn(ColumnDescription(COL_ID, ColumnType.TYPE_INTEGER, ColumnOption.PRIMARY_KEY, ColumnOption.AUTOINCREMENT))
-        tableDescription.addColumn(ColumnDescription(COL_ENTITY_ID, ColumnType.TYPE_INTEGER, ColumnOption.NOT_NULL))
-        tableDescription.addColumn(ColumnDescription(COL_NAME, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
+        tableDescription.addColumn(ColumnDescription(COL_TRAVELLER_ID, ColumnType.TYPE_INTEGER, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_FROM_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_DELAY, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_DIRECTION, ColumnType.TYPE_INTEGER))
@@ -170,7 +169,7 @@ class KhronorgSchema : SQLiteDescriptionProvider {
 
         val COL_PARENT_ID = "parent_id"
         val COL_PROJECT_ID = "project_id"
-        val COL_ENTITY_ID = "entity_id"
+        val COL_TRAVELLER_ID = "traveller_id"
 
         // URI Matcher
         val AUTHORITY = BuildConfig.APPLICATION_ID + ".provider"

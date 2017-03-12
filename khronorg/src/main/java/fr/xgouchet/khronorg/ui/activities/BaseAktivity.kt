@@ -7,7 +7,7 @@ import fr.xgouchet.khronorg.BaseApplication
 /**
  * @author Xavier F. Gouchet
  */
-open class BaseActivity : AppCompatActivity() {
+open class BaseAktivity : AppCompatActivity() {
 
     val kodein: Kodein
         get() = BaseApplication.from(this).kodein

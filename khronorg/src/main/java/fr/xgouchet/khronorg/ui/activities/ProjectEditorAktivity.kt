@@ -13,7 +13,7 @@ import fr.xgouchet.khronorg.ui.presenters.ProjectEditorPresenter
 /**
  * @author Xavier F. Gouchet
  */
-class ProjectEditorActivity : BaseEditorActivity<Project>() {
+class ProjectEditorAktivity : BaseEditorAktivity<Project>() {
 
 
     override fun readItem(intent: Intent?): Project? {

@@ -9,7 +9,7 @@ import fr.xgouchet.khronorg.ui.presenters.BaseEditorPresenter
 /**
  * @author Xavier F. Gouchet
  */
-abstract class BaseEditorActivity<T> : BaseActivity() {
+abstract class BaseEditorAktivity<T> : BaseAktivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

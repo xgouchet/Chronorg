@@ -3,16 +3,14 @@ package fr.xgouchet.khronorg.data.queriers
 import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
-import com.deezer.android.counsel.annotations.Trace
 import fr.xgouchet.khronorg.data.ioproviders.IOProvider
-import fr.xgouchet.khronorg.data.query.QueryAlteration
+import fr.xgouchet.khronorg.data.query.Query
 import fr.xgouchet.khronorg.provider.KhronorgSchema
 import io.reactivex.functions.Consumer
 
 /**
  * @author Xavier Gouchet
  */
-@Trace
 abstract class BaseContentQuerier<T> protected constructor(protected val ioProvider: IOProvider<T>) : ContentQuerier<T> {
 
     abstract val uri: Uri
@@ -33,7 +31,7 @@ abstract class BaseContentQuerier<T> protected constructor(protected val ioProvi
         }
     }
 
-    override fun queryWhere(contentResolver: ContentResolver, alter: QueryAlteration, action: Consumer<T>) {
+    override fun queryWhere(contentResolver: ContentResolver, alter: Query, action: Consumer<T>) {
         var cursor: Cursor? = null
         try {
             cursor = contentResolver.query(uri,

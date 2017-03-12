@@ -17,7 +17,7 @@ class ProjectViewHolder(listener: Consumer<Project>?, itemView: View)
 
     init {
         if (listener != null) {
-            itemView.setOnClickListener({ v -> listener.accept(item) })
+            itemView.setOnClickListener({ _ -> listener.accept(item) })
         }
     }
 

@@ -13,7 +13,7 @@ import fr.xgouchet.khronorg.ui.presenters.TravellerEditorPresenter
 /**
  * @author Xavier F. Gouchet
  */
-class TravellerEditorActivity : BaseEditorActivity<Traveller>() {
+class TravellerEditorAktivity : BaseEditorAktivity<Traveller>() {
 
 
     override fun readItem(intent: Intent?): Traveller? {

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class BaseDao(private val openHelper: SQLiteOpenHelper,
               private val tableName: String) {
 
+
     fun insert(cv: ContentValues): Long {
         val db = openHelper.writableDatabase
 

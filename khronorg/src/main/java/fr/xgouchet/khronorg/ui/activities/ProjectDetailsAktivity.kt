@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.github.salomonbrys.kodein.instance
 import fr.xgouchet.khronorg.R
+import fr.xgouchet.khronorg.data.models.Jump
 import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
 import fr.xgouchet.khronorg.ui.Cutelry.knife
@@ -18,7 +19,7 @@ import kotlin.properties.Delegates.notNull
 /**
  * @author Xavier F. Gouchet
  */
-class ProjectDetailsActivity : BaseActivity() {
+class ProjectDetailsAktivity : BaseAktivity() {
 
     val viewPager: ViewPager by knife(R.id.pager)
     var pageAdapter: PagerFragmentAdapter by notNull()
@@ -61,6 +62,7 @@ class ProjectDetailsActivity : BaseActivity() {
                 ProjectNavigator(this).goToItemEdition(project)
             }
             R.id.delete -> {
+                // TODO
             }
             else -> result = super.onOptionsItemSelected(item)
         }

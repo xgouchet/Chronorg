@@ -8,6 +8,7 @@ import com.facebook.stetho.Stetho
 class KhronorgApplication : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
+
         Stetho.initializeWithDefaults(this)
     }
 }

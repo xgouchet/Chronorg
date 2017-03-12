@@ -5,7 +5,7 @@ package fr.xgouchet.khronorg.data.query
  * @author Xavier F. Gouchet
  */
 class QueryAlterer private constructor(val select: String?, val args: Array<out String?>?, val order: String?)
-    : QueryAlteration {
+    : Query {
 
     companion object {
         fun create(init: Builder.() -> Unit) = Builder(init).build()
@@ -20,9 +20,9 @@ class QueryAlterer private constructor(val select: String?, val args: Array<out 
 
     // region Where
 
-    private constructor(builder: QueryAlteration) : this(builder.select(), builder.args(), builder.order())
+    private constructor(builder: Query) : this(builder.select(), builder.args(), builder.order())
 
-    class WhereBuilder private constructor() : QueryAlteration {
+    class WhereBuilder private constructor() : Query {
 
         private var clause: String? = null
         private var value: String? = null

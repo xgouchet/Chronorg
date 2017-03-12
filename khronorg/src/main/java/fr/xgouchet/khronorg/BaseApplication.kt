@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import com.github.salomonbrys.kodein.*
 import fr.xgouchet.khronorg.data.ioproviders.IOProvider
+import fr.xgouchet.khronorg.data.ioproviders.JumpProvider
 import fr.xgouchet.khronorg.data.ioproviders.ProjectProvider
 import fr.xgouchet.khronorg.data.ioproviders.TravellerProvider
+import fr.xgouchet.khronorg.data.models.Jump
 import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
@@ -23,10 +25,12 @@ open class BaseApplication : Application() {
         // Providers
         bind<IOProvider<Project>>() with singleton { ProjectProvider() }
         bind<IOProvider<Traveller>>() with singleton { TravellerProvider() }
+        bind<IOProvider<Jump>>() with singleton { JumpProvider() }
 
         // Repositories
         bind<BaseRepository<Project>>() with singleton { BaseRepository<Project>(instance(), instance()) }
         bind<BaseRepository<Traveller>>() with singleton { BaseRepository<Traveller>(instance(), instance()) }
+        bind<BaseRepository<Jump>>() with singleton { BaseRepository<Jump>(instance(), instance()) }
 
         // Presenters
     }

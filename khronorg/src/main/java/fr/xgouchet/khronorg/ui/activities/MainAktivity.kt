@@ -3,7 +3,6 @@ package fr.xgouchet.khronorg.ui.activities
 import android.os.Bundle
 import com.github.salomonbrys.kodein.instance
 import fr.xgouchet.khronorg.R
-import fr.xgouchet.khronorg.data.ioproviders.ProjectProvider
 import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
 import fr.xgouchet.khronorg.ui.fragments.ProjectListFragment
@@ -13,7 +12,7 @@ import fr.xgouchet.khronorg.ui.presenters.ProjectListPresenter
 /**
  * @author Xavier F. Gouchet
  */
-class MainActivity : BaseActivity() {
+class MainAktivity : BaseAktivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,7 +3,7 @@ package fr.xgouchet.khronorg.data.query
 /**
  * @author Xavier F. Gouchet
  */
-interface QueryAlteration {
+interface Query {
 
     fun select(): String?
 

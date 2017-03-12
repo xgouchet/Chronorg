@@ -8,7 +8,7 @@ import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
-import fr.xgouchet.khronorg.ui.activities.BaseActivity
+import fr.xgouchet.khronorg.ui.activities.BaseAktivity
 import fr.xgouchet.khronorg.ui.fragments.TravellerListFragment
 import fr.xgouchet.khronorg.ui.navigators.TravellerNavigator
 import fr.xgouchet.khronorg.ui.presenters.TravellerListPresenter
@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
 /**
  * @author Xavier F. Gouchet
  */
-class PagerFragmentAdapter(fm: FragmentManager, activity: BaseActivity, val project: Project) : FragmentStatePagerAdapter(fm) {
+class PagerFragmentAdapter(fm: FragmentManager, aktivity: BaseAktivity, val project: Project) : FragmentStatePagerAdapter(fm) {
 
     companion object {
 
@@ -29,7 +29,7 @@ class PagerFragmentAdapter(fm: FragmentManager, activity: BaseActivity, val proj
 
     }
 
-    val activityRef = WeakReference(activity)
+    val activityRef = WeakReference(aktivity)
 
     override fun getCount(): Int = 1 // PAGE_COUNT
 
@@ -49,21 +49,21 @@ class PagerFragmentAdapter(fm: FragmentManager, activity: BaseActivity, val proj
             }
 //            PAGE_EVENTS -> {
 //                val fragment = EventListFragment.createFragment(project.getId())
-//                val presenter = activity.getActivityComponent().getEventListPresenter()
+//                val presenter = aktivity.getActivityComponent().getEventListPresenter()
 //                presenter.setProject(project)
 //                presenter.setView(fragment)
 //                return fragment
 //            }
 //            PAGE_PORTALS -> {
 //                val fragment = PortalListFragment.createFragment(project.getId())
-//                val presenter = activity.getActivityComponent().getPortalListPresenter()
+//                val presenter = aktivity.getActivityComponent().getPortalListPresenter()
 //                presenter.setProject(project)
 //                presenter.setView(fragment)
 //                return fragment
 //            }
 //            PAGE_TIMELINES -> {
 //                val fragment = TimelineListFragment.createFragment(project.getId())
-//                val presenter = activity.getActivityComponent().getTimelineListPresenter()
+//                val presenter = aktivity.getActivityComponent().getTimelineListPresenter()
 //                presenter.setProject(project)
 //                presenter.setView(fragment)
 //                return fragment

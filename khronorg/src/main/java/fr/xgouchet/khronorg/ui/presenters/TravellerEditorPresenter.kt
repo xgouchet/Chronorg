@@ -56,6 +56,14 @@ class TravellerEditorPresenter(item: Traveller, val repository: BaseRepository<T
         return repository.save(item)
     }
 
+    override fun getDeleteItemObservable():Observable<Any> {
+        if (item.id >= 0) {
+            return repository.delete(item)
+        } else {
+            return Observable.error(IllegalArgumentException("Cannot "))
+        }
+    }
+
     companion object {
         val NAME = "name"
         val BIRTH = "birth"

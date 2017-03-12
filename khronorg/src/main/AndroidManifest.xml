@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.activities.MainAktivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -17,17 +17,24 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.ProjectDetailsActivity"
+            android:name=".ui.activities.ProjectDetailsAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.ProjectEditorActivity"
+            android:name=".ui.activities.ProjectEditorAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.TravellerEditorActivity"
+            android:name=".ui.activities.TravellerDetailsAktivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activities.TravellerEditorAktivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activities.JumpEditorAktivity"
+            android:exported="false" />
         <!-- Content Provider  -->
         <provider
             android:name=".provider.KhronorgContentProvider"

@@ -46,6 +46,7 @@
     <string name="confirm_delete">Are you sure you want delay delete this element ?</string>
     <string name="hint_timeline_parent">Parent timeline</string>
     <string name="hint_timeline_delay">Delay</string>
+    <string name="error_traveller_details_empty">No Traveller</string>
 
 
     <string-array name="directions">

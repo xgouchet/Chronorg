@@ -19,6 +19,7 @@ abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>, 
 
     var readDisposable: Disposable? = null
     var saveDisposable: Disposable? = null
+    var deleteDisposable: Disposable? = null
 
     val items: MutableList<EditorItem> = ArrayList()
 
@@ -27,6 +28,7 @@ abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>, 
     }
 
     override fun unsubscribe() {
+        deleteDisposable?.dispose()
         saveDisposable?.dispose()
         readDisposable?.dispose()
     }
@@ -53,12 +55,19 @@ abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>, 
     }
 
     override fun applyEdition() {
-
         saveDisposable?.dispose()
         saveDisposable = getSaveItemObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, { onError(it) }, { onItemSaved() })
+    }
+
+    override fun delete() {
+        deleteDisposable?.dispose()
+        deleteDisposable = getDeleteItemObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, { onError(it) }, { onItemDeleted() })
     }
 
     private fun onError(e: Throwable?) {
@@ -85,8 +94,13 @@ abstract class BaseEditorPresenter<T>(val item: T, val navigator: Navigator<T>, 
         navigator.goBack()
     }
 
+    private fun onItemDeleted() {
+        navigator.goBack()
+    }
+
     abstract fun getEditorItemsObservable(item: T): Observable<EditorItem>
 
     abstract fun getSaveItemObservable(): Observable<Any>
 
+    abstract fun getDeleteItemObservable(): Observable<Any>
 }

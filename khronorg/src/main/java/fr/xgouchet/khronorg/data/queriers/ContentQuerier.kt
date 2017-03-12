@@ -1,7 +1,7 @@
 package fr.xgouchet.khronorg.data.queriers
 
 import android.content.ContentResolver
-import fr.xgouchet.khronorg.data.query.QueryAlteration
+import fr.xgouchet.khronorg.data.query.Query
 import io.reactivex.functions.Consumer
 
 /**
@@ -11,7 +11,7 @@ interface ContentQuerier<T> {
 
     fun queryAll(contentResolver: ContentResolver, action: Consumer<T>)
 
-    fun queryWhere(contentResolver: ContentResolver, alter: QueryAlteration, action: Consumer<T>)
+    fun queryWhere(contentResolver: ContentResolver, alter: Query, action: Consumer<T>)
 
     fun save(contentResolver: ContentResolver, item: T): Boolean
 

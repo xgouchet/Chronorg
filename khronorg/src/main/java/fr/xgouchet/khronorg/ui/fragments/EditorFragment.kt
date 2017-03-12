@@ -10,7 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.android.colorpicker.ColorPickerDialog
 import fr.xgouchet.khronorg.R
-import fr.xgouchet.khronorg.data.formatters.InstantFormatter
+import fr.xgouchet.khronorg.data.formatters.DefaultInstantFormatter
 import fr.xgouchet.khronorg.ui.Cutelry.knife
 import fr.xgouchet.khronorg.ui.adapters.EditorAdapter
 import fr.xgouchet.khronorg.ui.adapters.EditorAdapterListener
@@ -37,7 +37,7 @@ class EditorFragment<T>
     internal val message: TextView by knife(R.id.message)
 
     var presenter: EditorPresenter<T> by notNull()
-    val adapter = EditorAdapter(InstantFormatter, this)
+    val adapter = EditorAdapter(DefaultInstantFormatter, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +77,11 @@ class EditorFragment<T>
         when (item.itemId) {
             R.id.editor_validate -> {
                 presenter.applyEdition()
+                return true
+            }
+
+            R.id.editor_delete -> {
+                presenter.delete()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
