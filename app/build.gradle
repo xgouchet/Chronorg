@@ -4,7 +4,7 @@ apply plugin: 'android-aspectj'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion "$android_build_tools"
 
     defaultConfig {
         applicationId "fr.xgouchet.chronorg"
