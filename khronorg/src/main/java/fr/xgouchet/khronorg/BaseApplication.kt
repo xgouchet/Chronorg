@@ -12,6 +12,8 @@ import fr.xgouchet.khronorg.data.models.Project
 import fr.xgouchet.khronorg.data.models.Traveller
 import fr.xgouchet.khronorg.data.repositories.BaseRepository
 import fr.xgouchet.khronorg.ui.presenters.ProjectListPresenter
+import fr.xgouchet.khronorg.feature.events.Event
+import fr.xgouchet.khronorg.feature.events.EventProvider
 import net.danlew.android.joda.JodaTimeAndroid
 
 /**
@@ -25,11 +27,13 @@ open class BaseApplication : Application() {
         // Providers
         bind<IOProvider<Project>>() with singleton { ProjectProvider() }
         bind<IOProvider<Traveller>>() with singleton { TravellerProvider() }
+        bind<IOProvider<Event>>() with singleton { EventProvider() }
         bind<IOProvider<Jump>>() with singleton { JumpProvider() }
 
         // Repositories
         bind<BaseRepository<Project>>() with singleton { BaseRepository<Project>(instance(), instance()) }
         bind<BaseRepository<Traveller>>() with singleton { BaseRepository<Traveller>(instance(), instance()) }
+        bind<BaseRepository<Event>>() with singleton { BaseRepository<Event>(instance(), instance()) }
         bind<BaseRepository<Jump>>() with singleton { BaseRepository<Jump>(instance(), instance()) }
 
         // Presenters

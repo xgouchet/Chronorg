@@ -35,6 +35,11 @@
         <activity
             android:name=".ui.activities.JumpEditorAktivity"
             android:exported="false" />
+
+        <activity
+            android:name=".feature.travellers.EventEditorAktivity"
+            android:exported="false" />
+
         <!-- Content Provider  -->
         <provider
             android:name=".provider.KhronorgContentProvider"
