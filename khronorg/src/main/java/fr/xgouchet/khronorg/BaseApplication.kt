@@ -2,18 +2,20 @@ package fr.xgouchet.khronorg
 
 import android.app.Application
 import android.content.Context
-import com.github.salomonbrys.kodein.*
-import fr.xgouchet.khronorg.data.ioproviders.IOProvider
-import fr.xgouchet.khronorg.data.ioproviders.JumpProvider
-import fr.xgouchet.khronorg.data.ioproviders.ProjectProvider
-import fr.xgouchet.khronorg.data.ioproviders.TravellerProvider
-import fr.xgouchet.khronorg.data.models.Jump
-import fr.xgouchet.khronorg.data.models.Project
-import fr.xgouchet.khronorg.data.models.Traveller
-import fr.xgouchet.khronorg.data.repositories.BaseRepository
-import fr.xgouchet.khronorg.ui.presenters.ProjectListPresenter
+import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.bind
+import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.singleton
+import fr.xgouchet.khronorg.commons.ioproviders.IOProvider
+import fr.xgouchet.khronorg.commons.repositories.BaseRepository
+import fr.xgouchet.khronorg.feature.jumps.Jump
+import fr.xgouchet.khronorg.feature.jumps.JumpProvider
+import fr.xgouchet.khronorg.feature.projects.Project
+import fr.xgouchet.khronorg.feature.projects.ProjectProvider
 import fr.xgouchet.khronorg.feature.events.Event
 import fr.xgouchet.khronorg.feature.events.EventProvider
+import fr.xgouchet.khronorg.feature.travellers.Traveller
+import fr.xgouchet.khronorg.feature.travellers.TravellerProvider
 import net.danlew.android.joda.JodaTimeAndroid
 
 /**

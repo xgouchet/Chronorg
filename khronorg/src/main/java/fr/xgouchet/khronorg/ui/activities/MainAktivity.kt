@@ -3,11 +3,11 @@ package fr.xgouchet.khronorg.ui.activities
 import android.os.Bundle
 import com.github.salomonbrys.kodein.instance
 import fr.xgouchet.khronorg.R
-import fr.xgouchet.khronorg.data.models.Project
-import fr.xgouchet.khronorg.data.repositories.BaseRepository
-import fr.xgouchet.khronorg.ui.fragments.ProjectListFragment
-import fr.xgouchet.khronorg.ui.navigators.ProjectNavigator
-import fr.xgouchet.khronorg.ui.presenters.ProjectListPresenter
+import fr.xgouchet.khronorg.feature.projects.Project
+import fr.xgouchet.khronorg.commons.repositories.BaseRepository
+import fr.xgouchet.khronorg.feature.projects.ProjectListFragment
+import fr.xgouchet.khronorg.feature.projects.ProjectNavigator
+import fr.xgouchet.khronorg.feature.projects.ProjectListPresenter
 
 /**
  * @author Xavier F. Gouchet

@@ -17,27 +17,27 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.ProjectDetailsAktivity"
+            android:name=".feature.projects.ProjectDetailsAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.ProjectEditorAktivity"
+            android:name=".feature.projects.ProjectEditorAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.TravellerDetailsAktivity"
+            android:name=".feature.travellers.TravellerDetailsAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.TravellerEditorAktivity"
+            android:name=".feature.travellers.TravellerEditorAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.JumpEditorAktivity"
+            android:name=".feature.jumps.JumpEditorAktivity"
             android:exported="false" />
 
         <activity
-            android:name=".feature.travellers.EventEditorAktivity"
+            android:name=".feature.events.EventEditorAktivity"
             android:exported="false" />
 
         <!-- Content Provider  -->
