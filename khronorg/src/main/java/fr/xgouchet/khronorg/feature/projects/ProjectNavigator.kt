@@ -5,7 +5,7 @@ import android.content.Intent
 import fr.xgouchet.khronorg.feature.projects.Project
 import fr.xgouchet.khronorg.feature.projects.ProjectDetailsAktivity
 import fr.xgouchet.khronorg.feature.projects.ProjectEditorAktivity
-import fr.xgouchet.khronorg.ui.activities.TimelineAktivity
+import fr.xgouchet.khronorg.feature.timeline.TimelineAktivity
 import fr.xgouchet.khronorg.ui.navigators.Navigator
 
 /**

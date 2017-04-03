@@ -63,5 +63,8 @@ data class Jump(var id: Int = -1,
                 return arrayOfNulls(size)
             }
         }
+
+        val ID_BIRTH = -1;
+        val ID_DEATH = -2;
     }
 }

@@ -8,12 +8,13 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import fr.xgouchet.khronorg.commons.ioproviders.IOProvider
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
-import fr.xgouchet.khronorg.feature.jumps.Jump
-import fr.xgouchet.khronorg.feature.jumps.JumpProvider
-import fr.xgouchet.khronorg.feature.projects.Project
-import fr.xgouchet.khronorg.feature.projects.ProjectProvider
 import fr.xgouchet.khronorg.feature.events.Event
 import fr.xgouchet.khronorg.feature.events.EventProvider
+import fr.xgouchet.khronorg.feature.jumps.Jump
+import fr.xgouchet.khronorg.feature.jumps.JumpProvider
+import fr.xgouchet.khronorg.feature.jumps.JumpRepository
+import fr.xgouchet.khronorg.feature.projects.Project
+import fr.xgouchet.khronorg.feature.projects.ProjectProvider
 import fr.xgouchet.khronorg.feature.travellers.Traveller
 import fr.xgouchet.khronorg.feature.travellers.TravellerProvider
 import net.danlew.android.joda.JodaTimeAndroid
@@ -36,7 +37,11 @@ open class BaseApplication : Application() {
         bind<BaseRepository<Project>>() with singleton { BaseRepository<Project>(instance(), instance()) }
         bind<BaseRepository<Traveller>>() with singleton { BaseRepository<Traveller>(instance(), instance()) }
         bind<BaseRepository<Event>>() with singleton { BaseRepository<Event>(instance(), instance()) }
-        bind<BaseRepository<Jump>>() with singleton { BaseRepository<Jump>(instance(), instance()) }
+        bind<JumpRepository>() with singleton { JumpRepository(instance(), instance()) }
+        bind<BaseRepository<Jump>>() with singleton {
+            val jumpRepo: JumpRepository = instance()
+            return@singleton jumpRepo
+        }
 
         // Presenters
     }

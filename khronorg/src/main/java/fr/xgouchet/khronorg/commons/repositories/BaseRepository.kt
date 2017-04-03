@@ -11,7 +11,7 @@ import io.reactivex.subjects.BehaviorSubject
 /**
  * @author Xavier F. Gouchet
  */
-class BaseRepository<T>(val context: Context, val provider: IOProvider<T>) : Repository<T> {
+open class BaseRepository<T>(val context: Context, val provider: IOProvider<T>) : Repository<T> {
 
     private val currentItemSource = BehaviorSubject.create<T>()
 

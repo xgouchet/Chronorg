@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:orientation="horizontal">
+
+    <fr.xgouchet.khronorg.feature.timeline.ShardPrefixView
+        android:id="@+id/shard_prefix"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+
+        />
+
+    <TextView
+        android:id="@+id/shard_instant"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/shard_label"
+        android:layout_gravity="end|center_vertical"
+        android:layout_toEndOf="@id/shard_prefix"
+        android:height="24dp"
+        android:ellipsize="end"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:paddingBottom="4dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:textAppearance="?android:textAppearanceListItemSecondary"
+        android:textColor="@color/textColorSecondary"
+        android:textStyle="italic"
+        tools:text="Oct 21, 2015" />
+
+    <TextView
+        android:id="@+id/shard_label"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="end|center_vertical"
+        android:layout_toEndOf="@id/shard_instant"
+        android:ellipsize="end"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:textAppearance="?android:textAppearanceListItem"
+        tools:text="Foo (Bar) Spam" />
+
+</RelativeLayout>

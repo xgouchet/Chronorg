@@ -21,7 +21,7 @@ import kotlin.properties.Delegates.notNull
 /**
  * @author Xavier F. Gouchet
  */
-abstract class ListFragment<T>
+abstract class ListFragment<T>(val isFabVisible: Boolean)
     : Fragment(), ListView<T>, Consumer<T> {
 
     internal val list: RecyclerView by knife(android.R.id.list)
@@ -32,6 +32,7 @@ abstract class ListFragment<T>
     var presenter: ListPresenter<T> by notNull()
 
     abstract val adapter: BaseAdapter<T>
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
@@ -65,7 +66,7 @@ abstract class ListFragment<T>
 
     override fun setLoading(isLoading: Boolean) {
         loading.visibility = if (isLoading) View.VISIBLE else View.GONE
-        fab.visibility = if (isLoading) View.GONE else View.VISIBLE
+        fab.visibility = if (isLoading || !isFabVisible) View.GONE else View.VISIBLE
     }
 
     override fun setError(throwable: Throwable) {
