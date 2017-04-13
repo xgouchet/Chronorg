@@ -13,6 +13,8 @@ import fr.xgouchet.khronorg.feature.events.EventProvider
 import fr.xgouchet.khronorg.feature.jumps.Jump
 import fr.xgouchet.khronorg.feature.jumps.JumpProvider
 import fr.xgouchet.khronorg.feature.jumps.JumpRepository
+import fr.xgouchet.khronorg.feature.jumps.PortalProvider
+import fr.xgouchet.khronorg.feature.portals.Portal
 import fr.xgouchet.khronorg.feature.projects.Project
 import fr.xgouchet.khronorg.feature.projects.ProjectProvider
 import fr.xgouchet.khronorg.feature.travellers.Traveller
@@ -32,6 +34,7 @@ open class BaseApplication : Application() {
         bind<IOProvider<Traveller>>() with singleton { TravellerProvider() }
         bind<IOProvider<Event>>() with singleton { EventProvider() }
         bind<IOProvider<Jump>>() with singleton { JumpProvider() }
+        bind<IOProvider<Portal>>() with singleton { PortalProvider() }
 
         // Repositories
         bind<BaseRepository<Project>>() with singleton { BaseRepository<Project>(instance(), instance()) }
@@ -42,6 +45,7 @@ open class BaseApplication : Application() {
             val jumpRepo: JumpRepository = instance()
             return@singleton jumpRepo
         }
+        bind<BaseRepository<Portal>>() with singleton { BaseRepository<Portal>(instance(), instance()) }
 
         // Presenters
     }

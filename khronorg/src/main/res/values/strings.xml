@@ -33,7 +33,7 @@
     <string name="hint_name">Name</string>
     <string name="hint_color">Color</string>
     <string name="hint_portal_name">Portal name</string>
-    <string name="hint_portal_delay">Delay reference points</string>
+    <string name="hint_portal_delay">Delay from January 1st 2000</string>
     <string name="hint_portal_two_way">Two-way portal</string>
     <string name="hint_portal_timeline">Timeline</string>
     <string name="hint_entity_birth">Birth date and time</string>

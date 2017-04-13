@@ -24,7 +24,6 @@ data class Jump(var id: Int = -1,
             when (direction) {
                 Direction.PAST -> return from.toInstant().minus(delay.toDuration())
                 Direction.FUTURE -> return from.toInstant().plus(delay.toDuration())
-                Direction.BOTH -> throw IllegalArgumentException("A Jump's direction can't be BOTH")
                 else -> throw IllegalArgumentException("Unknown jump direction : $direction")
             }
         }

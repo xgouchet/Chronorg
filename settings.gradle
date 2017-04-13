@@ -1,1 +1,1 @@
-include ':app', ':colorpicker', ':khronorg'
+include ':colorpicker', ':khronorg'

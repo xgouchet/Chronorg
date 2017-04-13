@@ -56,7 +56,6 @@ abstract class ListFragment<T>(val isFabVisible: Boolean)
         presenter.unsubscribe()
     }
 
-
     override fun setEmpty() {
         message.setText(R.string.empty_list)
         message.visibility = View.VISIBLE
@@ -70,6 +69,7 @@ abstract class ListFragment<T>(val isFabVisible: Boolean)
     }
 
     override fun setError(throwable: Throwable) {
+        throwable.printStackTrace()
         message.text = getString(R.string.error_generic, throwable.message)
         message.visibility = View.VISIBLE
         list.visibility = View.GONE

@@ -47,7 +47,7 @@ class JumpEditorPresenter(item: Jump, val repository: BaseRepository<Jump>, navi
                         item.direction = Direction.PAST
                     } else {
                         item.delay = Interval(item.from, destination)
-                        item.direction = Direction.PAST
+                        item.direction = Direction.FUTURE
                     }
                 }
             }

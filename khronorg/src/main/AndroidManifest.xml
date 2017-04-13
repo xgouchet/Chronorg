@@ -42,6 +42,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".feature.portals.PortalEditorAktivity"
+            android:exported="false" />
+
+        <activity
             android:name=".feature.events.EventEditorAktivity"
             android:exported="false" />
 

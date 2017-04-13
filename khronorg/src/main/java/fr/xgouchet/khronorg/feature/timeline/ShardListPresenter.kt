@@ -1,16 +1,20 @@
 package fr.xgouchet.khronorg.feature.timeline
 
+import android.util.Log
 import fr.xgouchet.khronorg.commons.query.QueryBuilder
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
 import fr.xgouchet.khronorg.feature.events.Event
 import fr.xgouchet.khronorg.feature.jumps.Jump
 import fr.xgouchet.khronorg.feature.jumps.JumpRepository
+import fr.xgouchet.khronorg.feature.portals.Portal
 import fr.xgouchet.khronorg.feature.projects.Project
 import fr.xgouchet.khronorg.feature.travellers.Traveller
 import fr.xgouchet.khronorg.provider.KhronorgSchema
 import fr.xgouchet.khronorg.ui.presenters.BaseListPresenter
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
@@ -20,10 +24,42 @@ import java.util.*
 class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                          val jumpRepository: JumpRepository,
                          val eventRepository: BaseRepository<Event>,
+                         val portalRepository: BaseRepository<Portal>,
                          val project: Project,
                          navigator: ShardNavigator)
     : BaseListPresenter<TimelineShard>(navigator) {
 
+
+    private var portalsDisposable: Disposable? = null
+
+
+    override fun subscribe() {
+        loadPortals()
+    }
+
+    fun loadPortals() {
+        portalsDisposable?.dispose()
+        portalsDisposable = getPortalsObservable()
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ it -> onPortalsLoaded(it) })
+    }
+
+    private fun onPortalsLoaded(portals: List<Portal>) {
+        view?.let {
+            (it as ShardListFragment).setPortals(portals)
+        }
+        load(true)
+    }
+
+    fun getPortalsObservable(): Observable<Portal> {
+        val alteration = QueryBuilder.where {
+            equals(KhronorgSchema.COL_PROJECT_ID, project.id.toString())
+        }
+
+        return portalRepository.getWhere(alteration)
+    }
 
     override fun getItemsObservable(): Observable<TimelineShard> {
         val query = QueryBuilder.where {
@@ -33,21 +69,27 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                 .subscribeOn(Schedulers.io())
                 .map {
                     event ->
-                    TimelineShard(event.instant, event.name, event.color)
+                    val id = SHARD_EVENT or event.id.toLong()
+                    TimelineShard(event.instant, event.name, event.color, TimelineShard.ShardType.SINGLE, id)
                 }
 
         val jumpShardsObservable: Observable<TimelineShard> = travellerRepository.getWhere(query)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
                 .flatMap { traveller ->
                     return@flatMap jumpRepository.getTravellerJumps(traveller)
-                            .map { jump -> Pair<Jump, Traveller>(jump, traveller) }
+                            .map {
+                                jump ->
+                                return@map Pair<Jump, Traveller>(jump, traveller)
+                            }.toList()
+                            .flatMapObservable { list -> Observable.create(jumpsToSegments(list)) }
                 }
-                .toList()
-                .flatMapObservable { list -> Observable.create(jumpsToSegments(list)) }
                 .flatMap {
                     segment ->
-                    val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, segment.id)
-                    val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, segment.id)
+                    val shardId = (segment.id and SHARD_ID_MASK) or SHARD_SEGMENT
+                    val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, shardId)
+                    val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, shardId)
+
                     return@flatMap Observable.just(from, dest)
                 }
 
@@ -72,7 +114,6 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
             try {
                 val prefix = ArrayList<TimelineShard?>()
 
-                // TODO replace by null instead of remove
                 for (shard in list) {
                     when (shard.type) {
                         TimelineShard.ShardType.SINGLE -> {
@@ -84,7 +125,7 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                             shard.prefix.addAll(prefix)
                             val index = prefix.indexOfFirst { s -> (s != null) && (s.id == shard.id) }
                             if (index < 0) {
-                                throw IllegalStateException("WTF ‽")
+                                // throw IllegalStateException("WTF ‽")
                             } else if (index == (prefix.size - 1)) {
                                 prefix.removeAt(index)
                             } else {
@@ -133,7 +174,8 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                             else -> labelDest = "$index →"
                         }
 
-                        emitter.onNext(TimelineSegment(labelFrom, labelDest, previousJump.destination, currentJump.from, traveller.color))
+                        val timelineSegment = TimelineSegment(labelFrom, labelDest, previousJump.destination, currentJump.from, traveller.color)
+                        emitter.onNext(timelineSegment)
                     }
 
                     previous = pair
@@ -149,4 +191,9 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
     }
 
 
+    companion object {
+        val SHARD_ID_MASK: Long = 0x0FFFFFFFFFFFFFFFL
+        val SHARD_SEGMENT: Long = 0x1000000000000000L
+        val SHARD_EVENT: Long = 0x2000000000000000L
+    }
 }

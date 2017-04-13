@@ -11,10 +11,21 @@ data class TimelineShard(var instant: ReadableInstant,
                          var label: String = "",
                          var color: Int = Color.rgb(0xF6, 0x40, 0x2C),
                          var type: ShardType = ShardType.SINGLE,
-                         var id: Int = 0,
+                         var id: Long = 0,
                          val prefix: MutableList<TimelineShard?> = ArrayList()) {
     enum class ShardType {
-        SINGLE, FIRST, LAST
+        SINGLE, FIRST, LAST;
+
+        override fun toString(): String {
+            when (this) {
+                SINGLE -> return "()"
+                FIRST -> return "->"
+                LAST -> return ">|"
+            }
+        }
     }
 
+    override fun toString(): String {
+        return "Shard@$id “$label” [$instant] $type"
+    }
 }

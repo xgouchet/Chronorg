@@ -47,30 +47,35 @@ class ShardPrefixView(context: Context,
 
         if (isInEditMode) {
             val instant = DateTime("1970-01-01T00:00Z")
-            shard = TimelineShard(instant, "Foo", Color.GREEN, TimelineShard.ShardType.FIRST, 0)
+            shard = TimelineShard(instant, "Bar", Color.GREEN, TimelineShard.ShardType.FIRST, 0)
             shard.prefix.add(shard)
         }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minWidth = shard.prefix.size * lineWidth
+        val minHeight = 3 * lineCapDistanceFromTop
 
         val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
+        val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
         val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
         val width: Int
         val height: Int
 
-        if (widthMode == View.MeasureSpec.EXACTLY) {
-            width = widthSize
-        } else if (widthMode == View.MeasureSpec.AT_MOST) {
-            width = Math.min(minWidth, widthSize)
-        } else {
-            width = minWidth
+        when (widthMode) {
+            View.MeasureSpec.EXACTLY -> width = widthSize
+            View.MeasureSpec.AT_MOST -> width = Math.min(minWidth, widthSize)
+            else -> width = minWidth
         }
 
-        height = heightSize
+        when (heightMode) {
+            View.MeasureSpec.EXACTLY -> height = heightSize
+            View.MeasureSpec.AT_MOST -> height = Math.min(minHeight, heightSize)
+            else -> height = minHeight
+        }
+
         setMeasuredDimension(width, height)
     }
 
@@ -121,7 +126,7 @@ class ShardPrefixView(context: Context,
                 canvas.drawRect((lineStartX + lineMargin),
                         lineCapDistanceFromTop.toFloat(),
                         (lineStartX + lineWidth - lineMargin),
-                       measuredHeight.toFloat(),
+                        measuredHeight.toFloat(),
                         paint)
             }
 
