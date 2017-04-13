@@ -1,6 +1,5 @@
 package fr.xgouchet.khronorg.feature.timeline
 
-import android.util.Log
 import fr.xgouchet.khronorg.commons.query.QueryBuilder
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
 import fr.xgouchet.khronorg.feature.events.Event
@@ -81,17 +80,19 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                             .map {
                                 jump ->
                                 return@map Pair<Jump, Traveller>(jump, traveller)
-                            }.toList()
+                            }
+                            .toList()
                             .flatMapObservable { list -> Observable.create(jumpsToSegments(list)) }
-                }
-                .flatMap {
-                    segment ->
-                    val shardId = (segment.id and SHARD_ID_MASK) or SHARD_SEGMENT
-                    val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, shardId)
-                    val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, shardId)
+                            .flatMap {
+                                segment ->
+                                val shardId = (segment.id and SHARD_ID_MASK) or SHARD_SEGMENT
+                                val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, shardId)
+                                val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, shardId)
 
-                    return@flatMap Observable.just(from, dest)
+                                return@flatMap Observable.just(from, dest)
+                            }
                 }
+
 
         return Observable.mergeDelayError(jumpShardsObservable, eventShardsObservable)
                 .subscribeOn(Schedulers.computation())

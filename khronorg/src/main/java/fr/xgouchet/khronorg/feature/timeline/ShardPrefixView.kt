@@ -54,7 +54,8 @@ class ShardPrefixView(context: Context,
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minWidth = shard.prefix.size * lineWidth
-        val minHeight = 3 * lineCapDistanceFromTop
+        val minHeight =  (2 * lineCapDistanceFromTop) + lineCapWidth
+
 
         val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)

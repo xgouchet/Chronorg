@@ -17,6 +17,11 @@ class ShardAdapter(val instantFormatter: Formatter<ReadableInstant>) : BaseAdapt
     override val layoutId: Int = R.layout.item_shard
     val portals: MutableList<Portal> = ArrayList()
 
+    override fun getItemViewType(position: Int): Int {
+        val item = content[position]
+        return item.prefix.size
+    }
+
     override fun instantiateViewHolder(viewType: Int, view: View): BaseViewHolder<TimelineShard> {
         return ShardViewHolder(view, instantFormatter, portals)
     }

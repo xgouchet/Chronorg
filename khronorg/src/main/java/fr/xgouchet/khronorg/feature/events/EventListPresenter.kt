@@ -7,6 +7,7 @@ import fr.xgouchet.khronorg.commons.repositories.BaseRepository
 import fr.xgouchet.khronorg.provider.KhronorgSchema.Companion.COL_NAME
 import fr.xgouchet.khronorg.provider.KhronorgSchema.Companion.COL_PROJECT_ID
 import fr.xgouchet.khronorg.feature.events.EventNavigator
+import fr.xgouchet.khronorg.provider.KhronorgSchema.Companion.COL_INSTANT
 import fr.xgouchet.khronorg.ui.presenters.BaseListPresenter
 import io.reactivex.Observable
 
@@ -20,7 +21,7 @@ class EventListPresenter(val repository: BaseRepository<Event>, val project: Pro
     override fun getItemsObservable(): Observable<Event> {
         val alteration = QueryBuilder.where {
             equals(COL_PROJECT_ID, project.id.toString())
-            orderAsc(COL_NAME)
+            orderAsc(COL_INSTANT)
         }
 
         return repository.getWhere(alteration)

@@ -15,6 +15,15 @@ object DefaultInstantFormatter : Formatter<ReadableInstant> {
     }
 }
 
+object TimelineInstantFormatter : Formatter<ReadableInstant> {
+
+    internal val dtf = DateTimeFormat.forStyle("M-").withZoneUTC()
+
+    override fun format(input: ReadableInstant): String {
+        return dtf.print(input)
+    }
+}
+
 object ShortInstantFormatter : Formatter<ReadableInstant> {
 
     internal val dtf = DateTimeFormat.forStyle("S-").withZoneUTC()
