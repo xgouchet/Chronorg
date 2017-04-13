@@ -3,6 +3,7 @@ package fr.xgouchet.khronorg.feature.events
 import android.graphics.Color
 import android.os.Parcel
 import android.os.Parcelable
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import org.joda.time.DateTime
 import org.joda.time.ReadableInstant
 
@@ -34,7 +35,7 @@ data class Event(var id: Int = -1,
         id = input.readInt()
         projectId = input.readInt()
         name = input.readString()
-        instant = DateTime(input.readString())
+        instant = DateTime(input.readString(), getLocalTimeZone())
         color = input.readInt()
     }
 

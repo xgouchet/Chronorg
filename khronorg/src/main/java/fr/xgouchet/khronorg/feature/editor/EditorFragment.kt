@@ -11,16 +11,12 @@ import android.widget.TextView
 import com.android.colorpicker.ColorPickerDialog
 import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.commons.formatters.DefaultInstantFormatter
-import fr.xgouchet.khronorg.ui.Cutelry.knife
-import fr.xgouchet.khronorg.feature.editor.EditorAdapter
-import fr.xgouchet.khronorg.feature.editor.EditorAdapterListener
-import fr.xgouchet.khronorg.ui.dialog.InstantPickerDialog
 import fr.xgouchet.khronorg.feature.editor.items.EditorColorItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorInstantItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem
-import fr.xgouchet.khronorg.feature.editor.EditorPresenter
+import fr.xgouchet.khronorg.ui.Cutelry.knife
+import fr.xgouchet.khronorg.ui.dialog.InstantPickerDialog
 import fr.xgouchet.khronorg.ui.presenters.InstantPickerPresenter
-import fr.xgouchet.khronorg.feature.editor.EditorView
 import io.reactivex.functions.Consumer
 import kotlin.properties.Delegates.notNull
 

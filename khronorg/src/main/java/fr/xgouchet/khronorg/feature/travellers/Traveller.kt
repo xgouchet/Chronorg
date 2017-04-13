@@ -3,6 +3,7 @@ package fr.xgouchet.khronorg.feature.travellers
 import android.graphics.Color
 import android.os.Parcel
 import android.os.Parcelable
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import org.joda.time.DateTime
 import org.joda.time.ReadableInstant
 
@@ -36,8 +37,8 @@ data class Traveller(var id: Int = -1,
         id = input.readInt()
         projectId = input.readInt()
         name = input.readString()
-        birth = DateTime(input.readString())
-        death = DateTime(input.readString())
+        birth = DateTime(input.readString(), getLocalTimeZone())
+        death = DateTime(input.readString(), getLocalTimeZone())
         color = input.readInt()
     }
 

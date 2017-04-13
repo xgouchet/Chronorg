@@ -2,6 +2,7 @@ package fr.xgouchet.khronorg.feature.jumps
 
 import android.os.Parcel
 import android.os.Parcelable
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import fr.xgouchet.khronorg.data.models.Direction
 import org.joda.time.DateTime
 import org.joda.time.Interval
@@ -46,8 +47,8 @@ data class Jump(var id: Int = -1,
     constructor(input: Parcel) : this() {
         id = input.readInt()
         travellerId = input.readInt()
-        order= input.readInt()
-        from= DateTime(input.readString())
+        order = input.readInt()
+        from = DateTime(input.readString(), getLocalTimeZone())
         delay = Interval(input.readString())
         direction = input.readInt()
     }

@@ -30,6 +30,10 @@ class KhronorgSchema : SQLiteDescriptionProvider {
         tableDescription.addColumn(ColumnDescription(COL_ID, ColumnType.TYPE_INTEGER, ColumnOption.PRIMARY_KEY, ColumnOption.AUTOINCREMENT))
         tableDescription.addColumn(ColumnDescription(COL_NAME, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL, ColumnOption.UNIQUE))
 
+        // TODO add project time range
+        // tableDescription.addColumn(ColumnDescription(COL_BIRTH_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
+        // tableDescription.addColumn(ColumnDescription(COL_DEATH_INSTANT, ColumnType.TYPE_TEXT))
+
         return tableDescription
     }
 

@@ -2,8 +2,7 @@ package fr.xgouchet.khronorg.feature.jumps
 
 import android.database.Cursor
 import fr.xgouchet.khronorg.commons.readers.BaseReader
-import fr.xgouchet.khronorg.feature.jumps.Jump
-import fr.xgouchet.khronorg.feature.travellers.Traveller
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import fr.xgouchet.khronorg.provider.KhronorgSchema
 import org.joda.time.DateTime
 import org.joda.time.Interval
@@ -39,7 +38,7 @@ class JumpReader(cursor: Cursor) : BaseReader<Jump>(cursor) {
         data.id = readInt(idxId)
         data.travellerId = readInt(idxTravellerId)
         data.order = readInt(idxOrder)
-        data.from = DateTime(readString(idxFrom))
+        data.from = DateTime(readString(idxFrom), getLocalTimeZone())
         data.delay = Interval(readString(idxDelay))
         data.direction = readInt(idxDirection)
     }

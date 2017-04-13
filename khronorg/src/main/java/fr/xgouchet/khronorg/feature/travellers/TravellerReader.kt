@@ -2,7 +2,7 @@ package fr.xgouchet.khronorg.feature.travellers
 
 import android.database.Cursor
 import fr.xgouchet.khronorg.commons.readers.BaseReader
-import fr.xgouchet.khronorg.feature.travellers.Traveller
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import fr.xgouchet.khronorg.provider.KhronorgSchema
 import org.joda.time.DateTime
 
@@ -37,8 +37,8 @@ class TravellerReader(cursor: Cursor) : BaseReader<Traveller>(cursor) {
         data.id = readInt(idxId)
         data.projectId = readInt(idxProjectId)
         data.name = readString(idxName)
-        data.birth = DateTime(readString(idxBirth))
-        data.death = DateTime(readString(idxDeath))
+        data.birth = DateTime(readString(idxBirth), getLocalTimeZone())
+        data.death = DateTime(readString(idxDeath), getLocalTimeZone())
         data.color = readInt(idxColor)
     }
 }
