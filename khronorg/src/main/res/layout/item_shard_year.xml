@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <fr.xgouchet.khronorg.feature.timeline.ShardPrefixView
+        android:id="@+id/shard_prefix"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/shard_label"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/shard_separator"
+        />
+
+    <TextView
+        android:id="@+id/shard_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="end|center_vertical"
+        android:layout_toEndOf="@id/shard_prefix"
+        android:ellipsize="end"
+        android:textColor="@color/textColorSecondary"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:textStyle="italic"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:paddingEnd="48dp"
+        android:paddingStart="8dp"
+        android:textAppearance="?android:textAppearanceListItemSmall"
+        tools:text="Foo (Bar) Spam" />
+
+</RelativeLayout>

@@ -18,9 +18,13 @@ abstract class BaseAdapter<T>
     protected val content = ArrayList<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T> {
-        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(getLayoutId(viewType), parent, false)
 
         return instantiateViewHolder(viewType, view)
+    }
+
+    open fun getLayoutId(viewType: Int): Int {
+        return layoutId
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {

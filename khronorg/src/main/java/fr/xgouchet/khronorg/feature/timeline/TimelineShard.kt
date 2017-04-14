@@ -14,13 +14,14 @@ data class TimelineShard(var instant: ReadableInstant,
                          var id: Long = 0,
                          val prefix: MutableList<TimelineShard?> = ArrayList()) {
     enum class ShardType {
-        SINGLE, FIRST, LAST;
+        SINGLE, FIRST, LAST, YEAR;
 
         override fun toString(): String {
             when (this) {
                 SINGLE -> return "()"
                 FIRST -> return "->"
                 LAST -> return ">|"
+                YEAR -> return "××"
             }
         }
     }

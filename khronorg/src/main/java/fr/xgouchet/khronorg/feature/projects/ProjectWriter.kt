@@ -11,5 +11,7 @@ import fr.xgouchet.khronorg.provider.KhronorgSchema
 class ProjectWriter : BaseWriter<Project>() {
     override fun fillContentValues(cv: ContentValues, data: Project) {
         cv.put(KhronorgSchema.COL_NAME, data.name)
+        cv.put(KhronorgSchema.COL_RANGE_MIN_INSTANT, data.min.toString())
+        cv.put(KhronorgSchema.COL_RANGE_MAX_INSTANT, data.max.toString())
     }
 }

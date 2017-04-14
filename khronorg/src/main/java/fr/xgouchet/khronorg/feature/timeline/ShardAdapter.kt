@@ -14,16 +14,37 @@ import java.util.*
  */
 class ShardAdapter(val instantFormatter: Formatter<ReadableInstant>) : BaseAdapter<TimelineShard>() {
 
+    companion object {
+        val MASK_YEAR: Int = 0x10000
+    }
+
     override val layoutId: Int = R.layout.item_shard
     val portals: MutableList<Portal> = ArrayList()
 
+    override fun getLayoutId(viewType: Int): Int {
+        if ((viewType and MASK_YEAR) == MASK_YEAR) {
+            return R.layout.item_shard_year
+        } else {
+            return layoutId
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
+
         val item = content[position]
-        return item.prefix.size
+        when (item.type) {
+            TimelineShard.ShardType.YEAR -> return (item.prefix.size or MASK_YEAR)
+            else -> return item.prefix.size
+        }
+
     }
 
     override fun instantiateViewHolder(viewType: Int, view: View): BaseViewHolder<TimelineShard> {
-        return ShardViewHolder(view, instantFormatter, portals)
+        if ((viewType and MASK_YEAR) == MASK_YEAR) {
+            return ShardYearViewHolder(view)
+        } else {
+            return ShardViewHolder(view, instantFormatter, portals)
+        }
     }
 
     fun setPortals(list: List<Portal>) {

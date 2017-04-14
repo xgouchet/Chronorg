@@ -1,7 +1,9 @@
 package fr.xgouchet.khronorg.feature.timeline
 
+import android.graphics.Color
 import fr.xgouchet.khronorg.commons.query.QueryBuilder
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
+import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
 import fr.xgouchet.khronorg.feature.events.Event
 import fr.xgouchet.khronorg.feature.jumps.Jump
 import fr.xgouchet.khronorg.feature.jumps.JumpRepository
@@ -15,6 +17,8 @@ import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTime
+import org.joda.time.DateTimeFieldType
 import java.util.*
 
 /**
@@ -76,27 +80,18 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
                 .flatMap { traveller ->
-                    return@flatMap jumpRepository.getTravellerJumps(traveller)
-                            .map {
-                                jump ->
-                                return@map Pair<Jump, Traveller>(jump, traveller)
-                            }
-                            .toList()
-                            .flatMapObservable { list -> Observable.create(jumpsToSegments(list)) }
-                            .flatMap {
-                                segment ->
-                                val shardId = (segment.id and SHARD_ID_MASK) or SHARD_SEGMENT
-                                val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, shardId)
-                                val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, shardId)
-
-                                return@flatMap Observable.just(from, dest)
-                            }
+                    return@flatMap travellerToShards(traveller)
                 }
 
+        val yearsShardsObservable: Observable<TimelineShard> = Observable.just(project)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .flatMap { project -> Observable.create(projectToYearShards(project)) }
 
-        return Observable.mergeDelayError(jumpShardsObservable, eventShardsObservable)
+
+        return Observable.mergeDelayError(jumpShardsObservable, eventShardsObservable, yearsShardsObservable)
                 .subscribeOn(Schedulers.computation())
-                .sorted { s1, s2 ->
+                .sorted({ s1, s2 ->
                     if (s1.instant.isBefore(s2.instant)) {
                         return@sorted -1
                     } else if (s1.instant.isAfter(s2.instant)) {
@@ -104,9 +99,48 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                     } else {
                         return@sorted 0
                     }
-                }
+                })
                 .toList()
                 .flatMapObservable { list -> Observable.create(applyShardPrefix(list)) }
+    }
+
+    private fun projectToYearShards(project: Project): ObservableOnSubscribe<TimelineShard> {
+        return ObservableOnSubscribe {
+            emitter ->
+            try {
+
+                val min = project.min.get(DateTimeFieldType.year())
+                val max = project.max.get(DateTimeFieldType.year())
+
+                for (y in min..max) {
+                    val instant = DateTime("$y-01-01T00:00:00${getLocalTimeZone()}")
+                    emitter.onNext(TimelineShard(instant, "$y", Color.GRAY, TimelineShard.ShardType.YEAR))
+                }
+
+                // complete
+                emitter.onComplete()
+            } catch (e: Exception) {
+                emitter.onError(e)
+            }
+        }
+    }
+
+    private fun travellerToShards(traveller: Traveller): Observable<TimelineShard> {
+        return jumpRepository.getTravellerJumps(traveller)
+                .map {
+                    jump ->
+                    return@map Pair<Jump, Traveller>(jump, traveller)
+                }
+                .toList()
+                .flatMapObservable { list -> Observable.create(jumpsToSegments(list)) }
+                .flatMap {
+                    segment ->
+                    val shardId = (segment.id and SHARD_ID_MASK) or SHARD_SEGMENT
+                    val from = TimelineShard(segment.from, segment.legendFrom, segment.color, TimelineShard.ShardType.FIRST, shardId)
+                    val dest = TimelineShard(segment.dest, segment.legendDest, segment.color, TimelineShard.ShardType.LAST, shardId)
+
+                    return@flatMap Observable.just(from, dest)
+                }
     }
 
     private fun applyShardPrefix(list: List<TimelineShard>): ObservableOnSubscribe<TimelineShard> {
@@ -117,6 +151,9 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
 
                 for (shard in list) {
                     when (shard.type) {
+                        TimelineShard.ShardType.YEAR -> {
+                            shard.prefix.addAll(prefix)
+                        }
                         TimelineShard.ShardType.SINGLE -> {
                             prefix.add(shard)
                             shard.prefix.addAll(prefix)

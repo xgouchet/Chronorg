@@ -29,10 +29,8 @@ class KhronorgSchema : SQLiteDescriptionProvider {
 
         tableDescription.addColumn(ColumnDescription(COL_ID, ColumnType.TYPE_INTEGER, ColumnOption.PRIMARY_KEY, ColumnOption.AUTOINCREMENT))
         tableDescription.addColumn(ColumnDescription(COL_NAME, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL, ColumnOption.UNIQUE))
-
-        // TODO add project time range
-        // tableDescription.addColumn(ColumnDescription(COL_BIRTH_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
-        // tableDescription.addColumn(ColumnDescription(COL_DEATH_INSTANT, ColumnType.TYPE_TEXT))
+        tableDescription.addColumn(ColumnDescription(COL_RANGE_MIN_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
+        tableDescription.addColumn(ColumnDescription(COL_RANGE_MAX_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
 
         return tableDescription
     }
@@ -44,7 +42,7 @@ class KhronorgSchema : SQLiteDescriptionProvider {
         tableDescription.addColumn(ColumnDescription(COL_PROJECT_ID, ColumnType.TYPE_INTEGER, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_NAME, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_BIRTH_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
-        tableDescription.addColumn(ColumnDescription(COL_DEATH_INSTANT, ColumnType.TYPE_TEXT))
+        tableDescription.addColumn(ColumnDescription(COL_DEATH_INSTANT, ColumnType.TYPE_TEXT, ColumnOption.NOT_NULL))
         tableDescription.addColumn(ColumnDescription(COL_COLOR, ColumnType.TYPE_INTEGER))
 
         return tableDescription
@@ -150,7 +148,7 @@ class KhronorgSchema : SQLiteDescriptionProvider {
         val VERSION_BASE = 1
 
         val DB_VERSION = VERSION_BASE
-        val DB_NAME = "chronorg"
+        val DB_NAME = "khronorg"
 
         val TABLE_PROJECTS = "projects"
         val TABLE_TRAVELLERS = "travellers"
@@ -163,6 +161,8 @@ class KhronorgSchema : SQLiteDescriptionProvider {
         val COL_NAME = "name"
 
         val COL_FROM_INSTANT = "from_instant"
+        val COL_RANGE_MIN_INSTANT = "range_min"
+        val COL_RANGE_MAX_INSTANT = "range_max"
         val COL_BIRTH_INSTANT = "birth"
         val COL_DEATH_INSTANT = "death"
         val COL_INSTANT = "instant"

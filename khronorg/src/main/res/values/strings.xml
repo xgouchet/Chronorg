@@ -32,6 +32,8 @@
     <string name="hint_portal_direction">Direction</string>
     <string name="hint_name">Name</string>
     <string name="hint_color">Color</string>
+    <string name="hint_project_range_min">Time range from…</string>
+    <string name="hint_project_range_max">Time range to…</string>
     <string name="hint_portal_name">Portal name</string>
     <string name="hint_portal_delay">Delay from January 1st 2000</string>
     <string name="hint_portal_two_way">Two-way portal</string>

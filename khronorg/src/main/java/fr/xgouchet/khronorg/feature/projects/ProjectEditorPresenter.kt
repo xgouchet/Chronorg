@@ -7,6 +7,7 @@ import fr.xgouchet.khronorg.feature.editor.items.EditorItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorTextItem
 import fr.xgouchet.khronorg.ui.navigators.Navigator
 import fr.xgouchet.khronorg.feature.editor.BaseEditorPresenter
+import fr.xgouchet.khronorg.feature.editor.items.EditorInstantItem
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 
@@ -26,6 +27,8 @@ class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Proje
             emitter ->
             try {
                 emitter.onNext(EditorTextItem(NAME, R.string.hint_name, item.name))
+                emitter.onNext(EditorInstantItem(RANGE_MIN, R.string.hint_project_range_min, item.min))
+                emitter.onNext(EditorInstantItem(RANGE_MAX, R.string.hint_project_range_max, item.max))
                 emitter.onComplete()
             } catch (e: Exception) {
                 emitter.onError(e)
@@ -41,6 +44,12 @@ class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Proje
             when (editorItem.itemName) {
                 NAME -> {
                     item.name = (editorItem as EditorTextItem).text
+                }
+                RANGE_MIN -> {
+                    item.min = (editorItem as EditorInstantItem).instant
+                }
+                RANGE_MAX -> {
+                    item.max = (editorItem as EditorInstantItem).instant
                 }
             }
         }
@@ -58,5 +67,7 @@ class ProjectEditorPresenter(item: Project, val repository: BaseRepository<Proje
 
     companion object {
         val NAME = "name"
+        val RANGE_MIN = "range_min"
+        val RANGE_MAX = "range_max"
     }
 }
