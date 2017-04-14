@@ -18,7 +18,7 @@ object DefaultInstantFormatter : Formatter<ReadableInstant> {
 
 object TimelineInstantFormatter : Formatter<ReadableInstant> {
 
-    internal val dtf = DateTimeFormat.forStyle("M-").withZone(getLocalTimeZone())
+        internal val dtf = DateTimeFormat.forStyle("MS").withZone(getLocalTimeZone())
 
     override fun format(input: ReadableInstant): String {
 

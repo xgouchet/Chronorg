@@ -1,13 +1,12 @@
 package fr.xgouchet.khronorg.feature.projects
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.github.salomonbrys.kodein.instance
 import fr.xgouchet.khronorg.R
-import fr.xgouchet.khronorg.feature.projects.Project
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
-import fr.xgouchet.khronorg.feature.projects.ProjectListFragment
-import fr.xgouchet.khronorg.feature.projects.ProjectNavigator
-import fr.xgouchet.khronorg.feature.projects.ProjectListPresenter
+import fr.xgouchet.khronorg.feature.samples.BackToTheFutureSample
 import fr.xgouchet.khronorg.ui.activities.BaseAktivity
 
 /**
@@ -33,4 +32,22 @@ class ProjectListAktivity : BaseAktivity() {
                     .commit()
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item == null) return false
+        when (item.itemId) {
+            R.id.sample -> {
+                BackToTheFutureSample(kodein, ProjectNavigator(this)).addSampleProject()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
 }

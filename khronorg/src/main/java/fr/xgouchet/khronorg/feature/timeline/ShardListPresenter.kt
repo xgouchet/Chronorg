@@ -1,6 +1,7 @@
 package fr.xgouchet.khronorg.feature.timeline
 
 import android.graphics.Color
+import android.util.Log
 import fr.xgouchet.khronorg.commons.query.QueryBuilder
 import fr.xgouchet.khronorg.commons.repositories.BaseRepository
 import fr.xgouchet.khronorg.commons.time.getLocalTimeZone
@@ -148,7 +149,7 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
             emitter ->
             try {
                 val prefix = ArrayList<TimelineShard?>()
-
+                // TODO insert prefix on null positions
                 for (shard in list) {
                     when (shard.type) {
                         TimelineShard.ShardType.YEAR -> {
@@ -163,7 +164,7 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                             shard.prefix.addAll(prefix)
                             val index = prefix.indexOfFirst { s -> (s != null) && (s.id == shard.id) }
                             if (index < 0) {
-                                // throw IllegalStateException("WTF ‽")
+                                Log.w("PREFIX", "Illegal index ! $prefix")
                             } else if (index == (prefix.size - 1)) {
                                 prefix.removeAt(index)
                             } else {

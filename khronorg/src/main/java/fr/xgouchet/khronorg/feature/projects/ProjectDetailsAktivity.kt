@@ -15,6 +15,8 @@ import fr.xgouchet.khronorg.ui.activities.BaseAktivity
 import fr.xgouchet.khronorg.feature.projects.ProjectPagerFragmentAdapter
 import fr.xgouchet.khronorg.feature.projects.ProjectNavigator
 import fr.xgouchet.khronorg.feature.projects.ProjectNavigator.Companion.EXTRA_PROJECT
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlin.properties.Delegates.notNull
 
 /**
@@ -64,7 +66,11 @@ class ProjectDetailsAktivity : BaseAktivity() {
                 ProjectNavigator(this).goToItemEdition(project)
             }
             R.id.delete -> {
-                // TODO
+                kodein.instance<BaseRepository<Project>>().delete(project)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnComplete { ProjectNavigator(this).goBack() }
+                        .subscribe()
             }
             else -> result = super.onOptionsItemSelected(item)
         }

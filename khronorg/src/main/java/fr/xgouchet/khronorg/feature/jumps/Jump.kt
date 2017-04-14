@@ -20,6 +20,15 @@ data class Jump(var id: Int = -1,
                 var direction: Int = Direction.PAST)
     : Parcelable {
 
+    constructor(id: Int = -1,
+                travellerId: Int = -1,
+                order: Int = 0,
+                from: ReadableInstant = DateTime("1985-10-26T01:35:00-08:00"),
+                dest: ReadableInstant = DateTime("1955-11-05T06:15:00-08:00"))
+            : this(id, travellerId, order, from,
+            if (from.isBefore(dest)) Interval(from, dest) else Interval(dest, from),
+            if (from.isBefore(dest)) Direction.FUTURE else Direction.PAST)
+
     val destination: ReadableInstant
         get() {
             when (direction) {
