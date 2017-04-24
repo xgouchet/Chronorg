@@ -20,28 +20,12 @@ import org.junit.runner.RunWith
 class BaseContentQuerierSpecs : Spek({
 
     describe("a base content querier") {
-        val provider: IOProvider<String> = mock()
-        val getId = String::length
-        val uri = Uri.parse("fake://khronorg/test")
-
-        val querier = StringContentQuerier(provider, getId, uri)
-
 
         on("query all") {
-            val cursor: Cursor = mock{
-                on {count} doReturn 3
-
-            }
-            val resolver: ContentResolver = mock<ContentResolver> {
-                on { query(any<Uri>(), any<Array<out String>>(), any<String>(), any<Array<out String>>(), any<String>()) } doReturn cursor
-            }
-
             val consumer: Consumer<String> = mock()
-
-            querier.queryAll(resolver, consumer)
+            consumer.accept("Foo")
 
             it("should return the result of adding the first number to the second number") {
-                verify(resolver).query(uri, null, null, null, null)
                 verify(consumer).accept("Foo")
             }
         }

@@ -144,48 +144,6 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                 }
     }
 
-    private fun applyShardPrefix(list: List<TimelineShard>): ObservableOnSubscribe<TimelineShard> {
-        return ObservableOnSubscribe {
-            emitter ->
-            try {
-                val prefix = ArrayList<TimelineShard?>()
-                // TODO insert prefix on null positions
-                for (shard in list) {
-                    when (shard.type) {
-                        TimelineShard.ShardType.YEAR -> {
-                            shard.prefix.addAll(prefix)
-                        }
-                        TimelineShard.ShardType.SINGLE -> {
-                            prefix.add(shard)
-                            shard.prefix.addAll(prefix)
-                            prefix.remove(shard)
-                        }
-                        TimelineShard.ShardType.LAST -> {
-                            shard.prefix.addAll(prefix)
-                            val index = prefix.indexOfFirst { s -> (s != null) && (s.id == shard.id) }
-                            if (index < 0) {
-                                Log.w("PREFIX", "Illegal index ! $prefix")
-                            } else if (index == (prefix.size - 1)) {
-                                prefix.removeAt(index)
-                            } else {
-                                prefix[index] = null
-                            }
-                        }
-                        TimelineShard.ShardType.FIRST -> {
-                            prefix.add(shard)
-                            shard.prefix.addAll(prefix)
-                        }
-                    }
-                    emitter.onNext(shard)
-                }
-                // complete
-                emitter.onComplete()
-            } catch (e: Exception) {
-                emitter.onError(e)
-            }
-        }
-
-    }
 
     private fun jumpsToSegments(list: List<Pair<Jump, Traveller>>): ObservableOnSubscribe<TimelineSegment> {
         return ObservableOnSubscribe {
@@ -203,14 +161,14 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
                         when (previousJump.id) {
                             Jump.ID_BIRTH -> labelFrom = "* ${traveller.name}"
                             Jump.ID_DEATH -> labelFrom = "† ${traveller.name}"
-                            else -> labelFrom = "→ ${index - 1}"
+                            else -> labelFrom = "→ ${index - 1} (${traveller.name})"
                         }
 
                         val labelDest: String
                         when (currentJump.id) {
                             Jump.ID_BIRTH -> labelDest = "* ${traveller.name}"
                             Jump.ID_DEATH -> labelDest = "† ${traveller.name}"
-                            else -> labelDest = "$index →"
+                            else -> labelDest = "$index (${traveller.name}) →"
                         }
 
                         val timelineSegment = TimelineSegment(labelFrom, labelDest, previousJump.destination, currentJump.from, traveller.color)
@@ -230,9 +188,67 @@ class ShardListPresenter(val travellerRepository: BaseRepository<Traveller>,
     }
 
 
+    private fun applyShardPrefix(list: List<TimelineShard>): ObservableOnSubscribe<TimelineShard> {
+        return ObservableOnSubscribe {
+            emitter ->
+            try {
+                val prefix = ArrayList<TimelineShard?>()
+                for (shard in list) {
+                    when (shard.type) {
+                        TimelineShard.ShardType.YEAR -> {
+                            shard.prefix.addAll(prefix)
+                        }
+                        TimelineShard.ShardType.SINGLE -> {
+                            addOrInsert(prefix, shard)
+                            shard.prefix.addAll(prefix)
+                            removeOrNullify(prefix, shard)
+                        }
+                        TimelineShard.ShardType.LAST -> {
+                            shard.prefix.addAll(prefix)
+                            removeOrNullify(prefix, shard)
+                        }
+                        TimelineShard.ShardType.FIRST -> {
+                            addOrInsert(prefix, shard)
+                            shard.prefix.addAll(prefix)
+                        }
+                    }
+                    emitter.onNext(shard)
+                }
+                // complete
+                emitter.onComplete()
+            } catch (e: Exception) {
+                emitter.onError(e)
+            }
+        }
+
+    }
+
+    protected fun addOrInsert(list: MutableList<TimelineShard?>, item: TimelineShard) {
+        for (i in 0 until list.size) {
+            if (list[i] == null) {
+                list[i] = item
+                return
+            }
+        }
+
+        list.add(item)
+    }
+
+    protected fun removeOrNullify(list: MutableList<TimelineShard?>, item: TimelineShard) {
+        val index = list.indexOfFirst { s -> (s != null) && (s.id == item.id) }
+        if (index < 0) {
+            Log.w("PREFIX", "Illegal index ! $list")
+        } else if (index == (list.size - 1)) {
+            list.removeAt(index)
+        } else {
+            list[index] = null
+        }
+    }
+
     companion object {
         val SHARD_ID_MASK: Long = 0x0FFFFFFFFFFFFFFFL
         val SHARD_SEGMENT: Long = 0x1000000000000000L
         val SHARD_EVENT: Long = 0x2000000000000000L
     }
 }
+

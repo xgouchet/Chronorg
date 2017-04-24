@@ -27,8 +27,8 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
         val jumpRepository = kodein.instance<BaseRepository<Jump>>()
 
         val bttf = Project(name = "Back to the Future",
-                min = DateTime("1865-01-01T12:00:00$TZ"),
-                max = DateTime("2019-12-31T12:00:00$TZ"))
+                min = DateTime("1860-01-01T12:00:00$TZ"),
+                max = DateTime("2049-12-31T12:00:00$TZ"))
 
         projectRepository.save(bttf)
                 .observeOn(Schedulers.io())
@@ -125,6 +125,7 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
                 birth = DateTime("1937-03-28T04:08:15$TZ"),
                 death = DateTime("2018-01-25T10:00:00$TZ"),
                 color = COLOR_BIFF)
+
         travellerRepository.save(biff)
                 .observeOn(Schedulers.io())
                 .doOnComplete {
@@ -138,46 +139,6 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
 
 
                 }.subscribe()
-    }
-
-    private fun addBiffJumps(biff: Traveller, jumpsCreator: BehaviorSubject<Jump>) {
-        jumpsCreator.onNext(Jump(
-                travellerId = biff.id,
-                from = HIJACK_2015_DEPARTURE,
-                dest = HIJACK_1955_LANDING))
-
-        jumpsCreator.onNext(Jump(
-                travellerId = biff.id,
-                from = HIJACK_RETURN_1955_DEPARTURE,
-                dest = HIJACK_RETURN_2015_LANDING))
-    }
-
-    private fun addDocJumps(doc: Traveller, jumpsCreator: BehaviorSubject<Jump>) {
-
-        jumpsCreator.onNext(Jump(
-                travellerId = doc.id,
-                from = LYON_ESTATE_1985_DEPARTURE,
-                dest = LYON_ESTATE_2015_LANDING))
-
-        jumpsCreator.onNext(Jump(
-                travellerId = doc.id,
-                from = HILLDALE_2015_DEPARTURE,
-                dest = HILLDALE_1985_LANDING))
-
-        jumpsCreator.onNext(Jump(
-                travellerId = doc.id,
-                from = HELL_1985_DEPARTURE,
-                dest = HILL_VALLEY_1955_LANDING))
-
-        jumpsCreator.onNext(Jump(
-                travellerId = doc.id,
-                from = LIGHTNING_1955_DEPARTURE,
-                dest = LIGHTNING_1885_LANDING))
-
-        jumpsCreator.onNext(Jump(
-                travellerId = doc.id,
-                from = DOC_TRAIN_DEPARTURE,
-                dest = DOC_TRAIN_LANDING))
     }
 
     private fun addMartyJumps(marty: Traveller, jumpsCreator: BehaviorSubject<Jump>) {
@@ -215,6 +176,46 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
                 travellerId = marty.id,
                 from = SHONASH_RAVINE_1885_DEPARTURE,
                 dest = EASTWOOD_RAVINE_1985_LANDING))
+    }
+
+    private fun addDocJumps(doc: Traveller, jumpsCreator: BehaviorSubject<Jump>) {
+
+        jumpsCreator.onNext(Jump(
+                travellerId = doc.id,
+                from = LYON_ESTATE_1985_DEPARTURE,
+                dest = LYON_ESTATE_2015_LANDING))
+
+        jumpsCreator.onNext(Jump(
+                travellerId = doc.id,
+                from = HILLDALE_2015_DEPARTURE,
+                dest = HILLDALE_1985_LANDING))
+
+        jumpsCreator.onNext(Jump(
+                travellerId = doc.id,
+                from = HELL_1985_DEPARTURE,
+                dest = HILL_VALLEY_1955_LANDING))
+
+        jumpsCreator.onNext(Jump(
+                travellerId = doc.id,
+                from = LIGHTNING_1955_DEPARTURE,
+                dest = LIGHTNING_1885_LANDING))
+
+        jumpsCreator.onNext(Jump(
+                travellerId = doc.id,
+                from = DOC_TRAIN_DEPARTURE,
+                dest = DOC_TRAIN_LANDING))
+    }
+
+    private fun addBiffJumps(biff: Traveller, jumpsCreator: BehaviorSubject<Jump>) {
+        jumpsCreator.onNext(Jump(
+                travellerId = biff.id,
+                from = HIJACK_2015_DEPARTURE,
+                dest = HIJACK_1955_LANDING))
+
+        jumpsCreator.onNext(Jump(
+                travellerId = biff.id,
+                from = HIJACK_RETURN_1955_DEPARTURE,
+                dest = HIJACK_RETURN_2015_LANDING))
     }
 
     private fun addSampleEvents(project: Project) {
@@ -284,10 +285,10 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
         val HILLDALE_1985_LANDING = DateTime("1985-10-26T09:00:00$TZ")
 
         val HELL_1985_DEPARTURE = DateTime("1985-10-27T02:42:00$TZ")
-        val HILL_VALLEY_1955_LANDING = DateTime("1955-11-12T21:44:00$TZ")
+        val HILL_VALLEY_1955_LANDING = DateTime("1955-11-12T06:00:00$TZ")
 
-        val LIGHTNING_1955_DEPARTURE = DateTime(1955, 11, 12, 21, 44, 0, 0, DateTimeZone.UTC)
-        val LIGHTNING_1885_LANDING = DateTime(1885, 1, 1, 0, 0, 0, 0, DateTimeZone.UTC)
+        val LIGHTNING_1955_DEPARTURE = DateTime("1955-11-12T21:44:00$TZ")
+        val LIGHTNING_1885_LANDING = DateTime("1885-01-01T00:00:00$TZ")
 
         val DESERT_1955_DEPARTURE = DateTime("1955-11-16T10:00:00$TZ")
         val DESERT_1885_LANDING = DateTime("1885-09-02T08:00:00$TZ")
