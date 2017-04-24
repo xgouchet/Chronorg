@@ -24,8 +24,6 @@ class BackToTheFutureSample(val kodein: Kodein, val navigator: ProjectNavigator)
     fun addSampleProject() {
         val projectRepository = kodein.instance<BaseRepository<Project>>()
 
-        val jumpRepository = kodein.instance<BaseRepository<Jump>>()
-
         val bttf = Project(name = "Back to the Future",
                 min = DateTime("1860-01-01T12:00:00$TZ"),
                 max = DateTime("2049-12-31T12:00:00$TZ"))

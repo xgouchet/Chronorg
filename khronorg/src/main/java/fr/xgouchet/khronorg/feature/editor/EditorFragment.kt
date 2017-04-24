@@ -9,13 +9,22 @@ import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.android.colorpicker.ColorPickerDialog
+import com.github.salomonbrys.kodein.instance
 import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.commons.formatters.DefaultInstantFormatter
+import fr.xgouchet.khronorg.commons.formatters.DefaultIntervalFormatter
+import fr.xgouchet.khronorg.commons.repositories.BaseRepository
 import fr.xgouchet.khronorg.feature.editor.items.EditorColorItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorInstantItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem
+import fr.xgouchet.khronorg.feature.editor.items.EditorPortalItem
+import fr.xgouchet.khronorg.feature.jumps.PortalListPresenter
+import fr.xgouchet.khronorg.feature.portals.Portal
 import fr.xgouchet.khronorg.ui.Cutelry.knife
+import fr.xgouchet.khronorg.ui.activities.BaseAktivity
 import fr.xgouchet.khronorg.ui.dialog.InstantPickerDialog
+import fr.xgouchet.khronorg.ui.dialog.PortalPickerDialog
+import fr.xgouchet.khronorg.ui.navigators.SimpleNavigator
 import fr.xgouchet.khronorg.ui.presenters.InstantPickerPresenter
 import io.reactivex.functions.Consumer
 import kotlin.properties.Delegates.notNull
@@ -33,7 +42,7 @@ class EditorFragment<T>
     internal val message: TextView by knife(R.id.message)
 
     var presenter: EditorPresenter<T> by notNull()
-    val adapter = EditorAdapter(DefaultInstantFormatter, this)
+    val adapter = EditorAdapter(DefaultInstantFormatter, DefaultIntervalFormatter, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,6 +148,26 @@ class EditorFragment<T>
         presenter.view = dialog
 
         presenter.onReady()
+    }
+
+    override fun pickPortal(portalItem: EditorPortalItem?) {
+        if (portalItem == null) return
+
+        val dialog = PortalPickerDialog()
+        val repository = (activity as BaseAktivity).kodein.instance<BaseRepository<Portal>>()
+        val navigator = SimpleNavigator<Portal>(details = { p ->
+            portalItem.portal = p
+            dialog.dismiss()
+            adapter.notifyDataSetChanged()
+        })
+
+        val presenter = PortalListPresenter(repository, portalItem.project, navigator)
+
+        dialog.presenter = presenter
+        presenter.view = dialog
+
+        dialog.show(activity.supportFragmentManager, "Go!")
+
     }
 }
 

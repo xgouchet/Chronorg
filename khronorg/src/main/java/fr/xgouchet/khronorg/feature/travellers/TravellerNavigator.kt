@@ -12,7 +12,7 @@ import fr.xgouchet.khronorg.ui.navigators.Navigator
  */
 class TravellerNavigator(val activity: Activity) : Navigator<Traveller> {
     companion object {
-        val EXTRA_TRAVELLER = "traveller"
+        val EXTRA_TRAVELLER = "project"
     }
 
     override fun goToItemDetails(item: Traveller) {

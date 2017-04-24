@@ -26,12 +26,4 @@ class JumpListPresenter(val repository: BaseRepository<Jump>, val traveller: Tra
         return repository.getWhere(alteration)
     }
 
-    override fun itemSelected(item: Jump?) {
-        if (item == null) {
-            navigator.goToItemCreation()
-        } else {
-            navigator.goToItemDetails(item)
-        }
-    }
-
 }

@@ -19,6 +19,6 @@ class TravellerListFragment : ListFragment<Traveller>(true) {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fab.setOnClickListener { e -> presenter.itemSelected(null) }
+        fab.setOnClickListener { e -> presenter.itemCreated() }
     }
 }

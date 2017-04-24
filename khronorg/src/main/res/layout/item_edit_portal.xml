@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/input_portal_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="start|center_vertical"
+        android:inputType="none"
+        android:maxLines="1"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/textColorSecondary"
+        tools:text="@string/hint_jump_through" />
+
+    <TextView
+        android:id="@+id/input_portal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:drawableEnd="@drawable/ic_portal_black_24dp"
+        android:gravity="start|center_vertical"
+        android:inputType="none"
+        android:maxLines="1"
+        android:padding="0dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/textColorPrimary"
+        tools:text="DeLorean (23d →)" />
+
+</FrameLayout>

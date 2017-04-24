@@ -6,6 +6,8 @@ package fr.xgouchet.khronorg.ui.presenters
  */
 interface ListPresenter<T> : Presenter<List<T>> {
 
-    fun itemSelected(item: T?)
+    fun itemCreated()
+
+    fun itemSelected(item: T)
 
 }

@@ -1,11 +1,9 @@
 package fr.xgouchet.khronorg.feature.jumps
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
-import fr.xgouchet.khronorg.feature.jumps.Jump
-import fr.xgouchet.khronorg.feature.travellers.Traveller
-import fr.xgouchet.khronorg.feature.jumps.JumpEditorAktivity
-import fr.xgouchet.khronorg.feature.travellers.TravellerEditorAktivity
+import fr.xgouchet.khronorg.R
 import fr.xgouchet.khronorg.ui.navigators.Navigator
 
 /**
@@ -27,7 +25,33 @@ class JumpNavigator(val activity: Activity) : Navigator<Jump> {
     }
 
     override fun goToItemCreation() {
+
+
+        AlertDialog.Builder(activity)
+                .setTitle(R.string.title_create_jump)
+                .setItems(
+                        R.array.jumps_creation,
+                        {
+                            dialog, selection ->
+                            when (selection) {
+                                0 -> goToJumpCreation()
+                                1 -> goToJumpThroughPortalCreation()
+                                else -> throw IllegalStateException("Unknown selection for jump creation  : $selection")
+                            }
+                        }
+                )
+                .show()
+
+
+    }
+
+    fun goToJumpCreation() {
         val intent = Intent(activity, JumpEditorAktivity::class.java)
+        activity.startActivity(intent)
+    }
+
+    fun goToJumpThroughPortalCreation() {
+        val intent = Intent(activity, JumpThroughEditorAktivity::class.java)
         activity.startActivity(intent)
     }
 

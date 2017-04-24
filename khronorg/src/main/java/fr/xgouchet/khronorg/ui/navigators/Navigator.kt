@@ -13,3 +13,4 @@ interface Navigator<in T> {
 
     fun goBack()
 }
+

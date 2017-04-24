@@ -52,12 +52,12 @@ abstract class BaseListPresenter<T>(val navigator: Navigator<T>) : ListPresenter
 
     }
 
-    override fun itemSelected(item: T?) {
-        if (item == null) {
-            navigator.goToItemCreation()
-        } else {
-            navigator.goToItemDetails(item)
-        }
+    override fun itemCreated() {
+        navigator.goToItemCreation()
+    }
+
+    override fun itemSelected(item: T) {
+        navigator.goToItemDetails(item)
     }
 
     private fun onError(e: Throwable?) {

@@ -11,19 +11,22 @@ import fr.xgouchet.khronorg.feature.editor.items.EditorInstantItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem.Companion.ITEM_COLOR
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem.Companion.ITEM_INSTANT
+import fr.xgouchet.khronorg.feature.editor.items.EditorItem.Companion.ITEM_PORTAL
 import fr.xgouchet.khronorg.feature.editor.items.EditorItem.Companion.ITEM_TEXT
-import fr.xgouchet.khronorg.feature.editor.viewholders.EditorColorViewHolder
-import fr.xgouchet.khronorg.feature.editor.viewholders.EditorEmptyViewHolder
-import fr.xgouchet.khronorg.feature.editor.viewholders.EditorInstantViewHolder
-import fr.xgouchet.khronorg.feature.editor.viewholders.EditorTextViewHolder
+import fr.xgouchet.khronorg.feature.editor.items.EditorPortalItem
+import fr.xgouchet.khronorg.feature.editor.viewholders.*
 import fr.xgouchet.khronorg.ui.viewholders.*
 import io.reactivex.functions.Consumer
 import org.joda.time.ReadableInstant
+import org.joda.time.ReadableInterval
 
 /**
  * @author Xavier F. Gouchet
  */
-class EditorAdapter(val formatter: Formatter<ReadableInstant>, val listener: EditorAdapterListener) : BaseAdapter<EditorItem>() {
+class EditorAdapter(val instantFormatter: Formatter<ReadableInstant>,
+                    val intervalFormatter: Formatter<ReadableInterval>,
+                    val listener: EditorAdapterListener)
+    : BaseAdapter<EditorItem>() {
 
     override val layoutId: Int = R.layout.item_project
 
@@ -44,6 +47,7 @@ class EditorAdapter(val formatter: Formatter<ReadableInstant>, val listener: Edi
             ITEM_TEXT -> return R.layout.item_edit_text
             ITEM_COLOR -> return R.layout.item_edit_color
             ITEM_INSTANT -> return R.layout.item_edit_instant
+            ITEM_PORTAL -> return R.layout.item_edit_portal
             else -> return R.layout.item_edit_empty
         }
     }
@@ -59,7 +63,11 @@ class EditorAdapter(val formatter: Formatter<ReadableInstant>, val listener: Edi
             }
             ITEM_INSTANT -> {
                 val consumer = Consumer<EditorInstantItem> { instantItem -> listener.pickInstant(instantItem) }
-                viewHolder = EditorInstantViewHolder(formatter, consumer, view)
+                viewHolder = EditorInstantViewHolder(instantFormatter, consumer, view)
+            }
+            ITEM_PORTAL -> {
+                val consumer = Consumer<EditorPortalItem> { instantItem -> listener.pickPortal(instantItem) }
+                viewHolder = EditorPortalViewHolder(intervalFormatter, consumer, view)
             }
             else -> viewHolder = EditorEmptyViewHolder(view)
         }

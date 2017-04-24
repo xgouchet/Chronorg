@@ -42,6 +42,7 @@
     <string name="hint_entity_death">Death date and time</string>
     <string name="hint_event_instant">Event date and time</string>
     <string name="hint_jump_to">Jump destination</string>
+    <string name="hint_jump_through">Through portal</string>
     <string name="hint_jump_from">Jump origin</string>
     <string name="hint_timeline_name">Timeline name</string>
     <string name="default_timeline_name">Main Timeline</string>
@@ -49,7 +50,7 @@
     <string name="hint_timeline_parent">Parent timeline</string>
     <string name="hint_timeline_delay">Delay</string>
     <string name="error_traveller_details_empty">No Traveller</string>
-
+    <string name="title_create_jump">Create jump …</string>
 
     <string-array name="directions">
         <item>1</item>
@@ -61,6 +62,11 @@
         <item>Future</item>
         <item>Past</item>
         <item>Both</item>
+    </string-array>
+
+    <string-array name="jumps_creation">
+        <item>With origin and destination</item>
+        <item>With origin and portal</item>
     </string-array>
 
 </resources>
