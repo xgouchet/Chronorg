@@ -27,3 +27,5 @@ reports/
 .idea/
 *.iml
 build/
+
+legacyapp/

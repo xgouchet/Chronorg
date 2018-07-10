@@ -1,0 +1,44 @@
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41"
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"
+    compile "com.android.tools.build:gradle:3.1.2"
+
+    compile "com.natpryce:konfig:1.6.6.0"
+    compile "com.github.kittinunf.fuel:fuel:1.12.0"
+    compile "com.github.kittinunf.fuel:fuel-gson:1.12.0"
+    compile "com.beust:klaxon:3.0.1"
+    compile "com.squareup:kotlinpoet:0.7.0"
+
+    testCompile "junit:junit:4.12"
+
+    testCompile "org.mockito:mockito-core:2.13.0"
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
+}
+
+
+apply plugin: 'java-gradle-plugin'
+
+gradlePlugin {
+    plugins {
+        triplea {
+            id = "triplea"
+            implementationClass = "fr.xgouchet.chronorg.triplea.GeneratorPlugin"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "package_name": "fr.xgouchet.chronorg",
+  "layers": [
+    "front-mvp"
+  ],
+  "screens": [
+    {
+      "key": "projects",
+      "template": "list",
+      "base_type": {
+        "simple_name": "Project",
+        "canonical_name": "fr.xgouchet.chronorg.models.Project"
+      },
+      "params": {
+        "paginated": "false",
+        "refreshable": "true",
+        "single_layout": "true",
+        "databinding": "false"
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.github.ben-manes.versions'
+
+
+import fr.xgouchet.chronorg.Dependencies
+
+apply plugin: 'triplea'
+
+kapt {
+    correctErrorTypes = true
+}
+
+android {
+
+    compileSdkVersion 28
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "fr.xgouchet.chronorg"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    dataBinding {
+//        enabled = true
+    }
+
+
+    sourceSets {
+        debug {
+            java {
+                srcDir "${buildDir.absolutePath}/generated/source/triplea/debug"
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(':triplea-core')
+
+    implementation Dependencies.Libraries.KotlinJdk8
+
+    implementation Dependencies.Libraries.Rx
+    implementation Dependencies.Libraries.SupportLibs
+    implementation Dependencies.Libraries.DebugTools
+}
