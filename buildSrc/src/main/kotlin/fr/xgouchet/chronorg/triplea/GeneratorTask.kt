@@ -2,8 +2,8 @@ package fr.xgouchet.chronorg.triplea
 
 import com.beust.klaxon.Klaxon
 import fr.xgouchet.chronorg.triplea.model.Definition
-import fr.xgouchet.chronorg.triplea.template.TemplateGenerator
-import fr.xgouchet.chronorg.triplea.template.front.mvp.MVPScreenGenerator
+import fr.xgouchet.chronorg.triplea.generator.BoilerplateGenerator
+import fr.xgouchet.chronorg.triplea.generator.front.mvp.MVPScreenGenerator
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
@@ -17,7 +17,7 @@ open class GeneratorTask : DefaultTask() {
     var configuration: GeneratorExtension = GeneratorExtension()
     var genDirPath: String = ""
 
-    val generator = TemplateGenerator(listOf(MVPScreenGenerator()))
+    val generator = BoilerplateGenerator(listOf(MVPScreenGenerator()))
 
     init {
         group = "triplea"
@@ -33,8 +33,8 @@ open class GeneratorTask : DefaultTask() {
         val definition = Klaxon().parse<Definition>(file)
                 ?: throw IllegalStateException("Couldn't parse file at ${file.path}.")
 
-        definition.screens.forEach {
-            generator.generateScreen(definition.packageName, definition.layers, it, getOutputDir())
+        definition.features.forEach {
+            generator.generateFeature(definition.packageName, definition.applicationId, it, getOutputDir())
         }
     }
 

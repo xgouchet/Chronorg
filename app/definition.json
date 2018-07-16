@@ -1,21 +1,41 @@
 {
   "package_name": "fr.xgouchet.chronorg",
-  "layers": [
-    "front-mvp"
-  ],
-  "screens": [
+  "application_id": "fr.xgouchet.chronorg",
+  "features": [
     {
       "key": "projects",
       "template": "list",
+      "layers": [
+        "front-mvp"
+      ],
       "base_type": {
         "simple_name": "Project",
         "canonical_name": "fr.xgouchet.chronorg.models.Project"
       },
       "params": {
+        "no_activity": "false",
         "paginated": "false",
-        "refreshable": "true",
+        "refreshable": "false",
         "single_layout": "true",
-        "databinding": "false"
+        "databinding": "true",
+        "databinding_key": "project",
+        "functional": "rx2",
+        "fab_icon": "ic_add_white_24dp"
+      }
+    },
+    {
+      "key": "project",
+      "template": "viewpager",
+      "layers": [
+        "front-mvp"
+      ],
+      "base_type": {
+        "simple_name": "Project",
+        "canonical_name": "fr.xgouchet.chronorg.models.Project"
+      },
+      "params": {
+        "functional": "rx2",
+        "pages": "projects"
       }
     }
   ]

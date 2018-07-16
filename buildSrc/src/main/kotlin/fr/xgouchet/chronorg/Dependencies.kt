@@ -6,7 +6,7 @@ object Dependencies {
         // Commons
         const val Kotlin = "1.2.41"
         const val AndroidBuildTools = "3.2.0-alpha12"
-        const val AndroidSupportLib = "27.1.1"
+        const val AndroidSupportLib = "27.0.2"
         const val AndroidNavigation = "1.0.0-alpha02"
         const val AndroidConstraintLayout = "1.0.2"
         const val AndroidX = "1.0.0-beta01"

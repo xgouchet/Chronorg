@@ -1,14 +1,18 @@
 package fr.xgouchet.chronorg.projects
 
-class ProjectsListActivity : TAProjectActivity() {
+class ProjectsListActivity : TAProjectsActivity() {
 
 
-    override fun instantiatePresenter(): TAProjectContract.Presenter {
-        return TAProjectPresenter(ProjectsDataSource())
+    override fun instantiatePresenter(): TAProjectsContract.Presenter {
+        return TAProjectsPresenter(ProjectsDataSource())
     }
 
-    override fun instantiateFragment(): TAProjectFragment {
+    override fun instantiateFragment(): TAProjectsFragment {
         return ProjectsListFragment()
+    }
+
+    override fun onFabClicked() {
+
     }
 
 

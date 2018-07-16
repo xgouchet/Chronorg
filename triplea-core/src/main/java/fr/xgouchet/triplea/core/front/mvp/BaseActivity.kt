@@ -2,14 +2,14 @@ package fr.xgouchet.triplea.core.front.mvp
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import timber.log.Timber
 import fr.xgouchet.triplea.core.R
+import timber.log.Timber
 
 abstract class BaseActivity<P, V>
     : AppCompatActivity()
@@ -20,9 +20,12 @@ abstract class BaseActivity<P, V>
         const val PRESENTER_KEY = "fr.xgouchet.triplea.core.front.mvp.presenter_key"
     }
 
+    protected open val layoutId: Int = R.layout.activity_single_fragment
+
     protected lateinit var fragment: V
         private set
-    protected lateinit var presenter: P
+
+    protected var presenter: P? = null
         private set
 
     private var isRestored: Boolean = false
@@ -37,13 +40,13 @@ abstract class BaseActivity<P, V>
             window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         }
 
-        setContentView(R.layout.activity_single_fragment)
+        setContentView(layoutId)
         fab = findViewById(R.id.root_fab)
         val iconRes = getFabIcon()
         if (iconRes != null && iconRes != 0) {
             fab.visibility = View.VISIBLE
             fab.setImageResource(iconRes)
-            fab.setOnClickListener({ onFabClicked() })
+            fab.setOnClickListener { onFabClicked() }
         }
 
         intent?.let { handleIntent(it) }
@@ -71,16 +74,15 @@ abstract class BaseActivity<P, V>
 
     override fun onStart() {
         super.onStart()
-        presenter.onViewAttached(fragment, isRestored)
+        presenter?.onViewAttached(fragment, isRestored)
     }
 
     override fun onStop() {
         super.onStop()
-        presenter.onViewDetached()
+        presenter?.onViewDetached()
 
         if (isFinishing) {
-            val key = getPresenterKey()
-            PresenterCache.dropPresenter(key)
+            presenter?.getKey()?.let { PresenterCache.dropPresenter(it) }
         }
     }
 
@@ -93,38 +95,26 @@ abstract class BaseActivity<P, V>
 
         if (savedInstanceState != null) {
             if (isRestored) {
-                Timber.w("Already restored but restoring again ‽")
+                Timber.w("Presenter already restored but restoring again ‽")
                 return
             }
             isRestored = true
             val restoredPresenter = restorePresenter(savedInstanceState)
             if (restoredPresenter !== presenter) {
-                presenter.onViewDetached()
+                presenter?.onViewDetached()
                 presenter = restoredPresenter
-                presenter.onViewAttached(fragment, isRestored)
+                presenter?.onViewAttached(fragment, isRestored)
             }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        val key = getPresenterKey()
-        PresenterCache.savePresenter(key, presenter)
-        outState?.putString(PRESENTER_KEY, key)
-    }
-
-    // endregion
-
-    // region OptionsMenu
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish() // onBackPressed()
-                return true
-            }
+        presenter?.let {
+            val key = it.getKey()
+            PresenterCache.savePresenter(key, it)
+            outState?.putString(PRESENTER_KEY, key)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     // endregion
@@ -139,7 +129,7 @@ abstract class BaseActivity<P, V>
             return instantiatePresenter()
         }
 
-        return PresenterCache.getPresenter(key, { instantiatePresenter() })
+        return PresenterCache.getPresenter(key) { instantiatePresenter() }
     }
 
     // endregion
@@ -152,13 +142,11 @@ abstract class BaseActivity<P, V>
 
     abstract fun instantiateFragment(): V
 
-    abstract fun getPresenterKey(): String
-
     open fun isSensitive(): Boolean = false
 
     open fun onFabClicked() {}
 
-    open fun getFabIcon(): Int? = null
+    @DrawableRes open fun getFabIcon(): Int? = null
 
     // endregion
 }

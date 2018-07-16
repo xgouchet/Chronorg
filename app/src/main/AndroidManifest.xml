@@ -7,15 +7,18 @@
             android:icon="@mipmap/ic_launcher"
             tools:ignore="GoogleAppIndexingWarning"
             android:allowBackup="true"
+            android:theme="@style/Base.Theme.AppCompat.Light"
             android:fullBackupContent="@xml/backup_descriptor">
 
-        <activity android:name=".projects.ProjectsListActivity"
-                android:theme="@style/Base.Theme.AppCompat.Light">
+        <activity
+                android:name=".projects.ProjectsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".project.ProjectActivity"/>
 
     </application>
 

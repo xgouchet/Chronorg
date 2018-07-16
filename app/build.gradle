@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-//apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -32,6 +32,9 @@ android {
         release {
             minifyEnabled false
         }
+        debug {
+            applicationIdSuffix = ".debug"
+        }
     }
 
     sourceSets {
@@ -43,7 +46,7 @@ android {
     }
 
     dataBinding {
-//        enabled = true
+        enabled = true
     }
 
 

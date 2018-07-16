@@ -38,7 +38,9 @@ class GeneratorPlugin : Plugin<Project> {
         }
     }
 
-    private fun createTaskForVariant(v: BaseVariant, project: Project, extension: GeneratorExtension) {
+    private fun createTaskForVariant(v: BaseVariant,
+                                     project: Project,
+                                     extension: GeneratorExtension) {
         val taskName = "$TASK_NAME${v.name.capitalize()}"
         val genDir = "${project.buildDir}/generated/source/triplea/${v.dirName}"
 
@@ -47,6 +49,7 @@ class GeneratorPlugin : Plugin<Project> {
                     projectBasePath = project.projectDir.path
                     configuration = extension
                     genDirPath = genDir
+                    variant = v.name
                 }
 
         project.tasks.matching { it.name == ("pre${v.name.capitalize()}Build") }.firstOrNull()?.dependsOn(task)

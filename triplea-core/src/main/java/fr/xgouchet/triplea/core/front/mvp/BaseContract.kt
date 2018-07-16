@@ -5,6 +5,7 @@ interface BaseContract {
     interface Presenter {
         fun onViewAttached(v: View, isRestored: Boolean)
         fun onViewDetached()
+        fun getKey(): String
     }
 
     interface View {

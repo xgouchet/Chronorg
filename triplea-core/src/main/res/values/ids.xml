@@ -7,4 +7,6 @@
     <item type="id" name="empty"/>
     <item type="id" name="filter"/>
     <item type="id" name="refresh"/>
+    <item type="id" name="pager"/>
+    <item type="id" name="pager_strip"/>
 </resources>

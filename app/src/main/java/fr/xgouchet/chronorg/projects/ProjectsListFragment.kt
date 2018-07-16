@@ -1,13 +1,15 @@
 package fr.xgouchet.chronorg.projects
 
+import android.content.Intent
 import fr.xgouchet.chronorg.models.Project
+import fr.xgouchet.chronorg.project.ProjectActivity
 
-class ProjectsListFragment : TAProjectFragment() {
+class ProjectsListFragment : TAProjectsFragment() {
 
-    override val adapter: TAProjectAdapter = ProjectsAdapter()
+    override val adapter: TAProjectsAdapter = ProjectsAdapter { navigateToEntity(it) }
 
     override fun navigateToEntity(entity: Project) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        startActivity(Intent(context, ProjectActivity::class.java))
     }
 
 }

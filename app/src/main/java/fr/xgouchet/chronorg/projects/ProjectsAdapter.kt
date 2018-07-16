@@ -1,12 +1,14 @@
 package fr.xgouchet.chronorg.projects
 
-import android.view.View
-import fr.xgouchet.chronorg.R
+import android.databinding.ViewDataBinding
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import fr.xgouchet.chronorg.databinding.ItemProjectBindingBinding
+import fr.xgouchet.chronorg.models.Project
 
-class ProjectsAdapter : TAProjectAdapter() {
-    override val layoutId: Int = R.layout.item_project
-
-    override fun instantiateViewHolder(view: View, viewType: Int): TAProjectViewHolder {
-        return ProjectViewHolder(view)
+class ProjectsAdapter(listener: ((Project) -> Unit)?)
+    : TAProjectsAdapter(listener) {
+    override fun inflateDataBinding(layoutInflater: LayoutInflater, parent: ViewGroup, viewType: Int): ViewDataBinding? {
+        return ItemProjectBindingBinding.inflate(layoutInflater, parent, false)
     }
 }

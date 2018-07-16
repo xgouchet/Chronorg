@@ -13,6 +13,19 @@ object PresenterCache {
         cache.put(key, presenter)
     }
 
+    fun <P : BaseContract.Presenter> getPresenterOrNull(key: String): P? {
+        var match: P? = null
+
+        try {
+            @Suppress("UNCHECKED_CAST")
+            match = cache.get(key) as P
+        } catch (e: ClassCastException) {
+            Timber.w("Presenter found for key $key, but type doesn't match expected.")
+        }
+
+        return match
+    }
+
     fun <P : BaseContract.Presenter> getPresenter(key: String, factory: () -> P): P {
         var match: P? = null
 
