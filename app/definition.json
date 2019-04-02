@@ -6,14 +6,13 @@
       "key": "projects",
       "template": "list",
       "layers": [
-        "front-mvp"
+        "front-mvvm"
       ],
       "base_type": {
         "simple_name": "Project",
         "canonical_name": "fr.xgouchet.chronorg.models.Project"
       },
       "params": {
-        "no_activity": "false",
         "paginated": "false",
         "refreshable": "false",
         "single_layout": "true",
@@ -35,7 +34,28 @@
       },
       "params": {
         "functional": "rx2",
-        "pages": "projects"
+        "pages": "travellers"
+      }
+    },
+    {
+      "key": "travellers",
+      "template": "list",
+      "layers": [
+        "front-mvp"
+      ],
+      "base_type": {
+        "simple_name": "Traveller",
+        "canonical_name": "fr.xgouchet.chronorg.models.Traveller"
+      },
+      "params": {
+        "no_activity" : "true",
+        "paginated": "false",
+        "refreshable": "false",
+        "single_layout": "true",
+        "databinding": "true",
+        "databinding_key": "project",
+        "functional": "rx2",
+        "fab_icon": "ic_add_white_24dp"
       }
     }
   ]

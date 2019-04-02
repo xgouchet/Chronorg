@@ -84,6 +84,12 @@ A feature's structure should look like this :
  - `base_type` : the type of data that is key to the feature;
  - `params` : a dictionary of Strings that holds parameters for the various layers (each layer have their own).
  
+## Reference
+ 
+### Layers 
+
+ - `front-mvp` : this layer generates a Frontend layer using the MVP architecture
+ - `front-mvvm` : this layer generates a Frontend layer using the MVVM architecture 
 
 
 ## Release History

@@ -4,6 +4,7 @@ import com.beust.klaxon.Klaxon
 import fr.xgouchet.chronorg.triplea.model.Definition
 import fr.xgouchet.chronorg.triplea.generator.BoilerplateGenerator
 import fr.xgouchet.chronorg.triplea.generator.front.mvp.MVPScreenGenerator
+import fr.xgouchet.chronorg.triplea.generator.front.mvvm.MVVMScreenGenerator
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
@@ -17,7 +18,12 @@ open class GeneratorTask : DefaultTask() {
     var configuration: GeneratorExtension = GeneratorExtension()
     var genDirPath: String = ""
 
-    val generator = BoilerplateGenerator(listOf(MVPScreenGenerator()))
+    val generator = BoilerplateGenerator(
+            listOf(
+                    MVPScreenGenerator(),
+                    MVVMScreenGenerator()
+            )
+    )
 
     init {
         group = "triplea"

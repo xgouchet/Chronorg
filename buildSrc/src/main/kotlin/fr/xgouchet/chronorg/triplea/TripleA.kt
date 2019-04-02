@@ -23,6 +23,15 @@ object TripleA {
         object Front {
             const val PACKAGE_NAME = "${TripleA.Core.PACKAGE_NAME}.front"
 
+            object MVVM {
+                const val PACKAGE_NAME = "${TripleA.Core.Front.PACKAGE_NAME}.mvp"
+
+                object BaseActivity {
+                    const val CLASS_NAME = "BaseActivity"
+                    const val CANONICAL_NAME = "${TripleA.Core.Front.MVP.PACKAGE_NAME}.$CLASS_NAME"
+                }
+            }
+
             object MVP {
                 const val PACKAGE_NAME = "${TripleA.Core.Front.PACKAGE_NAME}.mvp"
 

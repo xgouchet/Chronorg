@@ -59,6 +59,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
 
     implementation project(':triplea-core')

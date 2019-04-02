@@ -8,7 +8,8 @@ import android.view.View
 import android.view.WindowManager
 import fr.xgouchet.triplea.core.R
 
-abstract class BaseActivity<F : BaseFragment> : AppCompatActivity() {
+abstract class BaseActivity<F : BaseFragment>
+    : AppCompatActivity() {
 
 
     private lateinit var fab: FloatingActionButton
@@ -35,7 +36,6 @@ abstract class BaseActivity<F : BaseFragment> : AppCompatActivity() {
         if (isFinishing) return
 
         if (savedInstanceState == null) {
-//            supportFragmentManager.transaction { add(R.id.root_fragment, instantiateFragment()) }
             supportFragmentManager.beginTransaction()
                     .add(R.id.root_fragment, instantiateFragment())
                     .commit()

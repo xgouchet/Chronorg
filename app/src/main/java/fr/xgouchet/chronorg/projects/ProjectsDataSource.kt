@@ -8,7 +8,7 @@ class ProjectsDataSource : TAProjectsDataSource() {
 
     override fun observeData(): Observable<List<Project>> {
         return Observable.just("foo", "bar", "baz", "eggs", "bacon")
-                .map { Project(it) }
+                .map { Project(0, it) }
                 .toList()
                 .delay(1, TimeUnit.SECONDS)
                 .flatMapObservable { Observable.just(it) }
