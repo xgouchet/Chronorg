@@ -1,51 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="fr.xgouchet.chronorg">
 
     <application
-        android:name=".ChronorgApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+            android:name=".ChronorgApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.activities.ProjectsActivity">
+        <activity android:name=".android.activity.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.activities.ProjectDetailsActivity"/>
-        <activity
-            android:name=".ui.activities.EntityDetailsActivity"/>
-
-        <activity
-            android:name=".ui.activities.ProjectEditActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".ui.activities.EntityEditActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".ui.activities.JumpEditActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".ui.activities.EventEditActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".ui.activities.PortalEditActivity"
-            android:windowSoftInputMode="adjustResize"/>
-
-
-        <activity
-            android:name=".ui.activities.DateTimePickerActivity"
-            android:theme="@style/AppTheme.Transluscent"/>
-
-        <provider
-            android:name=".provider.ChronorgContentProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"/>
     </application>
 
 </manifest>

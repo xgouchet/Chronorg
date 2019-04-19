@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/projectListFragment">
+
+
+    <fragment
+            android:id="@+id/projectListFragment"
+            android:name="fr.xgouchet.chronorg.feature.project.list.ProjectListFragment"
+            android:label="fragment_project_list"
+            tools:layout="@layout/fragment_base">
+        <action
+                android:id="@+id/action_edit_project"
+                app:destination="@id/projectEditorFragment"/>
+        <action
+                android:id="@+id/action_projectListFragment_to_projectPreviewFragment"
+                app:destination="@id/projectPreviewFragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/projectEditorFragment"
+            android:name="fr.xgouchet.chronorg.feature.project.editor.ProjectEditorFragment"
+            android:label="ProjectEditorFragment">
+        <argument
+                android:name="project"
+                app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+                app:nullable="true"
+                android:defaultValue="@null"/>
+        <action
+                android:id="@+id/action_projectEditorFragment_to_projectPreviewFragment"
+                app:destination="@id/projectPreviewFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/projectPreviewFragment"
+            android:name="fr.xgouchet.chronorg.feature.project.preview.ProjectPreviewFragment"
+            android:label="ProjectPreviewFragment">
+        <argument
+                android:name="project"
+                app:argType="fr.xgouchet.chronorg.data.flow.model.Project"/>
+    </fragment>
+</navigation>

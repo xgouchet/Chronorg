@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="line_width">16dp</dimen>
-    <dimen name="line_stroke_width">4dp</dimen>
-    <dimen name="line_cap_width">10dp</dimen>
-    <dimen name="line_cap_distance_from_top">16dp</dimen>
+
+    <!-- Texts -->
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_s">14sp</dimen>
+    <dimen name="text_m">16sp</dimen>
+    <dimen name="text_l">22sp</dimen>
+    <dimen name="text_xl">26sp</dimen>
+
+    <!-- Corner Radii -->
+    <dimen name="corner_radius">8dp</dimen>
+
+    <!-- Size -->
+    <dimen name="height_small">32dp</dimen>
+    <dimen name="height_interactive">48dp</dimen>
+    <dimen name="height_icon">72dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+
+    <!-- Padding / Margin -->
+    <dimen name="space_xxl">48dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_xs">4dp</dimen>
+
 </resources>

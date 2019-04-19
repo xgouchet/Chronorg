@@ -1,8 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="fr.xgouchet.chronorg">
-
-    <application
-        android:name=".ChronorgApplication">
-    </application>
-
-</manifest>
