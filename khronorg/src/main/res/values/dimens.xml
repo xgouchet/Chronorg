@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="line_width">20dp</dimen>
-    <dimen name="line_stroke_width">2dp</dimen>
-    <dimen name="line_cap_width">12dp</dimen>
-    <dimen name="line_cap_distance_from_top">20dp</dimen>
-</resources>
