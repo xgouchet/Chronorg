@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "project")
-data class ProjectDbModel(
+data class RoomProject(
         @PrimaryKey(autoGenerate = true) var id: Long = 0,
         var name: String = "",
         var description: String = ""

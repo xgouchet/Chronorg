@@ -4,11 +4,11 @@ import android.content.Context
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.room.AppDatabase
 import fr.xgouchet.chronorg.data.room.RoomConverter
-import fr.xgouchet.chronorg.data.room.model.ProjectDbModel
+import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 class ProjectSource(
         context: Context,
-        private val converter: RoomConverter<ProjectDbModel, Project>
+        private val converter: RoomConverter<RoomProject, Project>
 ) : DataSource<Project> {
 
     private val appDatabase: AppDatabase = AppDatabase.getInstance(context)

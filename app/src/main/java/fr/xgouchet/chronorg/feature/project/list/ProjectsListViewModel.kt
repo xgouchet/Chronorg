@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.feature.project.list
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import fr.xgouchet.chronorg.R
@@ -24,6 +25,8 @@ class ProjectsListViewModel(
 
     override suspend fun onViewEvent(event: Item.Event, navController: NavController) {
         val data = event.viewModel.data() as? Project ?: return
-        navController.navigate(R.id.projectPreviewFragment)
+        val bundle = Bundle(1)
+        bundle.putParcelable("project", data)
+        navController.navigate(R.id.projectPreviewFragment, bundle)
     }
 }

@@ -3,7 +3,7 @@ package fr.xgouchet.chronorg.data.flow.sink
 import android.content.Context
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.room.AppDatabase
-import fr.xgouchet.chronorg.data.room.model.ProjectDbModel
+import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 class ProjectSink(context: Context)
     : DataSink<Project> {
@@ -12,7 +12,7 @@ class ProjectSink(context: Context)
 
     override suspend fun create(entity: Project): Boolean {
         val result = appDatabase.projectDao().insert(
-                ProjectDbModel(name = entity.name, description = entity.description)
+                RoomProject(name = entity.name, description = entity.description)
         )
         return (result > 0)
     }

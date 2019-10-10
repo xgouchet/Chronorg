@@ -15,12 +15,16 @@ class ProjectPreviewViewModel(
 ) : ViewModel(),
         ProjectPreviewContract.ViewModel {
 
+    var project: Project? = null
+
     override suspend fun getData(): List<Item.ViewModel> {
         return withContext(Dispatchers.IO) {
-            val entity = projectSource.get(0)
+            val entity = projectSource.get(project?.id ?: 0)
             if (entity == null) emptyList() else transformer.transform(entity)
         }
     }
 
-    override suspend fun onViewEvent(event: Item.Event, navController: NavController) {}
+    override suspend fun onViewEvent(event: Item.Event, navController: NavController) {
+
+    }
 }

@@ -2,12 +2,12 @@ package fr.xgouchet.chronorg.data.room.converter
 
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.room.RoomConverter
-import fr.xgouchet.chronorg.data.room.model.ProjectDbModel
+import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 class ProjectConverter
-    : RoomConverter<ProjectDbModel, Project> {
+    : RoomConverter<RoomProject, Project> {
 
-    override fun fromRoom(roomModel: ProjectDbModel): Project {
+    override fun fromRoom(roomModel: RoomProject): Project {
         return Project(
                 id = roomModel.id,
                 name = roomModel.name,
@@ -15,8 +15,8 @@ class ProjectConverter
         )
     }
 
-    override fun toRoom(appModel: Project): ProjectDbModel {
-        return ProjectDbModel(
+    override fun toRoom(appModel: Project): RoomProject {
+        return RoomProject(
                 id = appModel.id,
                 name = appModel.name,
                 description = appModel.description

@@ -6,24 +6,24 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import fr.xgouchet.chronorg.data.room.model.ProjectDbModel
+import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 @Dao
 interface ProjectDao {
 
     @Query("SELECT * FROM project")
-    suspend fun getAll(): List<ProjectDbModel>
+    suspend fun getAll(): List<RoomProject>
 
     @Query("SELECT * FROM project WHERE id = :id")
-    suspend fun get(id: Long): ProjectDbModel?
+    suspend fun get(id: Long): RoomProject?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(project: ProjectDbModel): Long
+    suspend fun insert(project: RoomProject): Long
 
     @Update
-    suspend fun update(project: ProjectDbModel): Int
+    suspend fun update(project: RoomProject): Int
 
     @Delete
-    suspend fun delete(project: ProjectDbModel): Int
+    suspend fun delete(project: RoomProject): Int
 
 }

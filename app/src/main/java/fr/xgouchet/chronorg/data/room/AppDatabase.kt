@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.xgouchet.chronorg.data.room.dao.ProjectDao
-import fr.xgouchet.chronorg.data.room.model.ProjectDbModel
+import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 @Database(
         entities = [
-            ProjectDbModel::class
+            RoomProject::class
         ],
         version = AppDatabase.V1_BASE,
         exportSchema = true

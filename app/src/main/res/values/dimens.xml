@@ -8,8 +8,11 @@
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">26sp</dimen>
 
-    <!-- Corner Radii -->
-    <dimen name="corner_radius">8dp</dimen>
+    <!-- Corners -->
+    <dimen name="corner_cut_size">16dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_card">1dp</dimen>
 
     <!-- Size -->
     <dimen name="height_small">32dp</dimen>

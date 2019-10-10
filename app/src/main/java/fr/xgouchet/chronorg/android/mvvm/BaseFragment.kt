@@ -72,6 +72,7 @@ abstract class BaseFragment<VM>
 
     override fun onResume() {
         super.onResume()
+        activity?.setTitle(R.string.app_name)
         viewModel?.let { updateData(it) }
     }
 

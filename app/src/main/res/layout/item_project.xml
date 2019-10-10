@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/corner_radius"
+        android:elevation="@dimen/elevation_card"
+        android:clipToPadding="false"
         >
 
 
@@ -32,6 +33,7 @@
                 android:textColor="@color/text_primary"
                 android:singleLine="true"
                 android:fontFamily="@font/electrolize"
+                android:padding="@dimen/space_xs"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +52,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/dosis"
                 android:gravity="start"
+                android:padding="@dimen/space_xs"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"

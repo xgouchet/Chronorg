@@ -68,6 +68,7 @@ class Item {
 
         EMPTY(ItemEmpty.ViewHolderInflater()),
         PROJECT(ItemProject.ViewHolderInflater()),
+        DETAILS(ItemDetail.ViewHolderInflater()),
 
 
         TEXT_INPUT(ItemTextInput.ViewHolderInflater()),
