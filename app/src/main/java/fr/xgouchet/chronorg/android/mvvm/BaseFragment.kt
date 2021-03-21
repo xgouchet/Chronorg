@@ -1,6 +1,7 @@
 package fr.xgouchet.chronorg.android.mvvm
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,14 +28,13 @@ import org.kodein.di.direct
 
 abstract class BaseFragment<VM>
     : Fragment(),
-        KodeinAware
-        where VM : BaseViewModel,
-              VM : ViewModel {
+    KodeinAware
+    where VM : BaseViewModel,
+          VM : ViewModel {
 
     abstract val vmClass: Class<VM>
     protected var viewModel: VM? = null
         private set
-
 
     private lateinit var contentView: View
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -47,13 +47,17 @@ abstract class BaseFragment<VM>
         }
     }
 
-    @DrawableRes open val fabIcon: Int? = null
+    @DrawableRes
+    open val fabIcon: Int? = null
     open val userCanRefresh: Boolean = false
-
 
     // region Fragment
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         contentView = inflater.inflate(R.layout.fragment_base, container, false)
         bindViews()
         setupViews()
@@ -70,10 +74,25 @@ abstract class BaseFragment<VM>
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel?.let {
+            it.onActivityResult(requestCode, resultCode, data)
+            updateData(it)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         activity?.setTitle(R.string.app_name)
-        viewModel?.let { updateData(it) }
+        viewModel?.let {
+            it.setLinkedFragment(this)
+            updateData(it)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel?.setLinkedFragment(null)
     }
 
     override fun onDestroy() {
@@ -112,21 +131,19 @@ abstract class BaseFragment<VM>
         refreshLayout = contentView.findViewById(R.id.swipe_refresh)
         fab = contentView.findViewById(R.id.fa_button)
         recyclerView = contentView.findViewById(R.id.recycler_view)
-
     }
 
     private fun updateData(vm: VM) {
         CoroutineScope(Dispatchers.Main).launch {
             val data = async { vm.getData() }
             adapter.updateData(data.await())
+            activity?.invalidateOptionsMenu()
         }
     }
 
     // endregion
 
-
     open fun configure(viewModel: VM) {}
 
     abstract fun onFabClicked()
-
 }

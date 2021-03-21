@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/input_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_input"
+    android:layout_marginStart="@dimen/space_m"
+    android:layout_marginEnd="@dimen/space_m"
+    android:drawableEnd="@drawable/ic_date"
+    android:padding="@dimen/space_m"
+    />

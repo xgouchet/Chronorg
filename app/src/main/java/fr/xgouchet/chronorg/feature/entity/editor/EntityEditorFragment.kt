@@ -1,53 +1,50 @@
-package fr.xgouchet.chronorg.feature.project.preview
+package fr.xgouchet.chronorg.feature.entity.editor
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.mvvm.BaseFragment
+import fr.xgouchet.chronorg.android.mvvm.EditorFragment
 import fr.xgouchet.chronorg.data.flow.model.Project
+import fr.xgouchet.chronorg.feature.entity.list.EntityListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class ProjectPreviewFragment
-    : BaseFragment<ProjectPreviewViewModel>() {
+class EntityEditorFragment
+    : EditorFragment<EntityEditorViewModel>() {
 
-    override val vmClass: Class<ProjectPreviewViewModel> = ProjectPreviewViewModel::class.java
-    override val fabIcon: Int? = R.drawable.ic_fab_add
+    override val vmClass: Class<EntityEditorViewModel> = EntityEditorViewModel::class.java
 
     // region Fragment
 
-    override fun onResume() {
-        super.onResume()
-        activity?.title = getProject()?.name ?: "?"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.view, menu)
+        inflater.inflate(R.menu.editor, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val vm = viewModel ?: return false
 
         return when (item.itemId) {
-            R.id.action_edit -> {
-                TODO()
-                // CoroutineScope(Dispatchers.Main).launch {
-                //
-                //     val result = async { vm.onSave() }
-                //     if (result.await()) {
-                //         findNavController().popBackStack()
-                //     }
-                // }
-                true
-            }
-            R.id.action_delete -> {
-                TODO()
+            R.id.action_confirm -> {
+                CoroutineScope(Dispatchers.Main).launch {
+
+                    val result = async { vm.onSave() }
+                    if (result.await()) {
+                        findNavController().popBackStack()
+                    }
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -58,13 +55,13 @@ class ProjectPreviewFragment
 
     // region BaseFragment
 
-    override fun configure(viewModel: ProjectPreviewViewModel) {
+    override fun configure(viewModel: EntityEditorViewModel) {
         super.configure(viewModel)
         viewModel.project = getProject()
     }
 
     override fun onFabClicked() {
-        findNavController().navigate(R.id.projectEditorFragment)
+
     }
 
     // endregion

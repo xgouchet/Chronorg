@@ -9,17 +9,20 @@ class ProjectConverter
 
     override fun fromRoom(roomModel: RoomProject): Project {
         return Project(
-                id = roomModel.id,
-                name = roomModel.name,
-                description = roomModel.description
+            id = roomModel.id,
+            name = roomModel.name,
+            description = roomModel.description,
+            entityCount = 0,
+            portalCount = 0,
+            eventCount = 0
         )
     }
 
     override fun toRoom(appModel: Project): RoomProject {
         return RoomProject(
-                id = appModel.id,
-                name = appModel.name,
-                description = appModel.description
+            id = appModel.id,
+            name = appModel.name,
+            description = appModel.description
         )
     }
 }

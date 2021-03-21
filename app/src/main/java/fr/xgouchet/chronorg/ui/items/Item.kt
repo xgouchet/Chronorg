@@ -68,10 +68,12 @@ class Item {
 
         EMPTY(ItemEmpty.ViewHolderInflater()),
         PROJECT(ItemProject.ViewHolderInflater()),
+        ENTITY(ItemEntity.ViewHolderInflater()),
         DETAILS(ItemDetail.ViewHolderInflater()),
 
 
         TEXT_INPUT(ItemTextInput.ViewHolderInflater()),
+        INSTANT_INPUT(ItemInstantInput.ViewHolderInflater()),
 
         ;
 

@@ -17,6 +17,7 @@
     <!-- Size -->
     <dimen name="height_small">32dp</dimen>
     <dimen name="height_interactive">48dp</dimen>
+    <dimen name="height_input">56dp</dimen>
     <dimen name="height_icon">72dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>

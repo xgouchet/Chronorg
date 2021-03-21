@@ -14,10 +14,19 @@ import org.kodein.di.android.androidCoreModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import timber.log.Timber
 
 class ChronorgApplication
     : Application(),
         KodeinAware {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (BuildConfig.DEBUG){
+            Timber.plant(Timber.DebugTree())
+        }
+    }
 
     override val kodein by Kodein.lazy {
         import(androidCoreModule(this@ChronorgApplication))

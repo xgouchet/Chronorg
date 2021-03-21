@@ -4,19 +4,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import fr.xgouchet.chronorg.data.room.dao.EntityDao
 import fr.xgouchet.chronorg.data.room.dao.ProjectDao
+import fr.xgouchet.chronorg.data.room.model.RoomEntity
 import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 @Database(
-        entities = [
-            RoomProject::class
-        ],
-        version = AppDatabase.V1_BASE,
-        exportSchema = true
+    entities = [
+        RoomProject::class,
+        RoomEntity::class
+    ],
+    version = AppDatabase.V1_BASE,
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun projectDao(): ProjectDao
+    abstract fun entityDao(): EntityDao
 
     companion object {
         private const val DB_NAME = "AppDatabase"
@@ -38,13 +42,14 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context) =
-                Room
-                        .databaseBuilder(
-                                context.applicationContext,
-                                AppDatabase::class.java,
-                                DB_NAME
-                        )
+            Room
+                .databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    DB_NAME
+                )
+                .fallbackToDestructiveMigration()
 //                        .addMigrations(MIGRATION_1_2) TODO
-                        .build()
+                .build()
     }
 }

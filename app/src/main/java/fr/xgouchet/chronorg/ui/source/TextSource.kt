@@ -21,6 +21,7 @@ sealed class TextSource {
     abstract fun getText(context: Context): CharSequence
 
     // region Operators / Utils
+
     operator fun plus(otherSource: TextSource): TextSource {
         return ConcatSource(this, otherSource)
     }
