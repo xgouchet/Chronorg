@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
@@ -105,6 +107,25 @@ abstract class BaseFragment<VM>
     // region KodeinAware
 
     override val kodein: Kodein by lazy { (context?.applicationContext as KodeinAware).kodein }
+
+    // endregion
+
+    // region UX
+
+    fun promptDeleteConfirmation(
+        @StringRes title: Int,
+        @StringRes message: Int = R.string.confirm_delete,
+        delete: () -> Unit = {}
+    ) {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setNeutralButton(android.R.string.cancel) { _, _ ->  }
+            .setNegativeButton(R.string.action_delete) { _, _ -> delete() }
+            .create()
+
+        dialog.show()
+    }
 
     // endregion
 

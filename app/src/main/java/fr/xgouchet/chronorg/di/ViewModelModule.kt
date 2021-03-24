@@ -17,13 +17,13 @@ import org.kodein.di.generic.provider
 val ViewModelModule = Kodein.Module(name = "ViewModel") {
 
     bindViewModel<ProjectsListViewModel>() with provider {
-        ProjectsListViewModel(instance(), instance())
+        ProjectsListViewModel(instance(), instance(), instance(), instance())
     }
     bindViewModel<ProjectEditorViewModel>() with provider {
         ProjectEditorViewModel(instance())
     }
     bindViewModel<ProjectPreviewViewModel>() with provider {
-        ProjectPreviewViewModel(instance(), instance())
+        ProjectPreviewViewModel(instance(), instance(), instance())
     }
 
 

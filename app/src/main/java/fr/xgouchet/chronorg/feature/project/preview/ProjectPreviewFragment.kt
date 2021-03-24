@@ -1,5 +1,6 @@
 package fr.xgouchet.chronorg.feature.project.preview
 
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,6 +27,11 @@ class ProjectPreviewFragment
         activity?.title = getProject()?.name ?: "?"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.view, menu)
@@ -47,7 +53,15 @@ class ProjectPreviewFragment
                 true
             }
             R.id.action_delete -> {
-                TODO()
+               promptDeleteConfirmation(R.string.title_timelines) {
+                   CoroutineScope(Dispatchers.Main).launch {
+
+                       val result = async { vm.onDelete() }
+                       if (result.await()) {
+                           findNavController().popBackStack()
+                       }
+                   }
+               }
                 true
             }
             else -> super.onOptionsItemSelected(item)

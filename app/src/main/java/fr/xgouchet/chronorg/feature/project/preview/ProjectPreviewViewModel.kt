@@ -6,6 +6,7 @@ import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.mvvm.SimpleViewModel
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.flow.model.ProjectLink
+import fr.xgouchet.chronorg.data.flow.sink.DataSink
 import fr.xgouchet.chronorg.data.flow.source.DataSource
 import fr.xgouchet.chronorg.ui.items.Item
 import fr.xgouchet.chronorg.ui.transformer.ViewModelListTransformer
@@ -14,6 +15,7 @@ import kotlinx.coroutines.withContext
 
 class ProjectPreviewViewModel(
     private val projectSource: DataSource<Project>,
+    private val projectSink: DataSink<Project>,
     private val transformer: ViewModelListTransformer<Project>
 ) : SimpleViewModel<ProjectPreviewViewModel, ProjectPreviewFragment>(),
     ProjectPreviewContract.ViewModel {
@@ -37,5 +39,12 @@ class ProjectPreviewViewModel(
             ProjectLink.Type.EVENTS -> TODO()
         }
         navController.navigate(target, bundle)
+    }
+
+    suspend fun onDelete(): Boolean {
+        val entity = project ?: return false
+        return withContext(Dispatchers.IO) {
+            projectSink.delete(entity)
+        }
     }
 }

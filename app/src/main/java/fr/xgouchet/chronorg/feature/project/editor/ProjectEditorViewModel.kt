@@ -44,7 +44,7 @@ class ProjectEditorViewModel(
     }
 
     override suspend fun onSave(): Boolean {
-        return projectSink.create(
+        val id = projectSink.create(
             Project(
                 id = 0,
                 name = name,
@@ -54,6 +54,7 @@ class ProjectEditorViewModel(
                 eventCount = 0
             )
         )
+        return id >= 0
     }
 
     companion object {

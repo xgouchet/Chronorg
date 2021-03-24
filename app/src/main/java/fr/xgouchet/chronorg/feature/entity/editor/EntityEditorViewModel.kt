@@ -83,7 +83,7 @@ class EntityEditorViewModel(
     }
 
     override suspend fun onSave(): Boolean {
-        return projectSink.create(
+        val id = projectSink.create(
             Entity(
                 id = 0L,
                 projectId = project?.id ?: 0L,
@@ -93,6 +93,7 @@ class EntityEditorViewModel(
                 death = Instant()
             )
         )
+        return id >= 0
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
