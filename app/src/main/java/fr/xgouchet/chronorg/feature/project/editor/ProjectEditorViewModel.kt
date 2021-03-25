@@ -13,8 +13,9 @@ class ProjectEditorViewModel(
 ) : SimpleViewModel<ProjectEditorViewModel, ProjectEditorFragment>(),
     ProjectEditorContract.ViewModel {
 
-    private var name = ""
-    private var description = ""
+    internal var projectId: Long? = null
+    internal var name = ""
+    internal var description = ""
 
     override suspend fun getData(): List<Item.ViewModel> {
         return listOf(
@@ -44,17 +45,20 @@ class ProjectEditorViewModel(
     }
 
     override suspend fun onSave(): Boolean {
-        val id = projectSink.create(
-            Project(
-                id = 0,
-                name = name,
-                description = description,
-                entityCount = 0,
-                portalCount = 0,
-                eventCount = 0
-            )
+        val project = Project(
+            id = projectId ?: 0,
+            name = name,
+            description = description,
+            entityCount = 0,
+            portalCount = 0,
+            eventCount = 0
         )
-        return id >= 0
+
+        return if (project.id == 0L) {
+            projectSink.create(project) >= 0
+        } else {
+            projectSink.update(project)
+        }
     }
 
     companion object {

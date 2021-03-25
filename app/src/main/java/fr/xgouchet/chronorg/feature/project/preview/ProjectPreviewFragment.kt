@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.mvvm.BaseFragment
 import fr.xgouchet.chronorg.data.flow.model.Project
@@ -42,26 +41,19 @@ class ProjectPreviewFragment
 
         return when (item.itemId) {
             R.id.action_edit -> {
-                TODO()
-                // CoroutineScope(Dispatchers.Main).launch {
-                //
-                //     val result = async { vm.onSave() }
-                //     if (result.await()) {
-                //         findNavController().popBackStack()
-                //     }
-                // }
+                vm.onEdit(findNavController())
                 true
             }
             R.id.action_delete -> {
-               promptDeleteConfirmation(R.string.title_timelines) {
-                   CoroutineScope(Dispatchers.Main).launch {
+                promptDeleteConfirmation(R.string.title_timelines) {
+                    CoroutineScope(Dispatchers.Main).launch {
 
-                       val result = async { vm.onDelete() }
-                       if (result.await()) {
-                           findNavController().popBackStack()
-                       }
-                   }
-               }
+                        val result = async { vm.onDelete() }
+                        if (result.await()) {
+                            findNavController().popBackStack()
+                        }
+                    }
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

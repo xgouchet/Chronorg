@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
 import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.mvvm.BaseFragment
+import fr.xgouchet.chronorg.data.flow.model.Project
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -51,7 +52,23 @@ class ProjectEditorFragment
 
     // region BaseFragment
 
+    override fun configure(viewModel: ProjectEditorViewModel) {
+        super.configure(viewModel)
+        val project  = getProject()
+        viewModel.projectId = project?.id
+        viewModel.name = project?.name.orEmpty()
+        viewModel.description = project?.description.orEmpty()
+    }
+
     override fun onFabClicked() {}
+
+    // endregion
+
+    // region Internal
+
+    private fun getProject(): Project? {
+        return arguments?.getParcelable("project")
+    }
 
     // endregion
 }

@@ -47,4 +47,12 @@ class ProjectPreviewViewModel(
             projectSink.delete(entity)
         }
     }
+
+    fun onEdit(navController: NavController) {
+        val entity = project ?: return
+        val bundle = Bundle(1)
+        bundle.putParcelable("project", entity)
+
+        navController.navigate(R.id.projectEditorFragment, bundle)
+    }
 }

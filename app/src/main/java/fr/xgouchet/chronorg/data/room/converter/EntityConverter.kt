@@ -8,8 +8,7 @@ import fr.xgouchet.chronorg.data.room.model.RoomProject
 import org.joda.time.DateTime
 import org.joda.time.Instant
 
-class EntityConverter
-    : RoomConverter<RoomEntity, Entity> {
+class EntityConverter : RoomConverter<RoomEntity, Entity> {
 
     override fun fromRoom(roomModel: RoomEntity): Entity {
         return Entity(

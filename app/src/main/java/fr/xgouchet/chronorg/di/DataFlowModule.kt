@@ -17,10 +17,10 @@ val DataFlowModule = Kodein.Module(name = "DataFlow") {
 
     bind<DataSource<Project>>() with provider { ProjectSource(instance(), instance()) }
 
-    bind<DataSink<Project>>() with provider { ProjectSink(instance()) }
+    bind<DataSink<Project>>() with provider { ProjectSink(instance(), instance()) }
 
     bind<DataSource<Entity>>() with provider { EntitySource(instance(), instance()) }
 
-    bind<DataSink<Entity>>() with provider { EntitySink(instance()) }
+    bind<DataSink<Entity>>() with provider { EntitySink(instance(), instance()) }
 }
 

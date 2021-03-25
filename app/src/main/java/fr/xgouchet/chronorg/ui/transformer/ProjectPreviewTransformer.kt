@@ -20,14 +20,14 @@ class ProjectPreviewTransformer
                 data = ProjectLink(entity, ProjectLink.Type.ENTITIES)
             ),
             ItemDetail.ViewModel(
-                index = Item.Index(0, 0),
+                index = Item.Index(0,1),
                 title = "Portals".asTextSource(),
                 description = entity.portalCount.toString().asTextSource(),
                 icon = R.drawable.ic_portal.asImageSource(),
                 data = ProjectLink(entity, ProjectLink.Type.PORTALS)
             ),
             ItemDetail.ViewModel(
-                index = Item.Index(0, 0),
+                index = Item.Index(0, 2),
                 title = "Events".asTextSource(),
                 description = entity.eventCount.toString().asTextSource(),
                 icon = R.drawable.ic_event.asImageSource(),
