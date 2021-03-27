@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.feature.entity.editor
+package fr.xgouchet.chronorg.feature.event.editor
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.activity.InstantPickerActivity
 import fr.xgouchet.chronorg.android.activity.Request
 import fr.xgouchet.chronorg.android.mvvm.SimpleViewModel
-import fr.xgouchet.chronorg.data.flow.model.Entity
+import fr.xgouchet.chronorg.data.flow.model.Event
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.flow.sink.DataSink
 import fr.xgouchet.chronorg.ui.formatter.Formatter
@@ -19,24 +19,23 @@ import fr.xgouchet.chronorg.ui.source.asImageSource
 import fr.xgouchet.chronorg.ui.source.asTextSource
 import org.joda.time.Instant
 
-class EntityEditorViewModel(
-    private val entitySink: DataSink<Entity>,
+class EventEditorViewModel(
+    private val eventSink: DataSink<Event>,
     private val instantFormatter: Formatter<Instant>
-) : SimpleViewModel<EntityEditorViewModel, EntityEditorFragment>(),
-    EntityEditorContract.ViewModel {
+) : SimpleViewModel<EventEditorViewModel, EventEditorFragment>(),
+    EventEditorContract.ViewModel {
 
     var project: Project? = null
 
     private var name = ""
     private var notes = ""
-    private var birth: Instant? = null
-    private var death: Instant? = null
+    private var date: Instant? = null
 
     override suspend fun getData(): List<Item.ViewModel> {
         return listOf(
             ItemTextInput.ViewModel(
                 index = Item.Index(0, 0),
-                hint = "Entity name".asTextSource(),
+                hint = "Event name".asTextSource(),
                 value = name.asTextSource(),
                 data = ID_NAME
             ),
@@ -49,16 +48,9 @@ class EntityEditorViewModel(
             ItemRawInput.ViewModel(
                 index = Item.Index(0, 2),
                 icon = R.drawable.ic_instant.asImageSource(),
-                hint = R.string.hint_entity_birth.asTextSource(),
-                value = dateViewTextSource(birth),
-                data = ID_BIRTH
-            ),
-            ItemRawInput.ViewModel(
-                index = Item.Index(0, 3),
-                icon = R.drawable.ic_instant.asImageSource(),
-                hint = R.string.hint_entity_death.asTextSource(),
-                value = dateViewTextSource(death),
-                data = ID_DEATH
+                hint = R.string.hint_event_instant.asTextSource(),
+                value = dateViewTextSource(date),
+                data = ID_DATE
             )
         )
     }
@@ -68,8 +60,7 @@ class EntityEditorViewModel(
         when (event.action) {
             Item.Action.ITEM_TAPPED -> {
                 val (request, value) = when (data) {
-                    ID_BIRTH -> Request.PICK_BIRTH_DATE to birth
-                    ID_DEATH -> Request.PICK_DEATH_DATE to death
+                    ID_DATE -> Request.PICK_EVENT_DATE to date
                     else -> TODO()
                 }
                 fragment?.promptInstant(request, value)
@@ -88,14 +79,13 @@ class EntityEditorViewModel(
     }
 
     override suspend fun onSave(): Boolean {
-        val id = entitySink.create(
-            Entity(
+        val id = eventSink.create(
+            Event(
                 id = 0L,
                 projectId = project?.id ?: 0L,
                 name = name,
                 notes = notes,
-                birth = Instant(),
-                death = Instant()
+                date = date ?: Instant()
             )
         )
         return id >= 0
@@ -107,8 +97,7 @@ class EntityEditorViewModel(
         val instant = Instant(instantData)
 
         when (requestCode) {
-            Request.PICK_BIRTH_DATE -> birth = instant
-            Request.PICK_DEATH_DATE -> death = instant
+            Request.PICK_EVENT_DATE -> date = instant
         }
     }
 
@@ -123,7 +112,6 @@ class EntityEditorViewModel(
     companion object {
         const val ID_NAME = "name"
         const val ID_NOTES = "notes"
-        const val ID_BIRTH = "birth"
-        const val ID_DEATH = "death"
+        const val ID_DATE = "birth"
     }
 }

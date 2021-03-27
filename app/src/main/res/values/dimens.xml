@@ -15,11 +15,14 @@
     <dimen name="elevation_card">1dp</dimen>
 
     <!-- Size -->
+    <dimen name="icon_s">32dp</dimen>
+    <dimen name="icon_m">48dp</dimen>
     <dimen name="height_small">32dp</dimen>
     <dimen name="height_interactive">48dp</dimen>
     <dimen name="height_input">64dp</dimen>
     <dimen name="height_icon">72dp</dimen>
 
+    <!-- FAB -->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_size">56dp</dimen>
 

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.xgouchet.chronorg.feature.entity.editor.EntityEditorViewModel
 import fr.xgouchet.chronorg.feature.entity.list.EntityListViewModel
+import fr.xgouchet.chronorg.feature.event.editor.EventEditorViewModel
+import fr.xgouchet.chronorg.feature.event.list.EventListViewModel
 import fr.xgouchet.chronorg.feature.portal.editor.PortalEditorViewModel
 import fr.xgouchet.chronorg.feature.portal.list.PortalListViewModel
 import fr.xgouchet.chronorg.feature.project.editor.ProjectEditorViewModel
@@ -40,6 +42,13 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     }
     bindViewModel<PortalEditorViewModel>() with provider {
         PortalEditorViewModel(instance(), instance())
+    }
+
+    bindViewModel<EventListViewModel>() with provider {
+        EventListViewModel(instance(), instance())
+    }
+    bindViewModel<EventEditorViewModel>() with provider {
+        EventEditorViewModel(instance(), instance())
     }
 }
 

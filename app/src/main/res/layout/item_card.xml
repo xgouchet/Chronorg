@@ -17,16 +17,25 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/project"
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/space_s"
             >
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/icon_s"
+            android:layout_height="@dimen/icon_s"
+            android:layout_margin="@dimen/space_s"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/about_icon_email" />
+
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_s"
                 android:layout_margin="@dimen/space_s"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -34,7 +43,7 @@
                 android:singleLine="true"
                 android:fontFamily="@font/electrolize"
                 android:padding="@dimen/space_xs"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icon"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="@tools:sample/lorem/random"

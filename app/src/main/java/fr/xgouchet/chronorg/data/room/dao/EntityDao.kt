@@ -22,12 +22,12 @@ interface EntityDao {
     suspend fun get(id: Long): RoomEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(project: RoomEntity): Long
+    suspend fun insert(item: RoomEntity): Long
 
     @Update
-    suspend fun update(project: RoomEntity): Int
+    suspend fun update(item: RoomEntity): Int
 
     @Delete
-    suspend fun delete(project: RoomEntity): Int
+    suspend fun delete(item: RoomEntity): Int
 
 }

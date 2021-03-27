@@ -69,4 +69,21 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+
+    <fragment
+        android:id="@+id/eventListFragment"
+        android:name="fr.xgouchet.chronorg.feature.event.list.EventListFragment"
+        tools:layout="@layout/fragment_base" />
+
+    <fragment
+        android:id="@+id/eventEditorFragment"
+        android:name="fr.xgouchet.chronorg.feature.event.editor.EventEditorFragment"
+        tools:layout="@layout/fragment_base">
+        <argument
+            android:name="project"
+            app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
 </navigation>

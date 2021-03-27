@@ -18,12 +18,12 @@ interface ProjectDao {
     suspend fun get(id: Long): RoomProject?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(project: RoomProject): Long
+    suspend fun insert(item: RoomProject): Long
 
     @Update
-    suspend fun update(project: RoomProject): Int
+    suspend fun update(item: RoomProject): Int
 
     @Delete
-    suspend fun delete(project: RoomProject): Int
+    suspend fun delete(item: RoomProject): Int
 
 }

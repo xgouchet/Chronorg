@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.xgouchet.chronorg.data.room.dao.EntityDao
+import fr.xgouchet.chronorg.data.room.dao.EventDao
 import fr.xgouchet.chronorg.data.room.dao.PortalDao
 import fr.xgouchet.chronorg.data.room.dao.ProjectDao
 import fr.xgouchet.chronorg.data.room.model.RoomEntity
+import fr.xgouchet.chronorg.data.room.model.RoomEvent
 import fr.xgouchet.chronorg.data.room.model.RoomPortal
 import fr.xgouchet.chronorg.data.room.model.RoomProject
 
@@ -15,6 +17,7 @@ import fr.xgouchet.chronorg.data.room.model.RoomProject
     entities = [
         RoomProject::class,
         RoomEntity::class,
+        RoomEvent::class,
         RoomPortal::class
     ],
     version = AppDatabase.V1_BASE,
@@ -25,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun projectDao(): ProjectDao
     abstract fun entityDao(): EntityDao
     abstract fun portalDao(): PortalDao 
+    abstract fun eventDao(): EventDao
 
 
     companion object {

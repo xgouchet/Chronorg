@@ -5,8 +5,8 @@ import fr.xgouchet.chronorg.data.flow.model.Portal
 import fr.xgouchet.chronorg.data.flow.model.symbol
 import fr.xgouchet.chronorg.ui.formatter.Formatter
 import fr.xgouchet.chronorg.ui.items.Item
+import fr.xgouchet.chronorg.ui.items.ItemCard
 import fr.xgouchet.chronorg.ui.items.ItemEmpty
-import fr.xgouchet.chronorg.ui.items.ItemPortal
 import fr.xgouchet.chronorg.ui.source.asImageSource
 import fr.xgouchet.chronorg.ui.source.asTextSource
 import org.joda.time.Interval
@@ -18,7 +18,7 @@ class PortalListTransformer(
     override fun empty(): Collection<Item.ViewModel> {
         return listOf(
             ItemEmpty.ViewModel(
-                icon = R.drawable.ic_portal.asImageSource(),
+                icon = R.drawable.ic_portal_empty.asImageSource(),
                 title = "Portals".asTextSource(),
                 subtitle = "It seems there are no portals yet.".asTextSource()
             )
@@ -30,8 +30,9 @@ class PortalListTransformer(
         val direction = item.direction.symbol()
 
         return listOf(
-            ItemPortal.ViewModel(
+            ItemCard.ViewModel(
                 index = Item.Index(1, index),
+                icon = R.drawable.ic_portal.asImageSource(),
                 title = item.name.asTextSource(),
                 subtitle = "$direction $delay".asTextSource(),
                 description = item.notes.asTextSource(),

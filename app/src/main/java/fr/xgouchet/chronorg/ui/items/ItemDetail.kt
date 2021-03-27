@@ -15,11 +15,11 @@ class ItemDetail {
     // region ViewModel
 
     data class ViewModel(
-            val index: Item.Index,
-            val title: TextSource,
-            val description: TextSource? = null,
-            val icon: ImageSource? = null,
-            val data: Any? = null
+        val index: Item.Index,
+        val title: TextSource,
+        val description: TextSource? = null,
+        val icon: ImageSource? = null,
+        val data: Any? = null
     ) : Item.ViewModel() {
 
         override fun type(): Item.Type = Item.Type.DETAILS
@@ -27,7 +27,6 @@ class ItemDetail {
         override fun index(): Item.Index = index
 
         override fun data(): Any? = data
-
     }
 
     // endregion
@@ -35,8 +34,8 @@ class ItemDetail {
     // region ViewHolder
 
     class ViewHolder(
-            itemView: View,
-            private val listener: (Item.Event) -> Unit
+        itemView: View,
+        private val listener: (Item.Event) -> Unit
     ) : Item.ViewHolder<ViewModel>(itemView) {
 
         private val titleView: TextView = itemView.findViewById(R.id.title)
@@ -63,9 +62,11 @@ class ItemDetail {
 
     class ViewHolderInflater
         : Item.ViewHolderInflater<ViewHolder> {
-        override fun inflate(inflater: LayoutInflater,
-                             parent: ViewGroup,
-                             listener: (Item.Event) -> Unit): ViewHolder {
+        override fun inflate(
+            inflater: LayoutInflater,
+            parent: ViewGroup,
+            listener: (Item.Event) -> Unit
+        ): ViewHolder {
             val view = inflater.inflate(R.layout.item_detail, parent, false)
             return ViewHolder(view, listener)
         }

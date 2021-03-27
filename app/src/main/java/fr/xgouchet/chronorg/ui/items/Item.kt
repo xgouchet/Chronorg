@@ -67,9 +67,7 @@ class Item {
     enum class Type(val inflater: ViewHolderInflater<*>) {
 
         EMPTY(ItemEmpty.ViewHolderInflater()),
-        PROJECT(ItemProject.ViewHolderInflater()),
-        ENTITY(ItemEntity.ViewHolderInflater()),
-        PORTAL(ItemPortal.ViewHolderInflater()),
+        CARD(ItemCard.ViewHolderInflater()),
         DETAILS(ItemDetail.ViewHolderInflater()),
 
 
