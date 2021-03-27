@@ -72,7 +72,7 @@ class ItemTextInput {
         override fun inflate(inflater: LayoutInflater,
                              parent: ViewGroup,
                              listener: (Item.Event) -> Unit): ViewHolder {
-            val view = inflater.inflate(R.layout.item_text_input, parent, false)
+            val view = inflater.inflate(R.layout.item_input_text, parent, false)
             return ViewHolder(view, listener)
         }
     }

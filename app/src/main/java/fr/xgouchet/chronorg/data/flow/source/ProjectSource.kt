@@ -20,7 +20,8 @@ class ProjectSource(
         } else {
             val project = converter.fromRoom(roomModel)
             val entityCount = appDatabase.entityDao().getAllInProject(id).count()
-            project.copy(entityCount = entityCount)
+            val portalCount = appDatabase.portalDao().getAllInProject(id).count()
+            project.copy(entityCount = entityCount, portalCount = portalCount)
         }
     }
 

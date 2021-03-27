@@ -9,14 +9,8 @@
     <fragment
         android:id="@+id/projectListFragment"
         android:name="fr.xgouchet.chronorg.feature.project.list.ProjectListFragment"
-        tools:layout="@layout/fragment_base">
-        <action
-            android:id="@+id/action_edit_project"
-            app:destination="@id/projectEditorFragment" />
-        <action
-            android:id="@+id/action_projectListFragment_to_projectPreviewFragment"
-            app:destination="@id/projectPreviewFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_base"></fragment>
+
     <fragment
         android:id="@+id/projectEditorFragment"
         android:name="fr.xgouchet.chronorg.feature.project.editor.ProjectEditorFragment"
@@ -26,10 +20,8 @@
             app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
             app:nullable="true"
             android:defaultValue="@null" />
-        <action
-            android:id="@+id/action_projectEditorFragment_to_projectPreviewFragment"
-            app:destination="@id/projectPreviewFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/projectPreviewFragment"
         android:name="fr.xgouchet.chronorg.feature.project.preview.ProjectPreviewFragment"
@@ -37,23 +29,13 @@
         <argument
             android:name="project"
             app:argType="fr.xgouchet.chronorg.data.flow.model.Project" />
-        <action
-            android:id="@+id/action_listEntities"
-            app:destination="@id/entityListFragment" />
     </fragment>
 
 
     <fragment
         android:id="@+id/entityListFragment"
         android:name="fr.xgouchet.chronorg.feature.entity.list.EntityListFragment"
-        tools:layout="@layout/fragment_base">
-        <action
-            android:id="@+id/action_edit_entity"
-            app:destination="@id/entityEditorFragment" />
-        <action
-            android:id="@+id/action_entityListFragment_to_entityPreviewFragment"
-            app:destination="@id/projectPreviewFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_base" />
 
     <fragment
         android:id="@+id/entityEditorFragment"
@@ -64,8 +46,27 @@
             app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
             app:nullable="true"
             android:defaultValue="@null" />
-        <action
-            android:id="@+id/action_projectEditorFragment_to_projectPreviewFragment"
-            app:destination="@id/projectPreviewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/portalListFragment"
+        android:name="fr.xgouchet.chronorg.feature.portal.list.PortalListFragment"
+        tools:layout="@layout/fragment_base">
+        <argument
+            android:name="project"
+            app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/portalEditorFragment"
+        android:name="fr.xgouchet.chronorg.feature.portal.editor.PortalEditorFragment"
+        tools:layout="@layout/fragment_base">
+        <argument
+            android:name="project"
+            app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

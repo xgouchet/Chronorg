@@ -69,11 +69,12 @@ class Item {
         EMPTY(ItemEmpty.ViewHolderInflater()),
         PROJECT(ItemProject.ViewHolderInflater()),
         ENTITY(ItemEntity.ViewHolderInflater()),
+        PORTAL(ItemPortal.ViewHolderInflater()),
         DETAILS(ItemDetail.ViewHolderInflater()),
 
 
         TEXT_INPUT(ItemTextInput.ViewHolderInflater()),
-        INSTANT_INPUT(ItemInstantInput.ViewHolderInflater()),
+        RAW_INPUT(ItemRawInput.ViewHolderInflater())
 
         ;
 

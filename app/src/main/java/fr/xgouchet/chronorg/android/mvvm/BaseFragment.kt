@@ -166,5 +166,5 @@ abstract class BaseFragment<VM>
 
     open fun configure(viewModel: VM) {}
 
-    abstract fun onFabClicked()
+    open fun onFabClicked() {}
 }

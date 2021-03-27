@@ -5,14 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.xgouchet.chronorg.data.room.dao.EntityDao
+import fr.xgouchet.chronorg.data.room.dao.PortalDao
 import fr.xgouchet.chronorg.data.room.dao.ProjectDao
 import fr.xgouchet.chronorg.data.room.model.RoomEntity
+import fr.xgouchet.chronorg.data.room.model.RoomPortal
 import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 @Database(
     entities = [
         RoomProject::class,
-        RoomEntity::class
+        RoomEntity::class,
+        RoomPortal::class
     ],
     version = AppDatabase.V1_BASE,
     exportSchema = true
@@ -21,6 +24,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun projectDao(): ProjectDao
     abstract fun entityDao(): EntityDao
+    abstract fun portalDao(): PortalDao 
+
 
     companion object {
         private const val DB_NAME = "AppDatabase"

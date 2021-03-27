@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import fr.xgouchet.chronorg.di.ConverterModule
 import fr.xgouchet.chronorg.di.DataFlowModule
+import fr.xgouchet.chronorg.di.FormatterModule
 import fr.xgouchet.chronorg.di.TransformerModule
 import fr.xgouchet.chronorg.di.ViewModelFactory
 import fr.xgouchet.chronorg.di.ViewModelModule
@@ -32,8 +33,9 @@ class ChronorgApplication
         import(androidCoreModule(this@ChronorgApplication))
         import(ViewModelModule)
         import(DataFlowModule)
-        import(TransformerModule)
+        import(FormatterModule)
         import(ConverterModule)
+        import(TransformerModule)
 
         bind<Context>() with singleton { this@ChronorgApplication }
 

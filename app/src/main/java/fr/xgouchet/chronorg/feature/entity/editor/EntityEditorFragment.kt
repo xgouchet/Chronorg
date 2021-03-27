@@ -60,10 +60,6 @@ class EntityEditorFragment
         viewModel.project = getProject()
     }
 
-    override fun onFabClicked() {
-
-    }
-
     // endregion
 
     // region Internal

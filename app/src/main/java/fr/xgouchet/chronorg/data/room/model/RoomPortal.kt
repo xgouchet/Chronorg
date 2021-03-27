@@ -10,6 +10,7 @@ data class RoomPortal(
         @PrimaryKey(autoGenerate = true) var id: Long = 0,
         @ColumnInfo(index = true) var project_id: Long = 0,
         var name: String = "",
+        var notes: String = "",
         var delay: String = "",
-        var direction: String = ""
+        var direction: Int = 0
 )

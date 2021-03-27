@@ -34,8 +34,8 @@ class ProjectPreviewViewModel(
         val bundle = Bundle(1)
         bundle.putParcelable("project", data.project)
         val target = when (data.link) {
-            ProjectLink.Type.ENTITIES -> R.id.action_listEntities
-            ProjectLink.Type.PORTALS -> TODO()
+            ProjectLink.Type.ENTITIES -> R.id.entityListFragment
+            ProjectLink.Type.PORTALS -> R.id.portalListFragment
             ProjectLink.Type.EVENTS -> TODO()
         }
         navController.navigate(target, bundle)

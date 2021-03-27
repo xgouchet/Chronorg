@@ -60,8 +60,6 @@ class ProjectEditorFragment
         viewModel.description = project?.description.orEmpty()
     }
 
-    override fun onFabClicked() {}
-
     // endregion
 
     // region Internal

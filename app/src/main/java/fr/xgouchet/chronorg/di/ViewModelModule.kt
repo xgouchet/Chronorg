@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.xgouchet.chronorg.feature.entity.editor.EntityEditorViewModel
 import fr.xgouchet.chronorg.feature.entity.list.EntityListViewModel
+import fr.xgouchet.chronorg.feature.portal.editor.PortalEditorViewModel
+import fr.xgouchet.chronorg.feature.portal.list.PortalListViewModel
 import fr.xgouchet.chronorg.feature.project.editor.ProjectEditorViewModel
 import fr.xgouchet.chronorg.feature.project.list.ProjectsListViewModel
 import fr.xgouchet.chronorg.feature.project.preview.ProjectPreviewViewModel
@@ -26,12 +28,18 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
         ProjectPreviewViewModel(instance(), instance(), instance())
     }
 
-
     bindViewModel<EntityListViewModel>() with provider {
         EntityListViewModel(instance(), instance())
     }
     bindViewModel<EntityEditorViewModel>() with provider {
         EntityEditorViewModel(instance(), instance())
+    }
+
+    bindViewModel<PortalListViewModel>() with provider {
+        PortalListViewModel(instance(), instance())
+    }
+    bindViewModel<PortalEditorViewModel>() with provider {
+        PortalEditorViewModel(instance(), instance())
     }
 }
 

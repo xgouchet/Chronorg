@@ -13,18 +13,18 @@ class ProjectSink(
 
     private val appDatabase: AppDatabase = AppDatabase.getInstance(context)
 
-    override suspend fun create(entity: Project): Long {
+    override suspend fun create(data: Project): Long {
         return appDatabase.projectDao()
-            .insert(converter.toRoom(entity))
+            .insert(converter.toRoom(data))
     }
 
-    override suspend fun update(entity: Project): Boolean {
+    override suspend fun update(data: Project): Boolean {
         return appDatabase.projectDao()
-            .update(converter.toRoom(entity)) == 1
+            .update(converter.toRoom(data)) == 1
     }
 
-    override suspend fun delete(entity: Project): Boolean {
+    override suspend fun delete(data: Project): Boolean {
         return appDatabase.projectDao()
-            .delete(converter.toRoom(entity)) == 1
+            .delete(converter.toRoom(data)) == 1
     }
 }
