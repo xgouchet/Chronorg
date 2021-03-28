@@ -26,4 +26,10 @@ class PortalSource(
     override suspend fun getAllInParent(parentId: Long): List<Portal> {
         return appDatabase.portalDao().getAllInProject(parentId).map { converter.fromRoom(it) }
     }
+
+    override suspend fun getAllOrphans(): List<Portal> {
+        val projectIds = appDatabase.projectDao().getAll().map { it.id }
+        return appDatabase.portalDao().getAllNotInProjects(projectIds)
+            .map { converter.fromRoom(it) }
+    }
 }

@@ -21,8 +21,12 @@ class ProjectSource(
             val project = converter.fromRoom(roomModel)
             val entityCount = appDatabase.entityDao().getAllInProject(id).count()
             val portalCount = appDatabase.portalDao().getAllInProject(id).count()
-            val eventCount = appDatabase.portalDao().getAllInProject(id).count()
-            project.copy(entityCount = entityCount, portalCount = portalCount)
+            val eventCount = appDatabase.eventDao().getAllInProject(id).count()
+            project.copy(
+                entityCount = entityCount,
+                portalCount = portalCount,
+                eventCount = eventCount
+            )
         }
     }
 
@@ -34,5 +38,9 @@ class ProjectSource(
         throw IllegalStateException(
             "Can't get all projects in parent: projects don't have parents."
         )
+    }
+
+    override suspend fun getAllOrphans(): List<Project> {
+        return getAll()
     }
 }

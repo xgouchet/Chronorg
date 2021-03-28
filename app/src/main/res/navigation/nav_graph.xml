@@ -5,12 +5,13 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/projectListFragment">
 
+    <!-- endregion -->
 
+    <!-- region Projects -->
     <fragment
         android:id="@+id/projectListFragment"
         android:name="fr.xgouchet.chronorg.feature.project.list.ProjectListFragment"
-        tools:layout="@layout/fragment_base"></fragment>
-
+        tools:layout="@layout/fragment_base" />
     <fragment
         android:id="@+id/projectEditorFragment"
         android:name="fr.xgouchet.chronorg.feature.project.editor.ProjectEditorFragment"
@@ -21,7 +22,6 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
-
     <fragment
         android:id="@+id/projectPreviewFragment"
         android:name="fr.xgouchet.chronorg.feature.project.preview.ProjectPreviewFragment"
@@ -30,13 +30,19 @@
             android:name="project"
             app:argType="fr.xgouchet.chronorg.data.flow.model.Project" />
     </fragment>
+    <!-- endregion -->
 
-
+    <!-- region Entities -->
     <fragment
         android:id="@+id/entityListFragment"
         android:name="fr.xgouchet.chronorg.feature.entity.list.EntityListFragment"
-        tools:layout="@layout/fragment_base" />
-
+        tools:layout="@layout/fragment_base">
+        <argument
+            android:name="project"
+            app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/entityEditorFragment"
         android:name="fr.xgouchet.chronorg.feature.entity.editor.EntityEditorFragment"
@@ -47,7 +53,13 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/orphanEntityListFragment"
+        android:name="fr.xgouchet.chronorg.feature.entity.orphans.OrphanEntityListFragment"
+        tools:layout="@layout/fragment_base" />
+    <!-- endregion -->
 
+    <!-- region Portals -->
     <fragment
         android:id="@+id/portalListFragment"
         android:name="fr.xgouchet.chronorg.feature.portal.list.PortalListFragment"
@@ -58,7 +70,6 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
-
     <fragment
         android:id="@+id/portalEditorFragment"
         android:name="fr.xgouchet.chronorg.feature.portal.editor.PortalEditorFragment"
@@ -69,12 +80,23 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/orphanPortalListFragment"
+        android:name="fr.xgouchet.chronorg.feature.portal.orphans.OrphanPortalListFragment"
+        tools:layout="@layout/fragment_base" />
+    <!-- endregion -->
 
+    <!-- region Events -->
     <fragment
         android:id="@+id/eventListFragment"
         android:name="fr.xgouchet.chronorg.feature.event.list.EventListFragment"
-        tools:layout="@layout/fragment_base" />
-
+        tools:layout="@layout/fragment_base">
+        <argument
+            android:name="project"
+            app:argType="fr.xgouchet.chronorg.data.flow.model.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/eventEditorFragment"
         android:name="fr.xgouchet.chronorg.feature.event.editor.EventEditorFragment"
@@ -85,5 +107,10 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/orphanEventListFragment"
+        android:name="fr.xgouchet.chronorg.feature.event.orphans.OrphanEventListFragment"
+        tools:layout="@layout/fragment_base" />
+    <!-- endregion -->
 
 </navigation>

@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import fr.xgouchet.chronorg.data.room.model.RoomEntity
-import fr.xgouchet.chronorg.data.room.model.RoomProject
 
 @Dao
 interface EntityDao {
@@ -16,7 +15,10 @@ interface EntityDao {
     suspend fun getAll(): List<RoomEntity>
 
     @Query("SELECT * FROM entity WHERE project_id = :projectId")
-    suspend fun getAllInProject(projectId : Long): List<RoomEntity>
+    suspend fun getAllInProject(projectId: Long): List<RoomEntity>
+
+    @Query("SELECT * FROM entity WHERE project_id NOT IN (:projectIds)")
+    suspend fun getAllNotInProjects(projectIds: List<Long>): List<RoomEntity>
 
     @Query("SELECT * FROM entity WHERE id = :id")
     suspend fun get(id: Long): RoomEntity?
@@ -30,4 +32,6 @@ interface EntityDao {
     @Delete
     suspend fun delete(item: RoomEntity): Int
 
+    @Query("DELETE FROM entity WHERE project_id = :projectId")
+    suspend fun deleteAllInProject(projectId: Long): Int
 }

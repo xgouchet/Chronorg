@@ -19,6 +19,9 @@ interface PortalDao {
     @Query("SELECT * FROM portal WHERE project_id = :projectId")
     suspend fun getAllInProject(projectId : Long): List<RoomPortal>
 
+    @Query("SELECT * FROM portal WHERE project_id NOT IN (:projectIds)")
+    suspend fun getAllNotInProjects(projectIds: List<Long>): List<RoomPortal>
+
     @Query("SELECT * FROM portal WHERE id = :id")
     suspend fun get(id: Long): RoomPortal?
 
@@ -30,5 +33,8 @@ interface PortalDao {
 
     @Delete
     suspend fun delete(item: RoomPortal): Int
+
+    @Query("DELETE FROM portal WHERE project_id = :projectId")
+    suspend fun deleteAllInProject(projectId: Long): Int
 
 }

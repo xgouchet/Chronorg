@@ -24,6 +24,10 @@ class ProjectSink(
     }
 
     override suspend fun delete(data: Project): Boolean {
+        appDatabase.entityDao().deleteAllInProject(data.id)
+        appDatabase.portalDao().deleteAllInProject(data.id)
+        appDatabase.eventDao().deleteAllInProject(data.id)
+
         return appDatabase.projectDao()
             .delete(converter.toRoom(data)) == 1
     }

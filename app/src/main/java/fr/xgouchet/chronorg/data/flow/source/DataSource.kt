@@ -7,4 +7,6 @@ interface DataSource<T : Any> {
     suspend fun getAll(): List<T>
 
     suspend fun getAllInParent(parentId: Long): List<T>
+
+    suspend fun getAllOrphans(): List<T>
 }

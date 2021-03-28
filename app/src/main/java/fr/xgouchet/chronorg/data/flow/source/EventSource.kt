@@ -26,4 +26,10 @@ class EventSource(
     override suspend fun getAllInParent(parentId: Long): List<Event> {
         return appDatabase.eventDao().getAllInProject(parentId).map { converter.fromRoom(it) }
     }
+
+    override suspend fun getAllOrphans(): List<Event> {
+        val projectIds = appDatabase.projectDao().getAll().map { it.id }
+        return appDatabase.eventDao().getAllNotInProjects(projectIds)
+            .map { converter.fromRoom(it) }
+    }
 }

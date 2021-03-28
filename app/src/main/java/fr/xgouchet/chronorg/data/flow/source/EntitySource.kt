@@ -26,4 +26,10 @@ class EntitySource(
     override suspend fun getAllInParent(parentId: Long): List<Entity> {
         return appDatabase.entityDao().getAllInProject(parentId).map { converter.fromRoom(it) }
     }
+
+    override suspend fun getAllOrphans(): List<Entity> {
+        val projectIds = appDatabase.projectDao().getAll().map { it.id }
+        return appDatabase.entityDao().getAllNotInProjects(projectIds)
+            .map { converter.fromRoom(it) }
+    }
 }

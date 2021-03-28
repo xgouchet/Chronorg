@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.xgouchet.chronorg.feature.entity.editor.EntityEditorViewModel
 import fr.xgouchet.chronorg.feature.entity.list.EntityListViewModel
+import fr.xgouchet.chronorg.feature.entity.orphans.OrphanEntityListViewModel
 import fr.xgouchet.chronorg.feature.event.editor.EventEditorViewModel
 import fr.xgouchet.chronorg.feature.event.list.EventListViewModel
+import fr.xgouchet.chronorg.feature.event.orphans.OrphanEventListViewModel
 import fr.xgouchet.chronorg.feature.portal.editor.PortalEditorViewModel
 import fr.xgouchet.chronorg.feature.portal.list.PortalListViewModel
+import fr.xgouchet.chronorg.feature.portal.orphans.OrphanPortalListViewModel
 import fr.xgouchet.chronorg.feature.project.editor.ProjectEditorViewModel
 import fr.xgouchet.chronorg.feature.project.list.ProjectsListViewModel
 import fr.xgouchet.chronorg.feature.project.preview.ProjectPreviewViewModel
@@ -20,6 +23,8 @@ import org.kodein.di.generic.provider
 
 val ViewModelModule = Kodein.Module(name = "ViewModel") {
 
+    // region Projects
+
     bindViewModel<ProjectsListViewModel>() with provider {
         ProjectsListViewModel(instance(), instance(), instance(), instance())
     }
@@ -30,12 +35,23 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
         ProjectPreviewViewModel(instance(), instance(), instance())
     }
 
+    // endregion
+
+    // region Entities
+
     bindViewModel<EntityListViewModel>() with provider {
         EntityListViewModel(instance(), instance())
     }
     bindViewModel<EntityEditorViewModel>() with provider {
         EntityEditorViewModel(instance(), instance())
     }
+    bindViewModel<OrphanEntityListViewModel>() with provider {
+        OrphanEntityListViewModel(instance(), instance())
+    }
+
+    // endregion
+
+    // region Portals
 
     bindViewModel<PortalListViewModel>() with provider {
         PortalListViewModel(instance(), instance())
@@ -43,6 +59,13 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     bindViewModel<PortalEditorViewModel>() with provider {
         PortalEditorViewModel(instance(), instance())
     }
+    bindViewModel<OrphanPortalListViewModel>() with provider {
+        OrphanPortalListViewModel(instance(), instance())
+    }
+
+    // endregion
+
+    // region Events
 
     bindViewModel<EventListViewModel>() with provider {
         EventListViewModel(instance(), instance())
@@ -50,6 +73,12 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     bindViewModel<EventEditorViewModel>() with provider {
         EventEditorViewModel(instance(), instance())
     }
+    bindViewModel<OrphanEventListViewModel>() with provider {
+        OrphanEventListViewModel(instance(), instance())
+    }
+
+    // endregion
+
 }
 
 inline fun <reified T : Any> Kodein.Builder.bindViewModel()
