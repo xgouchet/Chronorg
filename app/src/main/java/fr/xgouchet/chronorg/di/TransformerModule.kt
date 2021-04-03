@@ -2,12 +2,14 @@ package fr.xgouchet.chronorg.di
 
 import fr.xgouchet.chronorg.data.flow.model.Entity
 import fr.xgouchet.chronorg.data.flow.model.Event
+import fr.xgouchet.chronorg.data.flow.model.Jump
 import fr.xgouchet.chronorg.data.flow.model.Portal
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.ui.transformer.EntityListTransformer
 import fr.xgouchet.chronorg.ui.transformer.EventListTransformer
+import fr.xgouchet.chronorg.ui.transformer.JumpListTransformer
 import fr.xgouchet.chronorg.ui.transformer.PortalListTransformer
-import fr.xgouchet.chronorg.ui.transformer.ProjectPreviewTransformer
+import fr.xgouchet.chronorg.ui.transformer.ProjectContentTransformer
 import fr.xgouchet.chronorg.ui.transformer.ProjectListTransformer
 import fr.xgouchet.chronorg.ui.transformer.ViewModelListTransformer
 import org.kodein.di.Kodein
@@ -22,7 +24,7 @@ val TransformerModule = Kodein.Module(name = "Transformer") {
     }
 
     bind<ViewModelListTransformer<Project>>() with provider {
-        ProjectPreviewTransformer()
+        ProjectContentTransformer()
     }
 
     bind<ViewModelListTransformer<List<Entity>>>() with provider {
@@ -35,5 +37,9 @@ val TransformerModule = Kodein.Module(name = "Transformer") {
 
     bind<ViewModelListTransformer<List<Event>>>() with provider {
         EventListTransformer(instance())
+    }
+
+    bind<ViewModelListTransformer<List<Jump>>>() with provider {
+        JumpListTransformer(instance())
     }
 }

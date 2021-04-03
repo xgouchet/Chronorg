@@ -11,5 +11,5 @@ data class Jump(
     val name: String,
     val from: Instant,
     val to: Instant,
-    val previousJumpId: Long
+    val previousJumpId: Long?
 ) : Parcelable

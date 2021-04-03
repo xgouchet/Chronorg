@@ -16,7 +16,7 @@ class EntityListFragment
 
     override fun onResume() {
         super.onResume()
-        activity?.title = getProject()?.name ?: "?"
+        activity?.title = getProject().name
     }
 
     // endregion
@@ -38,8 +38,8 @@ class EntityListFragment
 
     // region Internal
 
-    private fun getProject(): Project? {
-        return arguments?.getParcelable("project")
+    private fun getProject(): Project {
+        return requireArguments().getParcelable("project")!!
     }
 
     // endregion

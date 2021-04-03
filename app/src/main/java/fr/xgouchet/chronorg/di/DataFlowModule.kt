@@ -2,16 +2,19 @@ package fr.xgouchet.chronorg.di
 
 import fr.xgouchet.chronorg.data.flow.model.Entity
 import fr.xgouchet.chronorg.data.flow.model.Event
+import fr.xgouchet.chronorg.data.flow.model.Jump
 import fr.xgouchet.chronorg.data.flow.model.Portal
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.flow.sink.DataSink
 import fr.xgouchet.chronorg.data.flow.sink.EntitySink
 import fr.xgouchet.chronorg.data.flow.sink.EventSink
+import fr.xgouchet.chronorg.data.flow.sink.JumpSink
 import fr.xgouchet.chronorg.data.flow.sink.PortalSink
 import fr.xgouchet.chronorg.data.flow.sink.ProjectSink
 import fr.xgouchet.chronorg.data.flow.source.DataSource
 import fr.xgouchet.chronorg.data.flow.source.EntitySource
 import fr.xgouchet.chronorg.data.flow.source.EventSource
+import fr.xgouchet.chronorg.data.flow.source.JumpSource
 import fr.xgouchet.chronorg.data.flow.source.PortalSource
 import fr.xgouchet.chronorg.data.flow.source.ProjectSource
 import org.kodein.di.Kodein
@@ -32,5 +35,8 @@ val DataFlowModule = Kodein.Module(name = "DataFlow") {
 
     bind<DataSource<Event>>() with provider { EventSource(instance(), instance()) }
     bind<DataSink<Event>>() with provider { EventSink(instance(), instance()) }
+
+    bind<DataSource<Jump>>() with provider { JumpSource(instance(), instance()) }
+    bind<DataSink<Jump>>() with provider { JumpSink(instance(), instance()) }
 }
 

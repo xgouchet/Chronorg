@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import fr.xgouchet.chronorg.feature.entity.editor.EntityEditorViewModel
 import fr.xgouchet.chronorg.feature.entity.list.EntityListViewModel
 import fr.xgouchet.chronorg.feature.entity.orphans.OrphanEntityListViewModel
+import fr.xgouchet.chronorg.feature.entity.timeline.EntityTimelineViewModel
 import fr.xgouchet.chronorg.feature.event.editor.EventEditorViewModel
 import fr.xgouchet.chronorg.feature.event.list.EventListViewModel
 import fr.xgouchet.chronorg.feature.event.orphans.OrphanEventListViewModel
@@ -45,6 +46,9 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     bindViewModel<EntityEditorViewModel>() with provider {
         EntityEditorViewModel(instance(), instance())
     }
+    bindViewModel<EntityTimelineViewModel>() with provider {
+        EntityTimelineViewModel(instance(), instance(), instance(), instance(), instance())
+    }
     bindViewModel<OrphanEntityListViewModel>() with provider {
         OrphanEntityListViewModel(instance(), instance())
     }
@@ -76,6 +80,20 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     bindViewModel<OrphanEventListViewModel>() with provider {
         OrphanEventListViewModel(instance(), instance())
     }
+
+    // endregion
+
+    // region Jumps
+
+    // bindViewModel<JumpListViewModel>() with provider {
+    //     JumpListViewModel(instance(), instance())
+    // }
+    // bindViewModel<JumpEditorViewModel>() with provider {
+    //     JumpEditorViewModel(instance(), instance())
+    // }
+    // bindViewModel<OrphanJumpListViewModel>() with provider {
+    //     OrphanJumpListViewModel(instance(), instance())
+    // }
 
     // endregion
 

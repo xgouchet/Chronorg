@@ -2,15 +2,18 @@ package fr.xgouchet.chronorg.di
 
 import fr.xgouchet.chronorg.data.flow.model.Entity
 import fr.xgouchet.chronorg.data.flow.model.Event
+import fr.xgouchet.chronorg.data.flow.model.Jump
 import fr.xgouchet.chronorg.data.flow.model.Portal
 import fr.xgouchet.chronorg.data.flow.model.Project
 import fr.xgouchet.chronorg.data.room.RoomConverter
 import fr.xgouchet.chronorg.data.room.converter.EntityConverter
 import fr.xgouchet.chronorg.data.room.converter.EventConverter
+import fr.xgouchet.chronorg.data.room.converter.JumpConverter
 import fr.xgouchet.chronorg.data.room.converter.PortalConverter
 import fr.xgouchet.chronorg.data.room.converter.ProjectConverter
 import fr.xgouchet.chronorg.data.room.model.RoomEntity
 import fr.xgouchet.chronorg.data.room.model.RoomEvent
+import fr.xgouchet.chronorg.data.room.model.RoomJump
 import fr.xgouchet.chronorg.data.room.model.RoomPortal
 import fr.xgouchet.chronorg.data.room.model.RoomProject
 import org.kodein.di.Kodein
@@ -23,6 +26,7 @@ val ConverterModule = Kodein.Module(name = "Converter") {
     bind<RoomConverter<RoomEntity, Entity>>() with provider { EntityConverter() }
     bind<RoomConverter<RoomPortal, Portal>>() with provider { PortalConverter() }
     bind<RoomConverter<RoomEvent, Event>>() with provider { EventConverter() }
+    bind<RoomConverter<RoomJump, Jump>>() with provider { JumpConverter() }
 
 }
 

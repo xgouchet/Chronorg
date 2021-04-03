@@ -8,7 +8,7 @@ import fr.xgouchet.chronorg.ui.items.ItemDetail
 import fr.xgouchet.chronorg.ui.source.asImageSource
 import fr.xgouchet.chronorg.ui.source.asTextSource
 
-class ProjectPreviewTransformer
+class ProjectContentTransformer
     : ViewModelListTransformer<Project> {
     override fun transform(entity: Project): List<Item.ViewModel> {
         return listOf(

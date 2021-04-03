@@ -18,18 +18,18 @@ class EntityListViewModel(
     private val transformer: ViewModelListTransformer<List<Entity>>
 ) : SimpleViewModel<EntityListViewModel, EntityListFragment>(), OrphanEntityContract.ViewModel {
 
-    var project: Project? = null
+    lateinit var project: Project
 
     override suspend fun getData(): List<Item.ViewModel> {
         return withContext(Dispatchers.IO) {
-            transformer.transform(entitySource.getAllInParent(project?.id ?: 0))
+            transformer.transform(entitySource.getAllInParent(project.id))
         }
     }
 
     override suspend fun onViewEvent(event: Item.Event, navController: NavController) {
-        val data = event.viewModel.data() as? Project ?: return
+        val data = event.viewModel.data() as? Entity ?: return
         val bundle = Bundle(1)
-        bundle.putParcelable("project", data)
-        navController.navigate(R.id.projectPreviewFragment, bundle)
+        bundle.putParcelable("entity", data)
+        navController.navigate(R.id.entityTimelineFragment, bundle)
     }
 }
