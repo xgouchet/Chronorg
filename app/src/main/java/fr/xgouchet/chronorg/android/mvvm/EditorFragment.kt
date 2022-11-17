@@ -12,19 +12,26 @@ abstract class EditorFragment<VM> : BaseFragment<VM>(),
     where VM : BaseViewModel,
           VM : ViewModel {
 
-    fun promptInstant(requestId: Int, instantValue: Instant?) {
+    fun promptInstant(
+        requestId: Int,
+        instantValue: Instant?,
+        min : Instant? = null,
+        max : Instant? = null
+    ) {
         val intent = InstantPickerActivity.createInstantPicker(
             requireContext(),
-            instantValue
+            instantValue,
+            min,
+            max
         )
         startActivityForResult(intent, requestId)
     }
 
-     fun promptDirection(requestId: Int, direction: Direction) {
-         val intent = DirectionPickerActivity.createDirectionPicker(
-             requireContext(),
-             direction
-         )
-         startActivityForResult(intent, requestId)
+    fun promptDirection(requestId: Int, direction: Direction) {
+        val intent = DirectionPickerActivity.createDirectionPicker(
+            requireContext(),
+            direction
+        )
+        startActivityForResult(intent, requestId)
     }
 }

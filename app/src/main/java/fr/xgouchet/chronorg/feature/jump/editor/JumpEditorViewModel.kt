@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.feature.entity.editor
+package fr.xgouchet.chronorg.feature.jump.editor
 
 import android.app.Activity
 import android.content.Intent
@@ -8,7 +8,8 @@ import fr.xgouchet.chronorg.android.activity.InstantPickerActivity
 import fr.xgouchet.chronorg.android.activity.Request
 import fr.xgouchet.chronorg.android.mvvm.SimpleViewModel
 import fr.xgouchet.chronorg.data.flow.model.Entity
-import fr.xgouchet.chronorg.data.flow.model.Project
+import fr.xgouchet.chronorg.data.flow.model.Jump
+import fr.xgouchet.chronorg.data.flow.model.Portal
 import fr.xgouchet.chronorg.data.flow.sink.DataSink
 import fr.xgouchet.chronorg.ui.formatter.Formatter
 import fr.xgouchet.chronorg.ui.items.Item
@@ -19,46 +20,51 @@ import fr.xgouchet.chronorg.ui.source.asImageSource
 import fr.xgouchet.chronorg.ui.source.asTextSource
 import org.joda.time.Instant
 
-class EntityEditorViewModel(
-    private val entitySink: DataSink<Entity>,
+class JumpEditorViewModel(
+    private val jumpSink: DataSink<Jump>,
     private val instantFormatter: Formatter<Instant>
-) : SimpleViewModel<EntityEditorViewModel, EntityEditorFragment>(),
-    EntityEditorContract.ViewModel {
+) : SimpleViewModel<JumpEditorViewModel, JumpEditorFragment>(),
+    JumpEditorContract.ViewModel {
 
-    lateinit var project: Project
+    lateinit var entity: Entity
+    lateinit var fromAfter: Instant
+    lateinit var toBefore: Instant
 
     private var name = ""
-    private var notes = ""
-    private var birth: Instant? = null
-    private var death: Instant? = null
+    private var from: Instant? = null
+    private var to: Instant? = null
+    private var portal: Portal? = null
+    internal var jumpOrder: Long = 0
+
 
     override suspend fun getData(): List<Item.ViewModel> {
         return listOf(
             ItemTextInput.ViewModel(
                 index = Item.Index(0, 0),
-                hint = "Entity name".asTextSource(),
+                hint = "Jump name".asTextSource(),
                 value = name.asTextSource(),
                 data = ID_NAME
-            ),
-            ItemTextInput.ViewModel(
-                index = Item.Index(0, 1),
-                hint = "Description".asTextSource(),
-                value = notes.asTextSource(),
-                data = ID_NOTES
             ),
             ItemRawInput.ViewModel(
                 index = Item.Index(0, 2),
                 icon = R.drawable.ic_instant.asImageSource(),
-                hint = R.string.hint_entity_birth.asTextSource(),
-                value = dateViewTextSource(birth),
-                data = ID_BIRTH
+                hint = R.string.hint_jump_from.asTextSource(),
+                value = dateViewTextSource(from),
+                data = ID_FROM
             ),
             ItemRawInput.ViewModel(
                 index = Item.Index(0, 3),
                 icon = R.drawable.ic_instant.asImageSource(),
-                hint = R.string.hint_entity_death.asTextSource(),
-                value = dateViewTextSource(death),
-                data = ID_DEATH
+                hint = R.string.hint_jump_to.asTextSource(),
+                value = dateViewTextSource(to),
+                data = ID_TO
+            ),
+            ItemRawInput.ViewModel(
+                index = Item.Index(0, 4),
+                icon = R.drawable.ic_portal.asImageSource(),
+                hint = R.string.hint_jump_through_portal.asTextSource(),
+                value = portal?.name.orEmpty().asTextSource(),
+                data = ID_PORTAL
             )
         )
     }
@@ -67,19 +73,17 @@ class EntityEditorViewModel(
         val data = event.viewModel.data()
         when (event.action) {
             Item.Action.ITEM_TAPPED -> {
-                val (request, value) = when (data) {
-                    ID_BIRTH -> Request.PICK_BIRTH_DATE to birth
-                    ID_DEATH -> Request.PICK_DEATH_DATE to death
-                    else -> TODO()
+                if (data == ID_FROM){
+                    fragment?.promptInstant(Request.PICK_JUMP_FROM_DATE, from, fromAfter, null)
+                } else if (data == ID_TO){
+                    fragment?.promptInstant(Request.PICK_JUMP_TO_DATE, to, null, toBefore)
                 }
-                fragment?.promptInstant(request, value)
             }
             Item.Action.VALUE_CHANGED -> {
 
                 val strValue = (event.value as? String).orEmpty()
                 when (data) {
                     ID_NAME -> name = strValue
-                    ID_NOTES -> notes = strValue
                 }
             }
             else -> {
@@ -88,14 +92,15 @@ class EntityEditorViewModel(
     }
 
     override suspend fun onSave(): Boolean {
-        val id = entitySink.create(
-            Entity(
+        val id = jumpSink.create(
+            Jump(
                 id = 0L,
-                project = project,
+                entity = entity,
                 name = name,
-                notes = notes,
-                birth = Instant(),
-                death = Instant()
+                from = from ?: Instant(),
+                to = to ?: Instant(),
+                portal = portal,
+                jumpOrder = jumpOrder
             )
         )
         return id >= 0
@@ -107,8 +112,8 @@ class EntityEditorViewModel(
         val instant = Instant(instantData)
 
         when (requestCode) {
-            Request.PICK_BIRTH_DATE -> birth = instant
-            Request.PICK_DEATH_DATE -> death = instant
+            Request.PICK_JUMP_FROM_DATE -> from = instant
+            Request.PICK_JUMP_TO_DATE -> to = instant
         }
     }
 
@@ -122,8 +127,8 @@ class EntityEditorViewModel(
 
     companion object {
         const val ID_NAME = "name"
-        const val ID_NOTES = "notes"
-        const val ID_BIRTH = "birth"
-        const val ID_DEATH = "death"
+        const val ID_FROM = "from"
+        const val ID_TO = "to"
+        const val ID_PORTAL = "portal"
     }
 }

@@ -14,6 +14,14 @@ class JumpSink(
     private val appDatabase: AppDatabase = AppDatabase.getInstance(context)
 
     override suspend fun create(data: Jump): Long {
+        appDatabase.jumpDao()
+            .getAllInEntity(data.entity.id)
+            .filter { it.jump_order >= data.jumpOrder }
+            .forEach {
+                 it.jump_order ++
+                appDatabase.jumpDao().update(it)
+            }
+
         return appDatabase.jumpDao()
             .insert(converter.toRoom(data))
     }

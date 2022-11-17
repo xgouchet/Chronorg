@@ -1,16 +1,13 @@
 package fr.xgouchet.chronorg.feature.portal.editor
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
 import fr.xgouchet.chronorg.R
-import fr.xgouchet.chronorg.android.mvvm.BaseFragment
 import fr.xgouchet.chronorg.android.mvvm.EditorFragment
 import fr.xgouchet.chronorg.data.flow.model.Project
-import fr.xgouchet.chronorg.feature.portal.list.PortalListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -64,8 +61,8 @@ class PortalEditorFragment
 
     // region Internal
 
-    private fun getProject(): Project? {
-        return arguments?.getParcelable("project")
+    private fun getProject(): Project {
+        return arguments?.getParcelable("project")!!
     }
 
     // endregion

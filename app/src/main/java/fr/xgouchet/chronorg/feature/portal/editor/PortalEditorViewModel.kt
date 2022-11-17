@@ -29,7 +29,7 @@ class PortalEditorViewModel(
 ) : SimpleViewModel<PortalEditorViewModel, PortalEditorFragment>(),
     PortalEditorContract.ViewModel {
 
-    var project: Project? = null
+    lateinit var project: Project
 
     private var name = ""
     private var notes = ""
@@ -92,7 +92,7 @@ class PortalEditorViewModel(
         val id = projectSink.create(
             Portal(
                 id = 0L,
-                projectId = project?.id ?: 0L,
+                project = project,
                 name = name,
                 notes = notes,
                 delay = Interval(Instant(), Instant()), // TODO

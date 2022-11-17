@@ -7,9 +7,10 @@ import org.joda.time.Instant
 @Parcelize
 data class Jump(
     val id: Long,
-    val entityId: Long,
+    val entity: Entity,
     val name: String,
     val from: Instant,
     val to: Instant,
-    val previousJumpId: Long?
+    val jumpOrder: Long,
+    val portal: Portal?
 ) : Parcelable

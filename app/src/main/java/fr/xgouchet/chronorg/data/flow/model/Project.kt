@@ -11,4 +11,8 @@ data class Project(
     @Transient val entityCount: Int,
     @Transient val portalCount: Int,
     @Transient val eventCount: Int
-) : Parcelable
+) : Parcelable {
+    companion object {
+        val EMPTY = Project(0, "", "", 0, 0, 0)
+    }
+}

@@ -40,6 +40,7 @@
     <string name="hint_event_instant">Event date and time</string>
     <string name="hint_jump_to">Jump destination</string>
     <string name="hint_jump_from">Jump origin</string>
+    <string name="hint_jump_through_portal">Jump through portal</string>
     <string name="hint_timeline_name">Timeline name</string>
     <string name="default_timeline_name">Main Timeline</string>
     <string name="confirm_delete">Are you sure you want delay delete this element ?</string>

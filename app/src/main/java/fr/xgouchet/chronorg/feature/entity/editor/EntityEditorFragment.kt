@@ -64,8 +64,8 @@ class EntityEditorFragment
 
     // region Internal
 
-    private fun getProject(): Project? {
-        return arguments?.getParcelable("project")
+    private fun getProject(): Project {
+        return arguments?.getParcelable("project")!!
     }
 
     // endregion

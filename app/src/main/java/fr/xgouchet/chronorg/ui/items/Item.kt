@@ -73,7 +73,8 @@ class Item {
 
 
         TEXT_INPUT(ItemTextInput.ViewHolderInflater()),
-        RAW_INPUT(ItemRawInput.ViewHolderInflater())
+        RAW_INPUT(ItemRawInput.ViewHolderInflater()),
+        ADD_INPUT(ItemAddInput.ViewHolderInflater())
 
         ;
 

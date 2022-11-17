@@ -9,6 +9,7 @@ import fr.xgouchet.chronorg.feature.entity.timeline.EntityTimelineViewModel
 import fr.xgouchet.chronorg.feature.event.editor.EventEditorViewModel
 import fr.xgouchet.chronorg.feature.event.list.EventListViewModel
 import fr.xgouchet.chronorg.feature.event.orphans.OrphanEventListViewModel
+import fr.xgouchet.chronorg.feature.jump.editor.JumpEditorViewModel
 import fr.xgouchet.chronorg.feature.portal.editor.PortalEditorViewModel
 import fr.xgouchet.chronorg.feature.portal.list.PortalListViewModel
 import fr.xgouchet.chronorg.feature.portal.orphans.OrphanPortalListViewModel
@@ -27,7 +28,7 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     // region Projects
 
     bindViewModel<ProjectsListViewModel>() with provider {
-        ProjectsListViewModel(instance(), instance(), instance(), instance())
+        ProjectsListViewModel(instance(), instance(), instance(), instance(), instance())
     }
     bindViewModel<ProjectEditorViewModel>() with provider {
         ProjectEditorViewModel(instance())
@@ -88,9 +89,9 @@ val ViewModelModule = Kodein.Module(name = "ViewModel") {
     // bindViewModel<JumpListViewModel>() with provider {
     //     JumpListViewModel(instance(), instance())
     // }
-    // bindViewModel<JumpEditorViewModel>() with provider {
-    //     JumpEditorViewModel(instance(), instance())
-    // }
+    bindViewModel<JumpEditorViewModel>() with provider {
+        JumpEditorViewModel(instance(), instance())
+    }
     // bindViewModel<OrphanJumpListViewModel>() with provider {
     //     OrphanJumpListViewModel(instance(), instance())
     // }

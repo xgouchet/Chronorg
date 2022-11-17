@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 import org.joda.time.Instant
 
 @Parcelize
-data class Event (
+data class Event(
     val id: Long,
-    val projectId : Long,
+    val project: Project,
     val name: String,
     val notes: String,
-    val date : Instant
+    val date: Instant
 ) : Parcelable

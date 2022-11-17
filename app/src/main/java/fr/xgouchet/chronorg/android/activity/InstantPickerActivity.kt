@@ -21,6 +21,8 @@ class InstantPickerActivity : AppCompatActivity(),
     DialogInterface.OnCancelListener {
 
     lateinit var defaultValue: DateTime
+    var minValue: DateTime? = null
+    var maxValue: DateTime? = null
 
     private var date: String? = null
     private var time: String? = null
@@ -35,6 +37,14 @@ class InstantPickerActivity : AppCompatActivity(),
             Instant(intent.getStringExtra(EXTRA_DEFAULT_VALUE)).toDateTime()
         } else {
             Instant().toDateTime()
+        }
+
+        if (intent.hasExtra(EXTRA_MIN_VALUE)) {
+            minValue = Instant(intent.getStringExtra(EXTRA_MIN_VALUE)).toDateTime()
+        }
+
+        if (intent.hasExtra(EXTRA_MAX_VALUE)) {
+            maxValue = Instant(intent.getStringExtra(EXTRA_MAX_VALUE)).toDateTime()
         }
     }
 
@@ -101,9 +111,9 @@ class InstantPickerActivity : AppCompatActivity(),
         val dialog = DatePickerDialog(this, this, year, month, dayOfMonth)
         val picker: DatePicker = dialog.datePicker
         // Around the birth of JC, because date picker doesn't handle negative
-        picker.minDate = TimeUnit.DAYS.toMillis(-735000)
+        picker.minDate = minValue?.millis ?: TimeUnit.DAYS.toMillis(-735000)
         // +2739 years (around 4760 AD)
-        picker.maxDate = TimeUnit.DAYS.toMillis(1000000)
+        picker.maxDate = maxValue?.millis ?: TimeUnit.DAYS.toMillis(1000000)
         dialog.setOnCancelListener(this)
         dialog.show()
     }
@@ -141,15 +151,27 @@ class InstantPickerActivity : AppCompatActivity(),
 
     companion object {
 
-        fun createInstantPicker(context: Context, defaultValue: Instant?): Intent {
+        fun createInstantPicker(
+            context: Context, defaultValue: Instant?,
+            min: Instant? = null,
+            max: Instant? = null
+        ): Intent {
             val intent = Intent(context, InstantPickerActivity::class.java)
             defaultValue?.let {
                 intent.putExtra(EXTRA_DEFAULT_VALUE, it.toString())
+            }
+            min?.let {
+                intent.putExtra(EXTRA_MIN_VALUE, it.toString())
+            }
+            max?.let {
+                intent.putExtra(EXTRA_MAX_VALUE, it.toString())
             }
             return intent
         }
 
         private const val EXTRA_DEFAULT_VALUE = "default_value"
+        private const val EXTRA_MIN_VALUE = "min_value"
+        private const val EXTRA_MAX_VALUE = "max_value"
 
         internal const val EXTRA_RESULT = "result"
     }

@@ -25,7 +25,7 @@ class EventEditorViewModel(
 ) : SimpleViewModel<EventEditorViewModel, EventEditorFragment>(),
     EventEditorContract.ViewModel {
 
-    var project: Project? = null
+    lateinit var project: Project
 
     private var name = ""
     private var notes = ""
@@ -82,7 +82,7 @@ class EventEditorViewModel(
         val id = eventSink.create(
             Event(
                 id = 0L,
-                projectId = project?.id ?: 0L,
+                project = project,
                 name = name,
                 notes = notes,
                 date = date ?: Instant()

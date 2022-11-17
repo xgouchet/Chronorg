@@ -9,21 +9,19 @@ import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.ui.source.ImageSource
 import fr.xgouchet.chronorg.ui.source.TextSource
 import fr.xgouchet.chronorg.ui.source.applyOrHide
+import fr.xgouchet.chronorg.ui.source.asImageSource
 
-class ItemJump {
+class ItemAddInput {
 
     // region ViewModel
 
     data class ViewModel(
         private val index: Item.Index = Item.Index(0, 0),
-        val title: TextSource,
-        val icon: ImageSource? = null,
-        val from: TextSource? = null,
-        val to: TextSource? = null,
+        val icon: ImageSource = R.drawable.ic_add_hex.asImageSource(),
         val data: Any? = null
     ) : Item.ViewModel() {
 
-        override fun type(): Item.Type = Item.Type.JUMP
+        override fun type(): Item.Type = Item.Type.ADD_INPUT
 
         override fun index(): Item.Index = index
 
@@ -40,15 +38,21 @@ class ItemJump {
     ) : Item.ViewHolder<ViewModel>(itemView) {
 
         private val iconView: ImageView = itemView.findViewById(R.id.icon)
-        private val titleView: TextView = itemView.findViewById(R.id.title)
-        private val jumpFromView: TextView = itemView.findViewById(R.id.jump_from)
-        private val jumpToView: TextView = itemView.findViewById(R.id.jump_to)
+
+        init {
+            itemView.setOnClickListener {
+                listener(
+                    Item.Event(
+                        boundItem,
+                        Item.Action.ITEM_TAPPED,
+                        null
+                    )
+                )
+            }
+        }
 
         override fun onBind(item: ViewModel) {
-            iconView.applyOrHide(item.icon) { setImage(it) }
-            item.title.setText(titleView)
-            jumpFromView.applyOrHide(item.from){setText(it)}
-            jumpToView.applyOrHide(item.to){setText(it)}
+            item.icon.setImage(iconView)
         }
     }
 
@@ -63,7 +67,7 @@ class ItemJump {
             parent: ViewGroup,
             listener: (Item.Event) -> Unit
         ): ViewHolder {
-            val view = inflater.inflate(R.layout.item_jump, parent, false)
+            val view = inflater.inflate(R.layout.item_add_between, parent, false)
             return ViewHolder(view, listener)
         }
     }

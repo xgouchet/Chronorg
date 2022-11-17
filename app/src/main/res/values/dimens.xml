@@ -17,6 +17,7 @@
     <!-- Size -->
     <dimen name="icon_s">32dp</dimen>
     <dimen name="icon_m">48dp</dimen>
+    <dimen name="icon_l">64dp</dimen>
     <dimen name="height_small">32dp</dimen>
     <dimen name="height_interactive">48dp</dimen>
     <dimen name="height_input">64dp</dimen>

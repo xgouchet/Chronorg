@@ -14,7 +14,7 @@ interface JumpDao {
     @Query("SELECT * FROM jump")
     suspend fun getAll(): List<RoomJump>
 
-    @Query("SELECT * FROM jump WHERE entity_id = :entityId")
+    @Query("SELECT * FROM jump WHERE entity_id = :entityId ORDER BY jump_order ASC")
     suspend fun getAllInEntity(entityId : Long): List<RoomJump>
 
     @Query("SELECT * FROM jump WHERE entity_id NOT IN (:entityIds)")
@@ -33,5 +33,5 @@ interface JumpDao {
     suspend fun delete(item: RoomJump): Int
 
     @Query("DELETE FROM jump WHERE entity_id = :entityId")
-    suspend fun deleteAllInProject(entityId: Long): Int
+    suspend fun deleteAllInEntity(entityId: Long): Int
 }

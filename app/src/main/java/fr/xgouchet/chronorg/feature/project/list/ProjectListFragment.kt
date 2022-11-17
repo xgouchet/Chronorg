@@ -9,6 +9,7 @@ import fr.xgouchet.chronorg.R
 import fr.xgouchet.chronorg.android.mvvm.BaseFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ProjectListFragment
@@ -35,7 +36,10 @@ class ProjectListFragment
         return when (item.itemId) {
             R.id.action_demo -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    vm.createDemoProject()
+                    val result = async { vm.createDemoProject() }
+                    if (result.await()) {
+                        viewModel?.let { updateData(it) }
+                    }
                 }
                 true
             }

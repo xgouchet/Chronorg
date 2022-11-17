@@ -10,8 +10,9 @@ import fr.xgouchet.chronorg.data.flow.sink.DataSink
 import fr.xgouchet.chronorg.data.flow.source.DataSource
 import fr.xgouchet.chronorg.ui.formatter.Formatter
 import fr.xgouchet.chronorg.ui.items.Item
-import fr.xgouchet.chronorg.ui.items.ItemDetail
+import fr.xgouchet.chronorg.ui.items.ItemAddInput
 import fr.xgouchet.chronorg.ui.items.ItemJump
+import fr.xgouchet.chronorg.ui.source.asImageSource
 import fr.xgouchet.chronorg.ui.source.asTextSource
 import fr.xgouchet.chronorg.ui.transformer.ViewModelListTransformer
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,8 @@ class EntityTimelineViewModel(
 
     lateinit var entity: Entity
 
+    var jumpList: List<Jump> = emptyList()
+
     override suspend fun getData(): List<Item.ViewModel> {
         return withContext(Dispatchers.IO) {
             val entity = entitySource.get(entity.id) ?: return@withContext emptyList()
@@ -36,46 +39,46 @@ class EntityTimelineViewModel(
             val jumpVMList = jumpListTransformer.transform(jumps)
 
             val header = listOf(
-                ItemDetail.ViewModel(
-                    index = Item.Index(0, 0),
-                    title = entity.name.asTextSource(),
-                    description = entity.notes.asTextSource()
-                ),
                 ItemJump.ViewModel(
-                    index = Item.Index(0, 0),
+                    index = Item.Index(0, 1),
+                    icon = R.drawable.ic_event.asImageSource(),
                     title = R.string.hint_entity_birth.asTextSource(),
-                    from = "".asTextSource(),
                     to = ("* " + instantFormatter.format(entity.birth)).asTextSource()
+                ),
+                ItemAddInput.ViewModel(
+                    index = Item.Index(0,2),
+                    data = null
                 )
             )
             val footer = listOf<Item.ViewModel>(
                 ItemJump.ViewModel(
-                    index = Item.Index(0, 0),
+                    index = Item.Index(0, 3),
+                    icon = R.drawable.ic_event.asImageSource(),
                     title = R.string.hint_entity_death.asTextSource(),
                     from = ("† " + instantFormatter.format(entity.death)).asTextSource(),
-                    to = "".asTextSource()
                 )
             )
-
+            jumpList = jumps
             header + jumpVMList + footer
         }
     }
 
     override suspend fun onViewEvent(event: Item.Event, navController: NavController) {
-        TODO()
-        // val data = event.viewModel.data() as? ProjectLink ?: return
-        // val bundle = Bundle(1)
-        // bundle.putParcelable("project", data.project)
-        // val target = when (data.link) {
-        //     ProjectLink.Type.ENTITIES -> R.id.entityListFragment
-        //     ProjectLink.Type.PORTALS -> R.id.portalListFragment
-        //     ProjectLink.Type.EVENTS -> R.id.eventListFragment
-        // }
-        // navController.navigate(target, bundle)
+        if (event.viewModel.type() == Item.Type.ADD_INPUT) {
+            val previousJump = event.viewModel.data() as? Jump
+            val order = (previousJump?.jumpOrder ?: -1) + 1
+            val nextJump = jumpList.firstOrNull { it.jumpOrder == order }
+            val bundle = Bundle(4)
+            bundle.putParcelable("entity", entity)
+            bundle.putLong("order", order)
+            bundle.putString("from_after", (previousJump?.to ?: entity.birth).toString())
+            bundle.putString("to_before", (nextJump?.from ?: entity.death).toString())
+            navController.navigate(R.id.jumpEditorFragment, bundle)
+        }
     }
 
     suspend fun onDelete(): Boolean {
-        val entity = entity ?: return false
+        val entity = entity
         return withContext(Dispatchers.IO) {
             entitySink.delete(entity)
         }

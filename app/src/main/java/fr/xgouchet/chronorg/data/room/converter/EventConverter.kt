@@ -13,7 +13,7 @@ class EventConverter : RoomConverter<RoomEvent, Event> {
     override fun fromRoom(roomModel: RoomEvent): Event {
         return Event(
             id = roomModel.id,
-            projectId = roomModel.project_id,
+            project = Project.EMPTY,
             name = roomModel.name,
             notes = roomModel.notes,
             date = Instant(roomModel.date)
@@ -23,7 +23,7 @@ class EventConverter : RoomConverter<RoomEvent, Event> {
     override fun toRoom(appModel: Event): RoomEvent {
         return RoomEvent(
             id = appModel.id,
-            project_id = appModel.projectId,
+            project_id = appModel.project.id,
             name = appModel.name,
             notes = appModel.notes,
             date = appModel.date.toString()

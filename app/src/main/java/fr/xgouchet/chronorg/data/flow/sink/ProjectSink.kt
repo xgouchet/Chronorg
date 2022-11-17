@@ -24,6 +24,12 @@ class ProjectSink(
     }
 
     override suspend fun delete(data: Project): Boolean {
+        // Delete Jumps
+        appDatabase.entityDao().getAllInProject(data.id).forEach {
+            appDatabase.jumpDao().deleteAllInEntity(it.id)
+        }
+
+        // Delete project children
         appDatabase.entityDao().deleteAllInProject(data.id)
         appDatabase.portalDao().deleteAllInProject(data.id)
         appDatabase.eventDao().deleteAllInProject(data.id)

@@ -6,4 +6,6 @@ object Request {
     const val PICK_EVENT_DATE = 4
     const val PICK_DELAY = 10
     const val PICK_DIRECTION = 11
+    const val PICK_JUMP_FROM_DATE = 22
+    const val PICK_JUMP_TO_DATE = 23
 }

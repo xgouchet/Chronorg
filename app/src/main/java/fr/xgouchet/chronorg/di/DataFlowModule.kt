@@ -27,16 +27,18 @@ val DataFlowModule = Kodein.Module(name = "DataFlow") {
     bind<DataSource<Project>>() with provider { ProjectSource(instance(), instance()) }
     bind<DataSink<Project>>() with provider { ProjectSink(instance(), instance()) }
 
-    bind<DataSource<Entity>>() with provider { EntitySource(instance(), instance()) }
+    bind<DataSource<Entity>>() with provider { EntitySource(instance(), instance(), instance()) }
     bind<DataSink<Entity>>() with provider { EntitySink(instance(), instance()) }
 
-    bind<DataSource<Portal>>() with provider { PortalSource(instance(), instance()) }
+    bind<DataSource<Portal>>() with provider { PortalSource(instance(), instance(), instance()) }
     bind<DataSink<Portal>>() with provider { PortalSink(instance(), instance()) }
 
-    bind<DataSource<Event>>() with provider { EventSource(instance(), instance()) }
+    bind<DataSource<Event>>() with provider { EventSource(instance(), instance(), instance()) }
     bind<DataSink<Event>>() with provider { EventSink(instance(), instance()) }
 
-    bind<DataSource<Jump>>() with provider { JumpSource(instance(), instance()) }
+    bind<DataSource<Jump>>() with provider {
+        JumpSource(instance(), instance(), instance(), instance())
+    }
     bind<DataSink<Jump>>() with provider { JumpSink(instance(), instance()) }
 }
 

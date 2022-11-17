@@ -7,9 +7,9 @@ import org.joda.time.Interval
 @Parcelize
 data class Portal(
     val id: Long,
-    val projectId: Long,
+    val project: Project,
     val name: String,
     val notes: String,
     val delay: Interval,
-    val direction: Direction    
+    val direction: Direction
 ) : Parcelable

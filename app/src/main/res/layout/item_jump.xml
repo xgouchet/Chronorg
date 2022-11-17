@@ -1,78 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/space_s"
-        android:layout_marginBottom="@dimen/space_s"
-        android:layout_marginStart="@dimen/space_m"
-        android:layout_marginEnd="@dimen/space_m"
-        android:layout_width="match_parent"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/jump"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/icon_s"
+        android:layout_height="@dimen/icon_s"
+        android:layout_margin="@dimen/space_xs"
+        android:padding="@dimen/space_xs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/about_icon_email" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/icon_s"
+        android:layout_margin="@dimen/space_s"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:singleLine="true"
+        android:fontFamily="@font/electrolize"
+        android:padding="@dimen/space_xs"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@tools:sample/lorem/random" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/jump_from"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:elevation="@dimen/elevation_card"
-        android:clipToPadding="false"
-        >
+        android:layout_margin="@dimen/space_s"
+        android:textSize="14sp"
+        android:textColor="@color/text_primary"
+        android:fontFamily="@font/electrolize"
+        android:textStyle="italic"
+        android:singleLine="true"
+        android:padding="@dimen/space_xs"
+        android:gravity="start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@tools:sample/date/ddmmyy" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/jump"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/jump_to"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_margin="@dimen/space_s"
+        android:textSize="14sp"
+        android:textColor="@color/text_primary"
+        android:fontFamily="@font/electrolize"
+        android:textStyle="italic"
+        android:singleLine="true"
+        android:padding="@dimen/space_xs"
+        android:gravity="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/jump_from"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@tools:sample/date/ddmmyy" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/icon_s"
-            android:layout_margin="@dimen/space_s"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:singleLine="true"
-            android:fontFamily="@font/electrolize"
-            android:padding="@dimen/space_xs"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@tools:sample/lorem/random"
-            />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/jump_from"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_s"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:fontFamily="@font/electrolize"
-            android:textStyle="italic"
-            android:singleLine="true"
-            android:padding="@dimen/space_xs"
-            android:gravity="start"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@tools:sample/date/ddmmyy"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/jump_to"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/space_s"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:fontFamily="@font/electrolize"
-            android:textStyle="italic"
-            android:singleLine="true"
-            android:padding="@dimen/space_xs"
-            android:gravity="end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jump_from"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@tools:sample/date/ddmmyy"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

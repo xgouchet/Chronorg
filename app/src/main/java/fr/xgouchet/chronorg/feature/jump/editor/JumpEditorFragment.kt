@@ -1,4 +1,4 @@
-package fr.xgouchet.chronorg.feature.entity.timeline
+package fr.xgouchet.chronorg.feature.jump.editor
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,24 +6,20 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
 import fr.xgouchet.chronorg.R
-import fr.xgouchet.chronorg.android.mvvm.BaseFragment
+import fr.xgouchet.chronorg.android.mvvm.EditorFragment
 import fr.xgouchet.chronorg.data.flow.model.Entity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.joda.time.Instant
 
-class EntityTimelineFragment
-    : BaseFragment<EntityTimelineViewModel>() {
+class JumpEditorFragment
+    : EditorFragment<JumpEditorViewModel>() {
 
-    override val vmClass: Class<EntityTimelineViewModel> = EntityTimelineViewModel::class.java
+    override val vmClass: Class<JumpEditorViewModel> = JumpEditorViewModel::class.java
 
     // region Fragment
-
-    override fun onResume() {
-        super.onResume()
-        activity?.title = getEntity().name
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,25 +28,19 @@ class EntityTimelineFragment
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.view, menu)
+        inflater.inflate(R.menu.editor, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val vm = viewModel ?: return false
 
         return when (item.itemId) {
-            R.id.action_edit -> {
-                vm.onEdit(findNavController())
-                true
-            }
-            R.id.action_delete -> {
-                promptDeleteConfirmation(R.string.title_timelines) {
-                    CoroutineScope(Dispatchers.Main).launch {
+            R.id.action_confirm -> {
+                CoroutineScope(Dispatchers.Main).launch {
 
-                        val result = async { vm.onDelete() }
-                        if (result.await()) {
-                            findNavController().popBackStack()
-                        }
+                    val result = async { vm.onSave() }
+                    if (result.await()) {
+                        findNavController().popBackStack()
                     }
                 }
                 true
@@ -63,9 +53,12 @@ class EntityTimelineFragment
 
     // region BaseFragment
 
-    override fun configure(viewModel: EntityTimelineViewModel) {
+    override fun configure(viewModel: JumpEditorViewModel) {
         super.configure(viewModel)
         viewModel.entity = getEntity()
+        viewModel.jumpOrder = getJumpOrder()
+        viewModel.fromAfter = getFromAfter()
+        viewModel.toBefore = getToBefore()
     }
 
     // endregion
@@ -73,7 +66,19 @@ class EntityTimelineFragment
     // region Internal
 
     private fun getEntity(): Entity {
-        return requireArguments().getParcelable("entity")!!
+        return arguments?.getParcelable("entity")!!
+    }
+
+    private fun getJumpOrder(): Long {
+        return arguments?.getLong("order") ?: 0L
+    }
+
+    private fun getFromAfter(): Instant {
+        return Instant(arguments?.getString("from_after")!!)
+    }
+
+    private fun getToBefore(): Instant {
+        return Instant(arguments?.getString("to_before")!!)
     }
 
     // endregion

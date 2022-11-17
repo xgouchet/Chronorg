@@ -154,7 +154,7 @@ abstract class BaseFragment<VM>
         recyclerView = contentView.findViewById(R.id.recycler_view)
     }
 
-    private fun updateData(vm: VM) {
+    protected fun updateData(vm: VM) {
         CoroutineScope(Dispatchers.Main).launch {
             val data = async { vm.getData() }
             adapter.updateData(data.await())

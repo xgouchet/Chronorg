@@ -13,18 +13,18 @@ class EntityConverter : RoomConverter<RoomEntity, Entity> {
     override fun fromRoom(roomModel: RoomEntity): Entity {
         return Entity(
             id = roomModel.id,
-            projectId = roomModel.project_id,
+            project = Project.EMPTY,
             name = roomModel.name,
             notes = roomModel.notes,
             birth = Instant(roomModel.birth),
-            death = Instant(roomModel.birth)
+            death = Instant(roomModel.death)
         )
     }
 
     override fun toRoom(appModel: Entity): RoomEntity {
         return RoomEntity(
             id = appModel.id,
-            project_id = appModel.projectId,
+            project_id = appModel.project.id,
             name = appModel.name,
             notes = appModel.notes,
             birth = appModel.birth.toString(),
